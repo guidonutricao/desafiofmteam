@@ -14,7 +14,238 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      cards_resultado: {
+        Row: {
+          created_at: string
+          descricao: string
+          icone_url: string | null
+          id: number
+          titulo: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          descricao: string
+          icone_url?: string | null
+          id?: number
+          titulo: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          descricao?: string
+          icone_url?: string | null
+          id?: number
+          titulo?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      desafios_diarios: {
+        Row: {
+          atividade_fisica: boolean
+          created_at: string
+          data: string
+          hidratacao: boolean
+          id: number
+          pontuacao_total: number
+          registro_visual: boolean
+          seguiu_dieta: boolean
+          sono_qualidade: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          atividade_fisica?: boolean
+          created_at?: string
+          data: string
+          hidratacao?: boolean
+          id?: number
+          pontuacao_total?: number
+          registro_visual?: boolean
+          seguiu_dieta?: boolean
+          sono_qualidade?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          atividade_fisica?: boolean
+          created_at?: string
+          data?: string
+          hidratacao?: boolean
+          id?: number
+          pontuacao_total?: number
+          registro_visual?: boolean
+          seguiu_dieta?: boolean
+          sono_qualidade?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "desafios_diarios_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      mensagens_motivacionais: {
+        Row: {
+          autor: string | null
+          created_at: string
+          id: number
+          mensagem: string
+          updated_at: string
+        }
+        Insert: {
+          autor?: string | null
+          created_at?: string
+          id?: number
+          mensagem: string
+          updated_at?: string
+        }
+        Update: {
+          autor?: string | null
+          created_at?: string
+          id?: number
+          mensagem?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      planos_dieta: {
+        Row: {
+          arquivo_url: string | null
+          created_at: string
+          descricao: string | null
+          id: number
+          is_vegetariano: boolean
+          nome: string
+          peso_max: number
+          peso_min: number
+          updated_at: string
+        }
+        Insert: {
+          arquivo_url?: string | null
+          created_at?: string
+          descricao?: string | null
+          id?: number
+          is_vegetariano?: boolean
+          nome: string
+          peso_max: number
+          peso_min: number
+          updated_at?: string
+        }
+        Update: {
+          arquivo_url?: string | null
+          created_at?: string
+          descricao?: string | null
+          id?: number
+          is_vegetariano?: boolean
+          nome?: string
+          peso_max?: number
+          peso_min?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      planos_treino: {
+        Row: {
+          arquivo_url: string | null
+          created_at: string
+          descricao: string | null
+          frequencia: number
+          id: number
+          nome: string
+          tipo_treino: Database["public"]["Enums"]["tipo_treino_enum"]
+          updated_at: string
+        }
+        Insert: {
+          arquivo_url?: string | null
+          created_at?: string
+          descricao?: string | null
+          frequencia: number
+          id?: number
+          nome: string
+          tipo_treino: Database["public"]["Enums"]["tipo_treino_enum"]
+          updated_at?: string
+        }
+        Update: {
+          arquivo_url?: string | null
+          created_at?: string
+          descricao?: string | null
+          frequencia?: number
+          id?: number
+          nome?: string
+          tipo_treino?: Database["public"]["Enums"]["tipo_treino_enum"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      pontuacoes: {
+        Row: {
+          created_at: string
+          dias_consecutivos: number
+          pontuacao_total: number
+          ultima_data_participacao: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          dias_consecutivos?: number
+          pontuacao_total?: number
+          ultima_data_participacao?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          dias_consecutivos?: number
+          pontuacao_total?: number
+          ultima_data_participacao?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pontuacoes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          foto_url: string | null
+          nome: string
+          peso_atual: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          foto_url?: string | null
+          nome: string
+          peso_atual?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          foto_url?: string | null
+          nome?: string
+          peso_atual?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +254,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      tipo_treino_enum: "casa" | "academia" | "ar_livre" | "outro"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +381,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      tipo_treino_enum: ["casa", "academia", "ar_livre", "outro"],
+    },
   },
 } as const
