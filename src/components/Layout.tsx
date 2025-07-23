@@ -49,7 +49,7 @@ export default function Layout({ children }: LayoutProps) {
               <div className="w-8 h-8 bg-gradient-gold rounded-lg flex items-center justify-center">
                 <Trophy className="w-5 h-5 text-gold-foreground" />
               </div>
-              <h1 className="text-xl font-bold text-foreground">WinStreak Fit</h1>
+              <h1 className="text-xl font-bold text-foreground">Shape Express</h1>
             </div>
             
             <Button 
