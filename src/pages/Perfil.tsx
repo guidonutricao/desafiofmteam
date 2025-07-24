@@ -79,8 +79,8 @@ export default function Perfil() {
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <div className="text-center">
-        <h1 className="text-3xl font-bold text-white mb-2">Meu Perfil</h1>
-        <p className="text-white/80">Gerencie suas informações pessoais</p>
+        <h1 className="text-3xl font-bold text-foreground mb-2">Meu Perfil</h1>
+        <p className="text-muted-foreground">Gerencie suas informações pessoais</p>
       </div>
 
       <Card className="bg-gradient-card">

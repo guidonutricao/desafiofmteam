@@ -119,8 +119,8 @@ export default function Ranking() {
         
         {minhaPosicao && (
           <div className="text-center">
-            <div className="text-2xl font-bold text-white">#{minhaPosicao}</div>
-            <div className="text-sm text-white">Sua posição atual</div>
+            <div className="text-2xl font-bold text-foreground">#{minhaPosicao}</div>
+            <div className="text-sm text-muted-foreground">Sua posição atual</div>
           </div>
         )}
       </div>

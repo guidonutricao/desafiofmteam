@@ -4,20 +4,15 @@ import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import {
-  Droplets,
-  Moon,
-  Dumbbell,
-  UtensilsCrossed,
+import { 
+  Droplets, 
+  Moon, 
+  Dumbbell, 
+  UtensilsCrossed, 
   Camera,
   Trophy,
   Flame,
-  Check,
-  Circle,
-  Award,
-  ShieldX,
-  Smartphone,
-  CalendarDays
+  Star
 } from 'lucide-react';
 
 interface DesafioDiario {
@@ -27,9 +22,6 @@ interface DesafioDiario {
   atividade_fisica: boolean;
   seguiu_dieta: boolean;
   registro_visual: boolean;
-  evitar_ultraprocessados: boolean;
-  dormir_sem_celular: boolean;
-  organizar_refeicoes: boolean;
   pontuacao_total: number;
 }
 
@@ -48,19 +40,16 @@ interface CardResultado {
 export default function DesafioDiario() {
   const { user } = useAuth();
   const { toast } = useToast();
-
+  
   const [desafio, setDesafio] = useState<DesafioDiario>({
     hidratacao: false,
     sono_qualidade: false,
     atividade_fisica: false,
     seguiu_dieta: false,
     registro_visual: false,
-    evitar_ultraprocessados: false,
-    dormir_sem_celular: false,
-    organizar_refeicoes: false,
     pontuacao_total: 0
   });
-
+  
   const [mensagem, setMensagem] = useState<MensagemMotivacional | null>(null);
   const [cardResultado, setCardResultado] = useState<CardResultado | null>(null);
   const [pontuacaoTotal, setPontuacaoTotal] = useState(0);
@@ -102,27 +91,6 @@ export default function DesafioDiario() {
       titulo: 'Registro Visual',
       descricao: 'Tire uma foto do seu progresso',
       emoji: '📸'
-    },
-    {
-      key: 'evitar_ultraprocessados' as keyof DesafioDiario,
-      icon: ShieldX,
-      titulo: 'Evitar Ultraprocessados',
-      descricao: 'Passe o dia todo sem consumir alimentos ultraprocessados (biscoitos, embutidos, salgadinhos etc.)',
-      emoji: '🚫'
-    },
-    {
-      key: 'dormir_sem_celular' as keyof DesafioDiario,
-      icon: Smartphone,
-      titulo: 'Dormir sem Mexer no Celular',
-      descricao: 'Evite celular por pelo menos 30 minutos antes de dormir',
-      emoji: '📱'
-    },
-    {
-      key: 'organizar_refeicoes' as keyof DesafioDiario,
-      icon: CalendarDays,
-      titulo: 'Organizar as Refeições do Dia Seguinte',
-      descricao: 'Planeje ou separe o que vai comer no dia seguinte (pode incluir marmitas, lanches, frutas etc.)',
-      emoji: '📋'
     }
   ];
 
@@ -145,12 +113,7 @@ export default function DesafioDiario() {
         .single();
 
       if (desafioData) {
-        setDesafio({
-          ...desafioData,
-          evitar_ultraprocessados: (desafioData as any).evitar_ultraprocessados || false,
-          dormir_sem_celular: (desafioData as any).dormir_sem_celular || false,
-          organizar_refeicoes: (desafioData as any).organizar_refeicoes || false,
-        });
+        setDesafio(desafioData);
       }
 
       // Carregar pontuação total e dias consecutivos
@@ -228,12 +191,7 @@ export default function DesafioDiario() {
           .single();
 
         if (data) {
-          setDesafio({
-            ...data,
-            evitar_ultraprocessados: (data as any).evitar_ultraprocessados || false,
-            dormir_sem_celular: (data as any).dormir_sem_celular || false,
-            organizar_refeicoes: (data as any).organizar_refeicoes || false,
-          });
+          setDesafio(data);
         }
       }
 
@@ -285,21 +243,21 @@ export default function DesafioDiario() {
           <Trophy className="w-5 h-5" />
           Desafio Shape Express - Dia {Math.min(diasConsecutivos + 1, 7)}/7
         </div>
-
+        
         <div className="flex items-center justify-center gap-8">
           <div className="text-center">
-            <div className="text-2xl font-bold text-white">{pontuacaoTotal}</div>
-            <div className="text-sm text-white">Pontos Totais</div>
+            <div className="text-2xl font-bold text-foreground">{pontuacaoTotal}</div>
+            <div className="text-sm text-muted-foreground">Pontos Totais</div>
           </div>
-
+          
           <div className="text-center">
-            <div className="text-2xl font-bold text-white">{tarefasConcluidas}/8</div>
-            <div className="text-sm text-white">Tarefas Hoje</div>
+            <div className="text-2xl font-bold text-foreground">{tarefasConcluidas}/5</div>
+            <div className="text-sm text-muted-foreground">Tarefas Hoje</div>
           </div>
-
+          
           <div className="text-center">
-            <div className="text-2xl font-bold text-white">{diasConsecutivos}</div>
-            <div className="text-sm text-white">Dias Seguidos</div>
+            <div className="text-2xl font-bold text-foreground">{diasConsecutivos}</div>
+            <div className="text-sm text-muted-foreground">Dias Seguidos</div>
           </div>
         </div>
 
@@ -310,7 +268,7 @@ export default function DesafioDiario() {
             <span className="text-sm font-medium text-foreground">{Math.round(progresso)}%</span>
           </div>
           <div className="w-full bg-secondary h-3 rounded-full overflow-hidden">
-            <div
+            <div 
               className="h-full bg-gradient-gold transition-all duration-500 ease-out"
               style={{ width: `${progresso}%` }}
             />
@@ -318,110 +276,51 @@ export default function DesafioDiario() {
         </div>
       </div>
 
-      {/* Tarefas do dia + Card Premium */}
+      {/* Tarefas do dia */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {tarefas.map((tarefa) => {
           const concluida = desafio[tarefa.key] as boolean;
           const IconComponent = tarefa.icon;
-
+          
           return (
-            <Card
+            <Card 
               key={tarefa.key}
-              className={`relative transition-all duration-300 ${concluida
-                ? 'bg-gradient-gold text-gold-foreground border-gold shadow-lg'
-                : 'bg-gradient-card'
-                }`}
+              className={`relative transition-all duration-300 hover:scale-[1.02] cursor-pointer ${
+                concluida 
+                  ? 'bg-gradient-gold text-gold-foreground border-gold shadow-lg' 
+                  : 'bg-gradient-card hover:bg-accent/5'
+              }`}
+              onClick={() => marcarTarefa(tarefa.key)}
             >
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-3">
                   <div className={`p-2 rounded-lg ${concluida ? 'bg-gold-foreground/20' : 'bg-accent'}`}>
                     <IconComponent className={`w-5 h-5 ${concluida ? 'text-gold-foreground' : 'text-muted-foreground'}`} />
                   </div>
-                  <div className="flex-1">
+                  <div>
                     <div className="flex items-center gap-2">
                       <span className="text-lg">{tarefa.emoji}</span>
                       <span className="font-semibold">{tarefa.titulo}</span>
                     </div>
                   </div>
-                  {/* Botão de check */}
-                  <div className={`p-2 rounded-full transition-all duration-200 ${concluida
-                    ? 'bg-gold-foreground text-gold shadow-md'
-                    : 'bg-accent/50 text-muted-foreground hover:bg-accent hover:text-foreground'
-                    }`}>
-                    {concluida ? (
-                      <Check className="w-5 h-5" />
-                    ) : (
-                      <Circle className="w-5 h-5" />
-                    )}
-                  </div>
                 </CardTitle>
               </CardHeader>
-
+              
               <CardContent>
-                <p className={`text-sm mb-4 ${concluida ? 'text-gold-foreground/80' : 'text-muted-foreground'}`}>
+                <p className={`text-sm ${concluida ? 'text-gold-foreground/80' : 'text-muted-foreground'}`}>
                   {tarefa.descricao}
                 </p>
-
-                {/* Botão de ação */}
-                <Button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    marcarTarefa(tarefa.key);
-                  }}
-                  className={`w-full transition-all duration-200 ${concluida
-                    ? 'bg-gold-foreground/20 hover:bg-gold-foreground/30 text-gold-foreground border border-gold-foreground/30'
-                    : 'bg-gradient-gold hover:opacity-90 text-gold-foreground'
-                    }`}
-                  variant={concluida ? "outline" : "default"}
-                >
-                  {concluida ? (
-                    <>
-                      <Check className="w-4 h-4 mr-2" />
-                      Concluída!
-                    </>
-                  ) : (
-                    <>
-                      <Circle className="w-4 h-4 mr-2" />
-                      Marcar como feito
-                    </>
-                  )}
-                </Button>
+                
+                {concluida && (
+                  <div className="flex items-center gap-1 mt-3">
+                    <Star className="w-4 h-4 fill-current" />
+                    <span className="text-sm font-medium">Concluída!</span>
+                  </div>
+                )}
               </CardContent>
             </Card>
           );
         })}
-
-        {/* Card Premium - Posicionado após as tarefas */}
-        <Card
-          className="bg-amber-500 text-white border-amber-400 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer hover:scale-[1.02] lg:col-span-1"
-          onClick={() => window.open('https://wa.me/5511948464441?text=Ol%C3%A1%2C%20vim%20do%20desafio%20e%20gostaria%20de%20saber%20mais%20sobre%20o%20acompanhamento%20premium.', '_blank')}
-        >
-          <CardHeader className="text-center pb-4">
-            <div className="mx-auto mb-4 p-3 bg-white/20 rounded-full w-fit">
-              <Award className="w-8 h-8 text-white" />
-            </div>
-            <CardTitle className="text-xl font-bold text-white leading-tight">
-              Quer Resultados Ainda Melhores?
-            </CardTitle>
-          </CardHeader>
-
-          <CardContent className="text-center space-y-4">
-            <p className="text-white/90 text-sm leading-relaxed">
-              Acompanhamento individual personalizado para participantes do desafio
-            </p>
-
-            <Button
-              className="w-full bg-white/20 hover:bg-white/30 text-white border border-white/30 transition-all duration-200"
-              variant="outline"
-              onClick={(e) => {
-                e.stopPropagation();
-                window.open('https://wa.me/5511948464441?text=Ol%C3%A1%2C%20vim%20do%20desafio%20e%20gostaria%20de%20saber%20mais%20sobre%20o%20acompanhamento%20premium.', '_blank');
-              }}
-            >
-              Conhecer Acompanhamento Premium
-            </Button>
-          </CardContent>
-        </Card>
       </div>
 
       {/* Mensagem motivacional */}
@@ -463,7 +362,16 @@ export default function DesafioDiario() {
         </Card>
       )}
 
-
+      {/* Botão premium fixo */}
+      <div className="fixed bottom-20 right-4 lg:bottom-4 lg:right-4">
+        <Button 
+          className="bg-gradient-gold hover:opacity-90 text-gold-foreground shadow-lg"
+          onClick={() => window.open('https://example.com/premium', '_blank')}
+        >
+          <Trophy className="w-4 h-4 mr-2" />
+          Conhecer Acompanhamento Premium
+        </Button>
+      </div>
     </div>
   );
 }
