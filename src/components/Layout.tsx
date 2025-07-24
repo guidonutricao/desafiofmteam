@@ -92,32 +92,86 @@ export default function Layout({ children }: LayoutProps) {
       </nav>
 
       {/* Sidebar Navigation - Desktop */}
-      <aside className="hidden lg:block fixed left-0 top-[73px] bottom-0 w-64 bg-card/50 backdrop-blur-md border-r border-border/20 p-6">
-        <nav className="space-y-2">
-          {navigationItems.map((item) => (
+      <aside className="hidden lg:block fixed left-0 top-[73px] bottom-0 w-72 bg-gradient-card backdrop-blur-xl border-r border-border/30 shadow-xl">
+        {/* Sidebar Header */}
+        <div className="p-6 border-b border-border/20">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-gold rounded-xl flex items-center justify-center shadow-lg">
+              <Trophy className="w-6 h-6 text-gold-foreground" />
+            </div>
+            <div>
+              <h2 className="font-bold text-lg text-foreground">Shape Express</h2>
+              <p className="text-sm text-muted-foreground">Seu app de transformação</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Navigation */}
+        <nav className="p-6 space-y-3">
+          {navigationItems.map((item, index) => (
             <NavLink
               key={item.to}
               to={item.to}
               className={({ isActive }) =>
-                `flex items-center gap-3 p-3 rounded-lg transition-all font-medium ${
+                `group flex items-center gap-4 p-4 rounded-xl transition-all duration-200 font-medium relative overflow-hidden ${
                   isActive
-                    ? 'text-gold bg-gold/10 border border-gold/20'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-accent/10'
+                    ? 'text-gold bg-gradient-gold/10 border border-gold/20 shadow-lg'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-accent/20 hover:scale-[1.02] hover:shadow-md'
                 }`
               }
             >
-              <item.icon className="w-5 h-5" />
-              {item.label}
+              {({ isActive }) => (
+                <>
+                  {/* Background glow effect for active item */}
+                  {isActive && (
+                    <div className="absolute inset-0 bg-gradient-gold opacity-5 rounded-xl" />
+                  )}
+                  
+                  {/* Icon container with enhanced styling */}
+                  <div className={`p-2 rounded-lg transition-all duration-200 ${
+                    isActive 
+                      ? 'bg-gold/20 text-gold shadow-sm' 
+                      : 'bg-accent/10 text-muted-foreground group-hover:bg-accent/20 group-hover:text-foreground'
+                  }`}>
+                    <item.icon className="w-5 h-5" />
+                  </div>
+                  
+                  {/* Label with better typography */}
+                  <span className="relative z-10 font-semibold tracking-wide">
+                    {item.label}
+                  </span>
+                  
+                  {/* Active indicator */}
+                  {isActive && (
+                    <div className="absolute right-4 w-2 h-2 bg-gold rounded-full shadow-lg" />
+                  )}
+                </>
+              )}
             </NavLink>
           ))}
         </nav>
+
+        {/* Footer with user info or additional content */}
+        <div className="absolute bottom-6 left-6 right-6">
+          <div className="p-4 bg-card/50 backdrop-blur-sm rounded-xl border border-border/20">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-gradient-gold rounded-lg flex items-center justify-center">
+                <User className="w-4 h-4 text-gold-foreground" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-foreground truncate">Bem-vindo!</p>
+                <p className="text-xs text-muted-foreground">Continue seu progresso</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </aside>
 
       {/* Ajuste do conteúdo para desktop com sidebar */}
       <style>{`
         @media (min-width: 1024px) {
           main {
-            margin-left: 16rem;
+            margin-left: 18rem;
           }
         }
         

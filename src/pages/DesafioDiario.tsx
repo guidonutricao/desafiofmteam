@@ -14,7 +14,10 @@ import {
   Flame,
   Check,
   Circle,
-  Award
+  Award,
+  ShieldX,
+  Smartphone,
+  CalendarDays
 } from 'lucide-react';
 
 interface DesafioDiario {
@@ -24,6 +27,9 @@ interface DesafioDiario {
   atividade_fisica: boolean;
   seguiu_dieta: boolean;
   registro_visual: boolean;
+  evitar_ultraprocessados: boolean;
+  dormir_sem_celular: boolean;
+  organizar_refeicoes: boolean;
   pontuacao_total: number;
 }
 
@@ -49,6 +55,9 @@ export default function DesafioDiario() {
     atividade_fisica: false,
     seguiu_dieta: false,
     registro_visual: false,
+    evitar_ultraprocessados: false,
+    dormir_sem_celular: false,
+    organizar_refeicoes: false,
     pontuacao_total: 0
   });
 
@@ -93,6 +102,27 @@ export default function DesafioDiario() {
       titulo: 'Registro Visual',
       descricao: 'Tire uma foto do seu progresso',
       emoji: '📸'
+    },
+    {
+      key: 'evitar_ultraprocessados' as keyof DesafioDiario,
+      icon: ShieldX,
+      titulo: 'Evitar Ultraprocessados',
+      descricao: 'Passe o dia todo sem consumir alimentos ultraprocessados (biscoitos, embutidos, salgadinhos etc.)',
+      emoji: '🚫'
+    },
+    {
+      key: 'dormir_sem_celular' as keyof DesafioDiario,
+      icon: Smartphone,
+      titulo: 'Dormir sem Mexer no Celular',
+      descricao: 'Evite celular por pelo menos 30 minutos antes de dormir',
+      emoji: '📱'
+    },
+    {
+      key: 'organizar_refeicoes' as keyof DesafioDiario,
+      icon: CalendarDays,
+      titulo: 'Organizar as Refeições do Dia Seguinte',
+      descricao: 'Planeje ou separe o que vai comer no dia seguinte (pode incluir marmitas, lanches, frutas etc.)',
+      emoji: '📋'
     }
   ];
 
@@ -115,7 +145,12 @@ export default function DesafioDiario() {
         .single();
 
       if (desafioData) {
-        setDesafio(desafioData);
+        setDesafio({
+          ...desafioData,
+          evitar_ultraprocessados: (desafioData as any).evitar_ultraprocessados || false,
+          dormir_sem_celular: (desafioData as any).dormir_sem_celular || false,
+          organizar_refeicoes: (desafioData as any).organizar_refeicoes || false,
+        });
       }
 
       // Carregar pontuação total e dias consecutivos
@@ -193,7 +228,12 @@ export default function DesafioDiario() {
           .single();
 
         if (data) {
-          setDesafio(data);
+          setDesafio({
+            ...data,
+            evitar_ultraprocessados: (data as any).evitar_ultraprocessados || false,
+            dormir_sem_celular: (data as any).dormir_sem_celular || false,
+            organizar_refeicoes: (data as any).organizar_refeicoes || false,
+          });
         }
       }
 
@@ -253,7 +293,7 @@ export default function DesafioDiario() {
           </div>
 
           <div className="text-center">
-            <div className="text-2xl font-bold text-white">{tarefasConcluidas}/5</div>
+            <div className="text-2xl font-bold text-white">{tarefasConcluidas}/8</div>
             <div className="text-sm text-white">Tarefas Hoje</div>
           </div>
 
