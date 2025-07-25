@@ -1,26 +1,19 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/use-auth';
-import { supabase } from '@/integrations/supabase/client';
+import { getRankingData, type RankingUser } from '@/lib/supabase/challengeQueries';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { Trophy, Medal, Award, Crown, Flame } from 'lucide-react';
-
-interface UsuarioRanking {
-  user_id: string;
-  pontuacao_total: number;
-  dias_consecutivos: number;
-  profiles: {
-    nome: string;
-    foto_url?: string;
-  };
-}
+import { Trophy, Medal, Award, Crown, Calendar } from 'lucide-react';
+import { ChallengeErrorDisplay, ChallengeLoadingDisplay } from '@/components/ChallengeErrorDisplay';
 
 export default function Ranking() {
   const { user } = useAuth();
-  const [usuarios, setUsuarios] = useState<UsuarioRanking[]>([]);
+  const [usuarios, setUsuarios] = useState<RankingUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [minhaPosicao, setMinhaPosicao] = useState<number | null>(null);
+  const [hasError, setHasError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   useEffect(() => {
     carregarRanking();
@@ -28,27 +21,12 @@ export default function Ranking() {
 
   const carregarRanking = async () => {
     try {
-      const { data, error } = await supabase
-        .from('pontuacoes')
-        .select(`
-          user_id,
-          pontuacao_total,
-          dias_consecutivos,
-          profiles!inner (
-            nome,
-            foto_url
-          )
-        `)
-        .order('pontuacao_total', { ascending: false })
-        .order('dias_consecutivos', { ascending: false });
-
-      if (error) throw error;
-
-      setUsuarios(data || []);
+      const rankingData = await getRankingData();
+      setUsuarios(rankingData);
       
       // Encontrar posição do usuário atual
-      if (user && data) {
-        const posicao = data.findIndex(u => u.user_id === user.id);
+      if (user && rankingData.length > 0) {
+        const posicao = rankingData.findIndex(u => u.id === user.id);
         setMinhaPosicao(posicao !== -1 ? posicao + 1 : null);
       }
     } catch (error) {
@@ -97,6 +75,30 @@ export default function Ranking() {
       .slice(0, 2);
   };
 
+  const getChallengeStatusBadge = (challengeProgress: RankingUser['challengeProgress']) => {
+    if (challengeProgress.isNotStarted) {
+      return (
+        <Badge variant="outline" className="text-xs bg-gray-100 text-gray-600 border-gray-300">
+          Não iniciado
+        </Badge>
+      );
+    }
+    
+    if (challengeProgress.isCompleted) {
+      return (
+        <Badge variant="outline" className="text-xs bg-green-100 text-green-700 border-green-300">
+          Concluído
+        </Badge>
+      );
+    }
+    
+    return (
+      <Badge variant="outline" className="text-xs bg-blue-100 text-blue-700 border-blue-300">
+        Dia {challengeProgress.currentDay}/7
+      </Badge>
+    );
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
@@ -142,14 +144,15 @@ export default function Ranking() {
                   <Medal className="w-8 h-8 text-gray-400" />
                 </div>
                 <Avatar className="mx-auto h-16 w-16 border-2 border-gray-400">
-                  <AvatarImage src={usuarios[1]?.profiles.foto_url} />
+                  <AvatarImage src={usuarios[1]?.avatar} />
                   <AvatarFallback className="bg-gray-100 text-gray-800">
-                    {usuarios[1] ? getInitiais(usuarios[1].profiles.nome) : '?'}
+                    {usuarios[1] ? getInitiais(usuarios[1].name) : '?'}
                   </AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="font-semibold text-sm">{usuarios[1]?.profiles.nome}</p>
-                  <p className="text-xs text-muted-foreground">{usuarios[1]?.pontuacao_total} pts</p>
+                  <p className="font-semibold text-sm">{usuarios[1]?.name}</p>
+                  <p className="text-xs text-muted-foreground">{usuarios[1]?.totalPoints} pts</p>
+                  {usuarios[1] && getChallengeStatusBadge(usuarios[1].challengeProgress)}
                 </div>
               </div>
 
@@ -159,14 +162,15 @@ export default function Ranking() {
                   <Crown className="w-10 h-10 text-yellow-500" />
                 </div>
                 <Avatar className="mx-auto h-20 w-20 border-4 border-yellow-500">
-                  <AvatarImage src={usuarios[0]?.profiles.foto_url} />
+                  <AvatarImage src={usuarios[0]?.avatar} />
                   <AvatarFallback className="bg-yellow-100 text-yellow-800">
-                    {usuarios[0] ? getInitiais(usuarios[0].profiles.nome) : '?'}
+                    {usuarios[0] ? getInitiais(usuarios[0].name) : '?'}
                   </AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="font-bold">{usuarios[0]?.profiles.nome}</p>
-                  <p className="text-sm text-muted-foreground">{usuarios[0]?.pontuacao_total} pts</p>
+                  <p className="font-bold">{usuarios[0]?.name}</p>
+                  <p className="text-sm text-muted-foreground">{usuarios[0]?.totalPoints} pts</p>
+                  {usuarios[0] && getChallengeStatusBadge(usuarios[0].challengeProgress)}
                 </div>
               </div>
 
@@ -176,14 +180,15 @@ export default function Ranking() {
                   <Award className="w-8 h-8 text-amber-600" />
                 </div>
                 <Avatar className="mx-auto h-16 w-16 border-2 border-amber-600">
-                  <AvatarImage src={usuarios[2]?.profiles.foto_url} />
+                  <AvatarImage src={usuarios[2]?.avatar} />
                   <AvatarFallback className="bg-amber-100 text-amber-800">
-                    {usuarios[2] ? getInitiais(usuarios[2].profiles.nome) : '?'}
+                    {usuarios[2] ? getInitiais(usuarios[2].name) : '?'}
                   </AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="font-semibold text-sm">{usuarios[2]?.profiles.nome}</p>
-                  <p className="text-xs text-muted-foreground">{usuarios[2]?.pontuacao_total} pts</p>
+                  <p className="font-semibold text-sm">{usuarios[2]?.name}</p>
+                  <p className="text-xs text-muted-foreground">{usuarios[2]?.totalPoints} pts</p>
+                  {usuarios[2] && getChallengeStatusBadge(usuarios[2].challengeProgress)}
                 </div>
               </div>
             </div>
@@ -195,11 +200,11 @@ export default function Ranking() {
       <div className="space-y-3">
         {usuarios.map((usuario, index) => {
           const posicao = index + 1;
-          const isUsuarioAtual = user?.id === usuario.user_id;
+          const isUsuarioAtual = user?.id === usuario.id;
           
           return (
             <Card 
-              key={usuario.user_id}
+              key={usuario.id}
               className={`transition-all duration-200 ${getCorFundo(posicao, isUsuarioAtual)} ${
                 isUsuarioAtual ? 'scale-[1.02] shadow-lg' : 'hover:scale-[1.01]'
               }`}
@@ -213,13 +218,13 @@ export default function Ranking() {
 
                   {/* Avatar */}
                   <Avatar className="h-12 w-12 border-2 border-border/20">
-                    <AvatarImage src={usuario.profiles.foto_url} />
+                    <AvatarImage src={usuario.avatar} />
                     <AvatarFallback className={`${
                       isUsuarioAtual 
                         ? 'bg-gold-foreground/20 text-gold-foreground' 
                         : 'bg-accent text-accent-foreground'
                     }`}>
-                      {getInitiais(usuario.profiles.nome)}
+                      {getInitiais(usuario.name)}
                     </AvatarFallback>
                   </Avatar>
 
@@ -229,7 +234,7 @@ export default function Ranking() {
                       <h3 className={`font-semibold ${
                         isUsuarioAtual ? 'text-gold-foreground' : 'text-foreground'
                       }`}>
-                        {usuario.profiles.nome}
+                        {usuario.name}
                       </h3>
                       {isUsuarioAtual && (
                         <Badge variant="secondary" className="bg-gold-foreground/20 text-gold-foreground">
@@ -245,17 +250,22 @@ export default function Ranking() {
                         <span className={`text-sm font-medium ${
                           isUsuarioAtual ? 'text-gold-foreground' : 'text-foreground'
                         }`}>
-                          {usuario.pontuacao_total} pts
+                          {usuario.totalPoints} pts
                         </span>
                       </div>
                       <div className="flex items-center gap-1">
-                        <Flame className={`w-4 h-4 ${
-                          isUsuarioAtual ? 'text-gold-foreground' : 'text-orange-500'
+                        <Calendar className={`w-4 h-4 ${
+                          isUsuarioAtual ? 'text-gold-foreground' : 'text-blue-500'
                         }`} />
                         <span className={`text-sm ${
                           isUsuarioAtual ? 'text-gold-foreground/80' : 'text-muted-foreground'
                         }`}>
-                          {usuario.dias_consecutivos} dias seguidos
+                          {usuario.challengeProgress.isNotStarted 
+                            ? 'Não iniciado'
+                            : usuario.challengeProgress.isCompleted 
+                              ? 'Concluído'
+                              : `Dia ${usuario.challengeProgress.currentDay}/7`
+                          }
                         </span>
                       </div>
                     </div>

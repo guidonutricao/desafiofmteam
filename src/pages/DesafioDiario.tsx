@@ -4,6 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+<<<<<<< HEAD
 import { 
   Droplets, 
   Moon, 
@@ -13,6 +14,24 @@ import {
   Trophy,
   Flame,
   Star
+=======
+import { useChallengeProgress } from '@/hooks/useChallengeProgress';
+import { ChallengeErrorDisplay, TimezoneErrorDisplay, ChallengeLoadingDisplay } from '@/components/ChallengeErrorDisplay';
+import {
+  Droplets,
+  Moon,
+  Dumbbell,
+  UtensilsCrossed,
+  Camera,
+  Trophy,
+  Flame,
+  Check,
+  Circle,
+  Award,
+  ShieldX,
+  Smartphone,
+  CalendarCheck
+>>>>>>> 2673e5a (falta configurar as datas do desafio)
 } from 'lucide-react';
 
 interface DesafioDiario {
@@ -22,6 +41,9 @@ interface DesafioDiario {
   atividade_fisica: boolean;
   seguiu_dieta: boolean;
   registro_visual: boolean;
+  evitar_ultraprocessados: boolean;
+  dormir_sem_celular: boolean;
+  organizar_refeicoes: boolean;
   pontuacao_total: number;
 }
 
@@ -47,6 +69,9 @@ export default function DesafioDiario() {
     atividade_fisica: false,
     seguiu_dieta: false,
     registro_visual: false,
+    evitar_ultraprocessados: false,
+    dormir_sem_celular: false,
+    organizar_refeicoes: false,
     pontuacao_total: 0
   });
   
@@ -55,6 +80,10 @@ export default function DesafioDiario() {
   const [pontuacaoTotal, setPontuacaoTotal] = useState(0);
   const [diasConsecutivos, setDiasConsecutivos] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [challengeStartDate, setChallengeStartDate] = useState<Date | null>(null);
+
+  // Use the challenge progress hook
+  const challengeProgress = useChallengeProgress(challengeStartDate);
 
   const tarefas = [
     {
@@ -62,35 +91,64 @@ export default function DesafioDiario() {
       icon: Droplets,
       titulo: 'Hidratação',
       descricao: 'Beba 2 litros de água hoje',
-      emoji: '💧'
+      emoji: '💧',
+      pontos: 100
     },
     {
       key: 'sono_qualidade' as keyof DesafioDiario,
       icon: Moon,
       titulo: 'Sono de Qualidade',
       descricao: 'Durma pelo menos 7-8 horas',
-      emoji: '😴'
+      emoji: '😴',
+      pontos: 100
+    },
+    {
+      key: 'evitar_ultraprocessados' as keyof DesafioDiario,
+      icon: ShieldX,
+      titulo: 'Evitar Ultraprocessados',
+      descricao: 'Passar o dia todo sem consumir alimentos ultraprocessados (biscoitos, embutidos, salgadinhos etc.)',
+      emoji: '🚫',
+      pontos: 150
+    },
+    {
+      key: 'dormir_sem_celular' as keyof DesafioDiario,
+      icon: Smartphone,
+      titulo: 'Dormir sem Mexer no Celular',
+      descricao: 'Evitar celular por pelo menos 1h antes de dormir',
+      emoji: '📵',
+      pontos: 150
     },
     {
       key: 'atividade_fisica' as keyof DesafioDiario,
       icon: Dumbbell,
       titulo: 'Atividade Física',
       descricao: 'Pratique pelo menos 30min de exercício',
-      emoji: '🏋️‍♀️'
+      emoji: '🏋️‍♀️',
+      pontos: 200
     },
     {
       key: 'seguiu_dieta' as keyof DesafioDiario,
       icon: UtensilsCrossed,
       titulo: 'Seguir a Dieta',
       descricao: 'Siga seu plano alimentar',
-      emoji: '🥗'
+      emoji: '🥗',
+      pontos: 200
     },
     {
       key: 'registro_visual' as keyof DesafioDiario,
       icon: Camera,
       titulo: 'Registro Visual',
       descricao: 'Tire uma foto do seu progresso',
-      emoji: '📸'
+      emoji: '📸',
+      pontos: 250
+    },
+    {
+      key: 'organizar_refeicoes' as keyof DesafioDiario,
+      icon: CalendarCheck,
+      titulo: 'Organizar as Refeições do Dia Seguinte',
+      descricao: 'Planejar ou separar o que vai comer no dia seguinte (pode incluir marmitas, lanches, frutas etc.)',
+      emoji: '📋',
+      pontos: 250
     }
   ];
 
@@ -103,6 +161,17 @@ export default function DesafioDiario() {
 
     try {
       const hoje = new Date().toISOString().split('T')[0];
+
+      // Carregar dados do perfil incluindo challenge_start_date
+      const { data: profileData } = await supabase
+        .from('profiles')
+        .select('challenge_start_date, challenge_completed_at')
+        .eq('user_id', user.id)
+        .single();
+
+      if (profileData?.challenge_start_date) {
+        setChallengeStartDate(new Date(profileData.challenge_start_date));
+      }
 
       // Carregar desafio do dia
       const { data: desafioData } = await supabase
@@ -150,6 +219,11 @@ export default function DesafioDiario() {
 
     } catch (error) {
       console.error('Erro ao carregar dados:', error);
+      toast({
+        title: "Erro",
+        description: "Não foi possível carregar os dados do desafio. Tente recarregar a página.",
+        variant: "destructive"
+      });
     } finally {
       setLoading(false);
     }
@@ -159,25 +233,33 @@ export default function DesafioDiario() {
     if (!user || typeof desafio[tarefa] !== 'boolean') return;
 
     const novoStatus = !desafio[tarefa];
-    const novaPontuacao = desafio.pontuacao_total + (novoStatus ? 1 : -1);
+    const tarefaInfo = tarefas.find(t => t.key === tarefa);
+    const pontosTarefa = tarefaInfo?.pontos || 0;
 
+    // Criar objeto com novo status (a pontuação será calculada automaticamente pelo trigger)
     const novoDesafio = {
       ...desafio,
-      [tarefa]: novoStatus,
-      pontuacao_total: Math.max(0, novaPontuacao)
+      [tarefa]: novoStatus
     };
 
     setDesafio(novoDesafio);
 
     try {
       const hoje = new Date().toISOString().split('T')[0];
+      let desafioAtualizado;
 
       if (desafio.id) {
         // Atualizar desafio existente
-        await supabase
+        const { data } = await supabase
           .from('desafios_diarios')
-          .update(novoDesafio)
-          .eq('id', desafio.id);
+          .update({
+            [tarefa]: novoStatus
+          })
+          .eq('id', desafio.id)
+          .select()
+          .single();
+        
+        desafioAtualizado = data;
       } else {
         // Criar novo desafio
         const { data } = await supabase
@@ -185,31 +267,52 @@ export default function DesafioDiario() {
           .insert({
             user_id: user.id,
             data: hoje,
-            ...novoDesafio
+            hidratacao: novoDesafio.hidratacao,
+            sono_qualidade: novoDesafio.sono_qualidade,
+            evitar_ultraprocessados: novoDesafio.evitar_ultraprocessados,
+            dormir_sem_celular: novoDesafio.dormir_sem_celular,
+            atividade_fisica: novoDesafio.atividade_fisica,
+            seguiu_dieta: novoDesafio.seguiu_dieta,
+            registro_visual: novoDesafio.registro_visual,
+            organizar_refeicoes: novoDesafio.organizar_refeicoes
           })
           .select()
           .single();
 
-        if (data) {
-          setDesafio(data);
-        }
+        desafioAtualizado = data;
       }
 
-      // Atualizar pontuação total
-      await supabase
-        .from('pontuacoes')
-        .upsert({
-          user_id: user.id,
-          pontuacao_total: pontuacaoTotal + (novoStatus ? 1 : -1),
-          dias_consecutivos: diasConsecutivos,
-          ultima_data_participacao: hoje
+      if (desafioAtualizado) {
+        setDesafio(desafioAtualizado);
+        
+        // Recalcular pontuação total do usuário
+        await supabase.rpc('recalcular_pontuacao_usuario', {
+          user_id_param: user.id
         });
 
-      setPontuacaoTotal(prev => Math.max(0, prev + (novoStatus ? 1 : -1)));
+        // Atualizar pontuação local
+        const { data: pontuacaoData } = await supabase
+          .from('pontuacoes')
+          .select('pontuacao_total')
+          .eq('user_id', user.id)
+          .single();
+
+        if (pontuacaoData) {
+          setPontuacaoTotal(pontuacaoData.pontuacao_total);
+        }
+
+        // Atualizar última data de participação
+        await supabase
+          .from('pontuacoes')
+          .update({
+            ultima_data_participacao: hoje
+          })
+          .eq('user_id', user.id);
+      }
 
       toast({
         title: novoStatus ? "Tarefa concluída! 🎉" : "Tarefa desmarcada",
-        description: novoStatus ? `+1 ponto! Continue assim!` : "Você pode marcar novamente quando completar.",
+        description: novoStatus ? `+${pontosTarefa} pontos! Continue assim!` : "Você pode marcar novamente quando completar.",
       });
 
     } catch (error) {
@@ -225,23 +328,182 @@ export default function DesafioDiario() {
   };
 
   if (loading) {
+    return <ChallengeLoadingDisplay message="Carregando dados do desafio..." />;
+  }
+
+  // Handle case where user hasn't registered for challenge yet
+  if (!challengeStartDate) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      <div className="text-center space-y-6">
+        <div className="inline-flex items-center gap-2 bg-gradient-gold text-gold-foreground px-4 py-2 rounded-full font-bold">
+          <Trophy className="w-5 h-5" />
+          Desafio Shape Express - Não iniciado
+        </div>
+        <Card className="max-w-md mx-auto bg-gradient-card">
+          <CardHeader>
+            <CardTitle className="text-center">Bem-vindo ao Desafio!</CardTitle>
+          </CardHeader>
+          <CardContent className="text-center space-y-4">
+            <p className="text-muted-foreground">
+              Seu desafio de 7 dias ainda não foi iniciado. Clique no botão abaixo para começar sua jornada!
+            </p>
+            <Button 
+              onClick={async () => {
+                try {
+                  await supabase.rpc('start_user_challenge', { user_id_param: user?.id });
+                  await carregarDados(); // Reload data after starting challenge
+                  toast({
+                    title: "Desafio iniciado! 🎉",
+                    description: "Sua jornada de 7 dias começou. Boa sorte!",
+                  });
+                } catch (error) {
+                  console.error('Error starting challenge:', error);
+                  toast({
+                    title: "Erro",
+                    description: "Não foi possível iniciar o desafio. Tente novamente.",
+                    variant: "destructive"
+                  });
+                }
+              }}
+              className="w-full bg-gradient-gold hover:opacity-90 text-gold-foreground"
+            >
+              Iniciar Desafio
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Show error state if challenge progress has errors
+  if (challengeProgress.hasError) {
+    return (
+      <div className="space-y-6">
+        <div className="text-center">
+          <div className="inline-flex items-center gap-2 bg-gradient-gold text-gold-foreground px-4 py-2 rounded-full font-bold">
+            <Trophy className="w-5 h-5" />
+            Desafio Shape Express
+          </div>
+        </div>
+        
+        <TimezoneErrorDisplay
+          hasError={true}
+          errorMessage={challengeProgress.errorMessage}
+          onRetry={() => {
+            carregarDados();
+          }}
+        />
+        
+        {/* Still show basic interface even with errors */}
+        <Card className="bg-gradient-card border-border/20">
+          <CardContent className="text-center py-12">
+            <p className="text-muted-foreground">
+              Alguns recursos podem estar limitados devido ao erro acima.
+              Tente recarregar a página ou entre em contato com o suporte se o problema persistir.
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Show special message for "starts tomorrow" state but still show tasks
+  const showTasksWithMessage = challengeProgress.isNotStarted && challengeStartDate;
+
+  if (challengeProgress.isCompleted) {
+    return (
+      <div className="text-center space-y-6">
+        <div className="inline-flex items-center gap-2 bg-gradient-gold text-gold-foreground px-4 py-2 rounded-full font-bold">
+          <Trophy className="w-5 h-5" />
+          {challengeProgress.displayText}
+        </div>
+        <Card className="max-w-md mx-auto bg-gradient-gold text-gold-foreground">
+          <CardHeader>
+            <CardTitle className="text-center flex items-center justify-center gap-2">
+              <Trophy className="w-6 h-6" />
+              Parabéns! 🎉
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="text-center space-y-4">
+            <p className="text-gold-foreground/90">
+              Você completou com sucesso o Desafio Shape Express de 7 dias! 
+              Continue mantendo esses hábitos saudáveis em sua rotina.
+            </p>
+            <div className="text-2xl font-bold">
+              {pontuacaoTotal} pontos totais
+            </div>
+          </CardContent>
+        </Card>
+        
+        {/* Show motivational message and result card even when completed */}
+        {mensagem && (
+          <Card className="bg-gradient-card border-border/20">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <Flame className="w-5 h-5 text-gold" />
+                Motivação Diária
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <blockquote className="text-foreground italic">
+                "{mensagem.mensagem}"
+              </blockquote>
+              {mensagem.autor && (
+                <cite className="text-sm text-muted-foreground mt-2 block">
+                  - {mensagem.autor}
+                </cite>
+              )}
+            </CardContent>
+          </Card>
+        )}
+
+        {cardResultado && (
+          <Card className="bg-gradient-gold text-gold-foreground">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Trophy className="w-5 h-5" />
+                {cardResultado.titulo}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gold-foreground/90">
+                {cardResultado.descricao}
+              </p>
+            </CardContent>
+          </Card>
+        )}
       </div>
     );
   }
 
   const tarefasConcluidas = tarefas.filter(t => desafio[t.key] as boolean).length;
-  const progresso = (tarefasConcluidas / tarefas.length) * 100;
+  const pontuacaoMaxima = tarefas.reduce((total, tarefa) => total + tarefa.pontos, 0);
+  const progresso = (desafio.pontuacao_total / pontuacaoMaxima) * 100;
 
   return (
     <div className="space-y-6">
+      {/* Special message for "starts tomorrow" state */}
+      {showTasksWithMessage && (
+        <Card className="bg-blue-500/10 border-blue-500/20">
+          <CardContent className="pt-6">
+            <div className="text-center space-y-2">
+              <div className="text-blue-400 font-semibold">
+                🌅 Seu desafio começará amanhã!
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Você pode começar a se preparar completando as tarefas abaixo. 
+                Elas contarão oficialmente a partir de amanhã.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Header com progresso */}
       <div className="text-center space-y-4">
         <div className="inline-flex items-center gap-2 bg-gradient-gold text-gold-foreground px-4 py-2 rounded-full font-bold">
           <Trophy className="w-5 h-5" />
-          Desafio Shape Express - Dia {Math.min(diasConsecutivos + 1, 7)}/7
+          {challengeProgress.displayText}
         </div>
         
         <div className="flex items-center justify-center gap-8">
@@ -251,18 +513,28 @@ export default function DesafioDiario() {
           </div>
           
           <div className="text-center">
+<<<<<<< HEAD
             <div className="text-2xl font-bold text-foreground">{tarefasConcluidas}/5</div>
             <div className="text-sm text-muted-foreground">Tarefas Hoje</div>
+=======
+            <div className="text-2xl font-bold text-white">{desafio.pontuacao_total}/{pontuacaoMaxima}</div>
+            <div className="text-sm text-white">Pontos Hoje</div>
+>>>>>>> 2673e5a (falta configurar as datas do desafio)
           </div>
           
           <div className="text-center">
+<<<<<<< HEAD
             <div className="text-2xl font-bold text-foreground">{diasConsecutivos}</div>
             <div className="text-sm text-muted-foreground">Dias Seguidos</div>
+=======
+            <div className="text-2xl font-bold text-white">{challengeProgress.currentDay}/{challengeProgress.totalDays}</div>
+            <div className="text-sm text-white">Dia do Desafio</div>
+>>>>>>> 2673e5a (falta configurar as datas do desafio)
           </div>
         </div>
 
-        {/* Barra de progresso */}
-        <div className="max-w-md mx-auto">
+        {/* Barra de progresso do desafio */}
+        <div className="max-w-md mx-auto space-y-3">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm text-muted-foreground">Progresso do dia</span>
             <span className="text-sm font-medium text-foreground">{Math.round(progresso)}%</span>
@@ -271,6 +543,18 @@ export default function DesafioDiario() {
             <div 
               className="h-full bg-gradient-gold transition-all duration-500 ease-out"
               style={{ width: `${progresso}%` }}
+            />
+          </div>
+          
+          {/* Barra de progresso do desafio geral */}
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm text-muted-foreground">Progresso do desafio</span>
+            <span className="text-sm font-medium text-foreground">{Math.round(challengeProgress.progressPercentage)}%</span>
+          </div>
+          <div className="w-full bg-secondary h-3 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-blue-500 transition-all duration-500 ease-out"
+              style={{ width: `${challengeProgress.progressPercentage}%` }}
             />
           </div>
         </div>
@@ -307,6 +591,7 @@ export default function DesafioDiario() {
               </CardHeader>
               
               <CardContent>
+<<<<<<< HEAD
                 <p className={`text-sm ${concluida ? 'text-gold-foreground/80' : 'text-muted-foreground'}`}>
                   {tarefa.descricao}
                 </p>
@@ -317,6 +602,44 @@ export default function DesafioDiario() {
                     <span className="text-sm font-medium">Concluída!</span>
                   </div>
                 )}
+=======
+                <p className={`text-sm mb-3 ${concluida ? 'text-gold-foreground/80' : 'text-muted-foreground'}`}>
+                  {tarefa.descricao}
+                </p>
+
+                {/* Pontuação da tarefa */}
+                <div className={`flex items-center gap-1 mb-4 text-sm font-medium ${
+                  concluida ? 'text-gold-foreground' : 'text-gold'
+                }`}>
+                  <Trophy className="w-4 h-4" />
+                  {tarefa.pontos} pontos
+                </div>
+
+                {/* Botão de ação */}
+                <Button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    marcarTarefa(tarefa.key);
+                  }}
+                  className={`w-full transition-all duration-200 ${concluida
+                    ? 'bg-gold-foreground/20 hover:bg-gold-foreground/30 text-gold-foreground border border-gold-foreground/30'
+                    : 'bg-gradient-gold hover:opacity-90 text-gold-foreground'
+                    }`}
+                  variant={concluida ? "outline" : "default"}
+                >
+                  {concluida ? (
+                    <>
+                      <Check className="w-4 h-4 mr-2" />
+                      Concluída!
+                    </>
+                  ) : (
+                    <>
+                      <Circle className="w-4 h-4 mr-2" />
+                      Marcar como feito
+                    </>
+                  )}
+                </Button>
+>>>>>>> 2673e5a (falta configurar as datas do desafio)
               </CardContent>
             </Card>
           );

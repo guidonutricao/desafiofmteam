@@ -76,8 +76,13 @@ export default function Login() {
           <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-gold rounded-full mb-4">
             <Trophy className="w-8 h-8 text-gold-foreground" />
           </div>
+<<<<<<< HEAD
           <h1 className="text-3xl font-bold text-foreground mb-2">WinStreak Fit</h1>
           <p className="text-muted-foreground">Transforme seus hábitos em 7 dias</p>
+=======
+          <h1 className="text-3xl font-bold text-white drop-shadow-lg mb-2">Shape Express</h1>
+          <p className="text-gray-200 drop-shadow-md">Transforme seus hábitos em 7 dias</p>
+>>>>>>> 2673e5a (falta configurar as datas do desafio)
         </div>
 
         <Card className="bg-gradient-card border-border/20 shadow-2xl">
