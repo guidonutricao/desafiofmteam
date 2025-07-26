@@ -8,17 +8,33 @@ import {
   isChallengeCompleted,
   isChallengeNotStarted,
   formatBrasiliaDate,
+  safeGetCurrentBrasiliaDate,
+  safeToBrasiliaDate,
+  safeGetStartOfDayBrasilia,
+  safeCalculateDaysSinceStart,
+  safeGetChallengeDay,
+  safeIsChallengeCompleted,
+  safeIsChallengeNotStarted,
+  safeFormatBrasiliaDate,
+  safeCalculateChallengeProgress,
+  getTimezoneErrorMessage,
+  TimezoneError,
+  InvalidDateError,
   BRASILIA_TIMEZONE,
   CHALLENGE_DURATION_DAYS
 } from '../timezoneUtils';
 
+
+
 describe('timezoneUtils', () => {
   beforeEach(() => {
     vi.useFakeTimers();
+    vi.clearAllMocks();
   });
 
   afterEach(() => {
     vi.useRealTimers();
+    vi.clearAllMocks();
   });
 
   describe('constants', () => {
@@ -525,6 +541,184 @@ describe('timezoneUtils', () => {
       const slightlyLaterDate = new Date('2024-01-04T13:30:45.999Z');
       const laterChallengeDay = getChallengeDay(slightlyLaterDate);
       expect(laterChallengeDay).toBe(challengeDay);
+    });
+  });
+
+  describe('Safe Wrapper Functions Error Handling', () => {
+    beforeEach(() => {
+      const mockDate = new Date('2024-01-05T15:00:00.000Z');
+      vi.setSystemTime(mockDate);
+    });
+
+    describe('safeToBrasiliaDate', () => {
+      it('should return null for null input', () => {
+        expect(safeToBrasiliaDate(null)).toBe(null);
+        expect(safeToBrasiliaDate(undefined)).toBe(null);
+      });
+
+      it('should return null for invalid date input', () => {
+        const invalidDate = new Date('invalid');
+        const result = safeToBrasiliaDate(invalidDate);
+        expect(result).toBe(null);
+      });
+
+      it('should return converted date when no error occurs', () => {
+        const date = new Date('2024-01-05T15:00:00.000Z');
+        const result = safeToBrasiliaDate(date);
+        expect(result).toBeInstanceOf(Date);
+      });
+    });
+
+    describe('safeGetStartOfDayBrasilia', () => {
+      it('should return null for null input', () => {
+        expect(safeGetStartOfDayBrasilia(null)).toBe(null);
+        expect(safeGetStartOfDayBrasilia(undefined)).toBe(null);
+      });
+
+      it('should return start of day when no error occurs', () => {
+        const date = new Date('2024-01-05T15:30:00.000Z');
+        const result = safeGetStartOfDayBrasilia(date);
+        expect(result).toBeInstanceOf(Date);
+      });
+    });
+
+    describe('safeCalculateDaysSinceStart', () => {
+      it('should return -1 for null input', () => {
+        expect(safeCalculateDaysSinceStart(null)).toBe(-1);
+        expect(safeCalculateDaysSinceStart(undefined)).toBe(-1);
+      });
+
+      it('should return -1 for invalid date input', () => {
+        const invalidDate = new Date('invalid');
+        const result = safeCalculateDaysSinceStart(invalidDate);
+        expect(result).toBe(-1);
+      });
+    });
+
+    describe('safeGetChallengeDay', () => {
+      it('should return 0 for null input', () => {
+        expect(safeGetChallengeDay(null)).toBe(0);
+        expect(safeGetChallengeDay(undefined)).toBe(0);
+      });
+
+      it('should return 0 for invalid date input', () => {
+        const invalidDate = new Date('invalid');
+        const result = safeGetChallengeDay(invalidDate);
+        expect(result).toBe(0);
+      });
+    });
+
+    describe('safeIsChallengeCompleted', () => {
+      it('should return false for null input', () => {
+        expect(safeIsChallengeCompleted(null)).toBe(false);
+        expect(safeIsChallengeCompleted(undefined)).toBe(false);
+      });
+
+      it('should return false for invalid date input', () => {
+        const invalidDate = new Date('invalid');
+        const result = safeIsChallengeCompleted(invalidDate);
+        expect(result).toBe(false);
+      });
+    });
+
+    describe('safeIsChallengeNotStarted', () => {
+      it('should return true for null input', () => {
+        expect(safeIsChallengeNotStarted(null)).toBe(true);
+        expect(safeIsChallengeNotStarted(undefined)).toBe(true);
+      });
+
+      it('should return true for invalid date input', () => {
+        const invalidDate = new Date('invalid');
+        const result = safeIsChallengeNotStarted(invalidDate);
+        expect(result).toBe(true); // Safe default: treat as not started
+      });
+    });
+
+    describe('safeFormatBrasiliaDate', () => {
+      it('should return "Data inválida" for null input', () => {
+        expect(safeFormatBrasiliaDate(null, 'yyyy-MM-dd')).toBe('Data inválida');
+        expect(safeFormatBrasiliaDate(undefined, 'yyyy-MM-dd')).toBe('Data inválida');
+      });
+
+      it('should return "Data inválida" for invalid date', () => {
+        const invalidDate = new Date('invalid');
+        const result = safeFormatBrasiliaDate(invalidDate, 'yyyy-MM-dd');
+        expect(result).toBe('Data inválida');
+      });
+    });
+
+    describe('safeCalculateChallengeProgress', () => {
+      it('should return not started state for null input', () => {
+        const result = safeCalculateChallengeProgress(null);
+        expect(result).toEqual({
+          currentDay: 0,
+          isCompleted: false,
+          isNotStarted: true,
+          hasError: false
+        });
+      });
+
+      it('should return error state for invalid date', () => {
+        const invalidDate = new Date('invalid');
+        const result = safeCalculateChallengeProgress(invalidDate);
+        expect(result).toEqual({
+          currentDay: 0,
+          isCompleted: false,
+          isNotStarted: true,
+          hasError: true,
+          errorMessage: 'Data de início inválida'
+        });
+      });
+
+      it('should return correct progress when no error occurs', () => {
+        const startDate = new Date('2024-01-04T10:00:00-03:00');
+        const result = safeCalculateChallengeProgress(startDate);
+        expect(result.hasError).toBe(false);
+        expect(result.currentDay).toBeGreaterThanOrEqual(0);
+      });
+    });
+
+    describe('getTimezoneErrorMessage', () => {
+      it('should return specific message for InvalidDateError', () => {
+        const error = new InvalidDateError('invalid date');
+        const message = getTimezoneErrorMessage(error);
+        expect(message).toBe('Data inválida fornecida. Verifique se a data está no formato correto.');
+      });
+
+      it('should return specific message for TimezoneError', () => {
+        const error = new TimezoneError('timezone error');
+        const message = getTimezoneErrorMessage(error);
+        expect(message).toBe('Erro ao processar horário de Brasília. Tente recarregar a página.');
+      });
+
+      it('should return generic message for unknown error', () => {
+        const error = new Error('unknown error');
+        const message = getTimezoneErrorMessage(error);
+        expect(message).toBe('Erro inesperado ao calcular datas. Tente novamente em alguns instantes.');
+      });
+
+      it('should return generic message for non-Error objects', () => {
+        const message = getTimezoneErrorMessage('string error');
+        expect(message).toBe('Erro inesperado ao calcular datas. Tente novamente em alguns instantes.');
+      });
+    });
+
+    describe('Error handling with console logging', () => {
+      it('should log errors when safe functions encounter issues', () => {
+        const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+        
+        // Test with invalid date that should trigger error logging
+        const invalidDate = new Date('invalid');
+        
+        safeGetChallengeDay(invalidDate);
+        safeIsChallengeCompleted(invalidDate);
+        safeIsChallengeNotStarted(invalidDate);
+        
+        // At least one of these should have logged an error
+        expect(consoleSpy).toHaveBeenCalled();
+        
+        consoleSpy.mockRestore();
+      });
     });
   });
 

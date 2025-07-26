@@ -252,13 +252,6 @@ export default function Perfil() {
     );
   }
 
-<<<<<<< HEAD
-  return (
-    <div className="max-w-2xl mx-auto space-y-6">
-      <div className="text-center">
-        <h1 className="text-3xl font-bold text-foreground mb-2">Meu Perfil</h1>
-        <p className="text-muted-foreground">Gerencie suas informações pessoais</p>
-=======
   // Error state with retry option
   if (error && !profile.nome) {
     return (
@@ -277,12 +270,9 @@ export default function Perfil() {
             Tentar novamente
           </Button>
         </div>
->>>>>>> 2673e5a (falta configurar as datas do desafio)
       </div>
     );
   }
-
-
 
   return (
     <div className="min-h-screen bg-zinc-900 py-8 px-4">

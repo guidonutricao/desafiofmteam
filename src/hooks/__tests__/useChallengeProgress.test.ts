@@ -5,9 +5,10 @@ import * as timezoneUtils from '../../lib/timezoneUtils';
 // Mock the timezone utilities
 vi.mock('../../lib/timezoneUtils');
 
-const mockGetChallengeDay = vi.mocked(timezoneUtils.getChallengeDay);
-const mockIsChallengeCompleted = vi.mocked(timezoneUtils.isChallengeCompleted);
-const mockIsChallengeNotStarted = vi.mocked(timezoneUtils.isChallengeNotStarted);
+const mockSafeGetChallengeDay = vi.mocked(timezoneUtils.safeGetChallengeDay);
+const mockSafeIsChallengeCompleted = vi.mocked(timezoneUtils.safeIsChallengeCompleted);
+const mockSafeIsChallengeNotStarted = vi.mocked(timezoneUtils.safeIsChallengeNotStarted);
+const mockSafeCalculateChallengeProgress = vi.mocked(timezoneUtils.safeCalculateChallengeProgress);
 
 describe('calculateChallengeProgress', () => {
   beforeEach(() => {
@@ -25,7 +26,8 @@ describe('calculateChallengeProgress', () => {
         isNotStarted: true,
         daysRemaining: 7,
         progressPercentage: 0,
-        displayText: 'Desafio Shape Express - Não iniciado'
+        displayText: 'Desafio Shape Express - Não iniciado',
+        hasError: false
       });
     });
   });
@@ -34,9 +36,16 @@ describe('calculateChallengeProgress', () => {
     it('should return "inicia amanhã" state', () => {
       const startDate = new Date('2024-01-01T00:00:00-03:00');
       
-      mockGetChallengeDay.mockReturnValue(0);
-      mockIsChallengeCompleted.mockReturnValue(false);
-      mockIsChallengeNotStarted.mockReturnValue(true);
+      mockSafeCalculateChallengeProgress.mockReturnValue({
+        currentDay: 0,
+        isCompleted: false,
+        isNotStarted: true,
+        hasError: false
+      });
+      
+      mockSafeGetChallengeDay.mockReturnValue(0);
+      mockSafeIsChallengeCompleted.mockReturnValue(false);
+      mockSafeIsChallengeNotStarted.mockReturnValue(true);
 
       const result = calculateChallengeProgress(startDate);
 
@@ -47,7 +56,8 @@ describe('calculateChallengeProgress', () => {
         isNotStarted: true,
         daysRemaining: 7,
         progressPercentage: 0,
-        displayText: 'Desafio Shape Express - Inicia amanhã'
+        displayText: 'Desafio Shape Express - Inicia amanhã',
+        hasError: false
       });
     });
   });
@@ -56,9 +66,16 @@ describe('calculateChallengeProgress', () => {
     it('should return correct progress for day 1', () => {
       const startDate = new Date('2024-01-01T00:00:00-03:00');
       
-      mockGetChallengeDay.mockReturnValue(1);
-      mockIsChallengeCompleted.mockReturnValue(false);
-      mockIsChallengeNotStarted.mockReturnValue(false);
+      mockSafeCalculateChallengeProgress.mockReturnValue({
+        currentDay: 1,
+        isCompleted: false,
+        isNotStarted: false,
+        hasError: false
+      });
+      
+      mockSafeGetChallengeDay.mockReturnValue(1);
+      mockSafeIsChallengeCompleted.mockReturnValue(false);
+      mockSafeIsChallengeNotStarted.mockReturnValue(false);
 
       const result = calculateChallengeProgress(startDate);
 
@@ -69,16 +86,24 @@ describe('calculateChallengeProgress', () => {
         isNotStarted: false,
         daysRemaining: 6,
         progressPercentage: 14.29,
-        displayText: 'Desafio Shape Express - Dia 1/7'
+        displayText: 'Desafio Shape Express - Dia 1/7',
+        hasError: false
       });
     });
 
     it('should return correct progress for day 3', () => {
       const startDate = new Date('2024-01-01T00:00:00-03:00');
       
-      mockGetChallengeDay.mockReturnValue(3);
-      mockIsChallengeCompleted.mockReturnValue(false);
-      mockIsChallengeNotStarted.mockReturnValue(false);
+      mockSafeCalculateChallengeProgress.mockReturnValue({
+        currentDay: 3,
+        isCompleted: false,
+        isNotStarted: false,
+        hasError: false
+      });
+      
+      mockSafeGetChallengeDay.mockReturnValue(3);
+      mockSafeIsChallengeCompleted.mockReturnValue(false);
+      mockSafeIsChallengeNotStarted.mockReturnValue(false);
 
       const result = calculateChallengeProgress(startDate);
 
@@ -89,16 +114,24 @@ describe('calculateChallengeProgress', () => {
         isNotStarted: false,
         daysRemaining: 4,
         progressPercentage: 42.86,
-        displayText: 'Desafio Shape Express - Dia 3/7'
+        displayText: 'Desafio Shape Express - Dia 3/7',
+        hasError: false
       });
     });
 
     it('should return correct progress for day 7', () => {
       const startDate = new Date('2024-01-01T00:00:00-03:00');
       
-      mockGetChallengeDay.mockReturnValue(7);
-      mockIsChallengeCompleted.mockReturnValue(false);
-      mockIsChallengeNotStarted.mockReturnValue(false);
+      mockSafeCalculateChallengeProgress.mockReturnValue({
+        currentDay: 7,
+        isCompleted: false,
+        isNotStarted: false,
+        hasError: false
+      });
+      
+      mockSafeGetChallengeDay.mockReturnValue(7);
+      mockSafeIsChallengeCompleted.mockReturnValue(false);
+      mockSafeIsChallengeNotStarted.mockReturnValue(false);
 
       const result = calculateChallengeProgress(startDate);
 
@@ -109,7 +142,8 @@ describe('calculateChallengeProgress', () => {
         isNotStarted: false,
         daysRemaining: 0,
         progressPercentage: 100,
-        displayText: 'Desafio Shape Express - Dia 7/7'
+        displayText: 'Desafio Shape Express - Dia 7/7',
+        hasError: false
       });
     });
   });
@@ -118,9 +152,16 @@ describe('calculateChallengeProgress', () => {
     it('should return completed state', () => {
       const startDate = new Date('2024-01-01T00:00:00-03:00');
       
-      mockGetChallengeDay.mockReturnValue(8);
-      mockIsChallengeCompleted.mockReturnValue(true);
-      mockIsChallengeNotStarted.mockReturnValue(false);
+      mockSafeCalculateChallengeProgress.mockReturnValue({
+        currentDay: 8,
+        isCompleted: true,
+        isNotStarted: false,
+        hasError: false
+      });
+      
+      mockSafeGetChallengeDay.mockReturnValue(8);
+      mockSafeIsChallengeCompleted.mockReturnValue(true);
+      mockSafeIsChallengeNotStarted.mockReturnValue(false);
 
       const result = calculateChallengeProgress(startDate);
 
@@ -131,7 +172,8 @@ describe('calculateChallengeProgress', () => {
         isNotStarted: false,
         daysRemaining: 0,
         progressPercentage: 100,
-        displayText: 'Desafio Shape Express - Concluído'
+        displayText: 'Desafio Shape Express - Concluído',
+        hasError: false
       });
     });
   });
@@ -140,11 +182,43 @@ describe('calculateChallengeProgress', () => {
     it('should return error fallback state when timezone utils throw error', () => {
       const startDate = new Date('2024-01-01T00:00:00-03:00');
       
-      mockGetChallengeDay.mockImplementation(() => {
+      mockSafeGetChallengeDay.mockImplementation(() => {
         throw new Error('Timezone calculation error');
       });
 
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+      const result = calculateChallengeProgress(startDate);
+
+      expect(result.currentDay).toBe(0);
+      expect(result.totalDays).toBe(7);
+      expect(result.isCompleted).toBe(false);
+      expect(result.isNotStarted).toBe(true);
+      expect(result.daysRemaining).toBe(7);
+      expect(result.progressPercentage).toBe(0);
+      expect(result.displayText).toBe('Erro ao calcular progresso');
+      expect(result.hasError).toBe(true);
+
+      expect(consoleSpy).toHaveBeenCalledWith(
+        'Error in calculateChallengeProgress:',
+        expect.any(Error)
+      );
+
+      consoleSpy.mockRestore();
+    });
+
+    it('should handle safe calculation errors gracefully', () => {
+      const startDate = new Date('2024-01-01T00:00:00-03:00');
+      
+      // Mock safeCalculateChallengeProgress to return error state
+      const mockSafeCalculate = vi.spyOn(timezoneUtils, 'safeCalculateChallengeProgress');
+      mockSafeCalculate.mockReturnValue({
+        currentDay: 0,
+        isCompleted: false,
+        isNotStarted: true,
+        hasError: true,
+        errorMessage: 'Data de início inválida'
+      });
 
       const result = calculateChallengeProgress(startDate);
 
@@ -155,13 +229,38 @@ describe('calculateChallengeProgress', () => {
         isNotStarted: true,
         daysRemaining: 7,
         progressPercentage: 0,
-        displayText: 'Erro ao calcular progresso'
+        displayText: 'Erro ao calcular progresso',
+        hasError: true,
+        errorMessage: 'Data de início inválida'
       });
 
-      expect(consoleSpy).toHaveBeenCalledWith(
-        'Error in calculateChallengeProgress:',
-        expect.any(Error)
-      );
+      mockSafeCalculate.mockRestore();
+    });
+
+    it('should handle invalid date objects', () => {
+      const invalidDate = new Date('invalid');
+      
+      const result = calculateChallengeProgress(invalidDate);
+
+      expect(result.hasError).toBe(true);
+      expect(result.displayText).toBe('Erro ao calcular progresso');
+      expect(result.currentDay).toBe(0);
+      expect(result.isNotStarted).toBe(true);
+    });
+
+    it('should handle error states correctly', () => {
+      const startDate = new Date('2024-01-01T00:00:00-03:00');
+      
+      mockSafeGetChallengeDay.mockImplementation(() => {
+        throw new Error('Calculation error');
+      });
+
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+      const result = calculateChallengeProgress(startDate);
+
+      expect(result.hasError).toBe(true);
+      expect(result.displayText).toBe('Erro ao calcular progresso');
 
       consoleSpy.mockRestore();
     });
@@ -171,9 +270,16 @@ describe('calculateChallengeProgress', () => {
     it('should return consistent results for same input', () => {
       const startDate = new Date('2024-01-01T00:00:00-03:00');
       
-      mockGetChallengeDay.mockReturnValue(3);
-      mockIsChallengeCompleted.mockReturnValue(false);
-      mockIsChallengeNotStarted.mockReturnValue(false);
+      mockSafeCalculateChallengeProgress.mockReturnValue({
+        currentDay: 3,
+        isCompleted: false,
+        isNotStarted: false,
+        hasError: false
+      });
+      
+      mockSafeGetChallengeDay.mockReturnValue(3);
+      mockSafeIsChallengeCompleted.mockReturnValue(false);
+      mockSafeIsChallengeNotStarted.mockReturnValue(false);
 
       const firstResult = calculateChallengeProgress(startDate);
       const secondResult = calculateChallengeProgress(startDate);
@@ -185,15 +291,29 @@ describe('calculateChallengeProgress', () => {
       const startDate1 = new Date('2024-01-01T00:00:00-03:00');
       const startDate2 = new Date('2024-01-02T00:00:00-03:00');
       
-      mockGetChallengeDay.mockReturnValueOnce(3);
-      mockIsChallengeCompleted.mockReturnValueOnce(false);
-      mockIsChallengeNotStarted.mockReturnValueOnce(false);
+      mockSafeCalculateChallengeProgress.mockReturnValueOnce({
+        currentDay: 3,
+        isCompleted: false,
+        isNotStarted: false,
+        hasError: false
+      });
+      
+      mockSafeGetChallengeDay.mockReturnValueOnce(3);
+      mockSafeIsChallengeCompleted.mockReturnValueOnce(false);
+      mockSafeIsChallengeNotStarted.mockReturnValueOnce(false);
 
       const firstResult = calculateChallengeProgress(startDate1);
 
-      mockGetChallengeDay.mockReturnValueOnce(2);
-      mockIsChallengeCompleted.mockReturnValueOnce(false);
-      mockIsChallengeNotStarted.mockReturnValueOnce(false);
+      mockSafeCalculateChallengeProgress.mockReturnValueOnce({
+        currentDay: 2,
+        isCompleted: false,
+        isNotStarted: false,
+        hasError: false
+      });
+      
+      mockSafeGetChallengeDay.mockReturnValueOnce(2);
+      mockSafeIsChallengeCompleted.mockReturnValueOnce(false);
+      mockSafeIsChallengeNotStarted.mockReturnValueOnce(false);
 
       const secondResult = calculateChallengeProgress(startDate2);
 
@@ -205,9 +325,16 @@ describe('calculateChallengeProgress', () => {
     it('should handle very large challenge day numbers', () => {
       const startDate = new Date('2024-01-01T00:00:00-03:00');
       
-      mockGetChallengeDay.mockReturnValue(100);
-      mockIsChallengeCompleted.mockReturnValue(true);
-      mockIsChallengeNotStarted.mockReturnValue(false);
+      mockSafeCalculateChallengeProgress.mockReturnValue({
+        currentDay: 100,
+        isCompleted: true,
+        isNotStarted: false,
+        hasError: false
+      });
+      
+      mockSafeGetChallengeDay.mockReturnValue(100);
+      mockSafeIsChallengeCompleted.mockReturnValue(true);
+      mockSafeIsChallengeNotStarted.mockReturnValue(false);
 
       const result = calculateChallengeProgress(startDate);
 
@@ -219,9 +346,16 @@ describe('calculateChallengeProgress', () => {
     it('should handle negative challenge day numbers', () => {
       const startDate = new Date('2024-01-01T00:00:00-03:00');
       
-      mockGetChallengeDay.mockReturnValue(-1);
-      mockIsChallengeCompleted.mockReturnValue(false);
-      mockIsChallengeNotStarted.mockReturnValue(true);
+      mockSafeCalculateChallengeProgress.mockReturnValue({
+        currentDay: -1,
+        isCompleted: false,
+        isNotStarted: true,
+        hasError: false
+      });
+      
+      mockSafeGetChallengeDay.mockReturnValue(-1);
+      mockSafeIsChallengeCompleted.mockReturnValue(false);
+      mockSafeIsChallengeNotStarted.mockReturnValue(true);
 
       const result = calculateChallengeProgress(startDate);
 

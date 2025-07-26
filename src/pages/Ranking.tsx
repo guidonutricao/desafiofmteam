@@ -1,11 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/use-auth';
 import { getRankingData, type RankingUser } from '@/lib/supabase/challengeQueries';
+import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
 import { Trophy, Medal, Award, Crown, Calendar } from 'lucide-react';
-import { ChallengeErrorDisplay, ChallengeLoadingDisplay } from '@/components/ChallengeErrorDisplay';
+import { 
+  ChallengeLoadingDisplay,
+  ChallengeErrorBoundary,
+  ChallengeFallbackDisplay
+} from '@/components/ChallengeErrorDisplay';
 
 export default function Ranking() {
   const { user } = useAuth();
@@ -17,20 +21,238 @@ export default function Ranking() {
 
   useEffect(() => {
     carregarRanking();
+    
+    // Debug: testar view diretamente
+    const testView = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('ranking_with_challenge_progress')
+          .select('user_id, nome, challenge_start_date, total_points')
+          .limit(5);
+        
+        if (error) {
+          console.error('❌ Erro ao testar view diretamente:', error);
+        } else {
+          console.log('🔍 Debug - Dados diretos da view:', data);
+        }
+      } catch (error) {
+        console.error('❌ Erro no teste da view:', error);
+      }
+    };
+    
+    testView();
   }, []);
+
+
+
+  // Função de fallback para buscar dados diretamente da tabela pontuacoes
+  const getRankingDataFallback = async (): Promise<RankingUser[]> => {
+    try {
+      console.log('🔄 Buscando dados da tabela pontuacoes como fallback...');
+      
+      const { data: pontuacoesData, error } = await supabase
+        .from('pontuacoes')
+        .select(`
+          user_id,
+          pontuacao_total,
+          dias_consecutivos,
+          ultima_data_participacao,
+          profiles!inner(nome, foto_url)
+        `)
+        .order('pontuacao_total', { ascending: false });
+
+      if (error) {
+        console.error('❌ Erro ao buscar dados da tabela pontuacoes:', error);
+        
+        // Tentar uma consulta mais simples sem join
+        console.log('🔄 Tentando consulta simplificada...');
+        const { data: simpleData, error: simpleError } = await supabase
+          .from('pontuacoes')
+          .select('user_id, pontuacao_total, dias_consecutivos')
+          .order('pontuacao_total', { ascending: false });
+          
+        if (simpleError) {
+          console.error('❌ Erro na consulta simplificada:', simpleError);
+          throw simpleError;
+        }
+        
+        if (!simpleData || simpleData.length === 0) {
+          console.log('⚠️ Nenhum dado encontrado na consulta simplificada');
+          return [];
+        }
+        
+        console.log(`✅ Encontrados ${simpleData.length} registros na consulta simplificada`);
+        
+        // Buscar nomes dos usuários e dados do desafio separadamente
+        const userIds = simpleData.map(item => item.user_id);
+        const { data: profilesData } = await supabase
+          .from('profiles')
+          .select('user_id, nome, foto_url, challenge_start_date, challenge_completed_at')
+          .in('user_id', userIds);
+        
+        // Combinar dados
+        const rankingUsers: RankingUser[] = simpleData.map((item) => {
+          const profile = profilesData?.find(p => p.user_id === item.user_id);
+          
+          // Processar data de início do desafio
+          let challengeStartDate: Date | null = null;
+          if (profile?.challenge_start_date) {
+            try {
+              challengeStartDate = new Date(profile.challenge_start_date);
+              if (isNaN(challengeStartDate.getTime())) {
+                challengeStartDate = null;
+              }
+            } catch (error) {
+              console.error(`Erro ao processar data de início para usuário ${item.user_id}:`, error);
+              challengeStartDate = null;
+            }
+          }
+          
+          return {
+            id: item.user_id,
+            name: profile?.nome || 'Usuário sem nome',
+            avatar: profile?.foto_url,
+            totalPoints: item.pontuacao_total || 0,
+            challengeStartDate,
+            challengeProgress: {
+              currentDay: 0,
+              totalDays: 7,
+              isCompleted: !!profile?.challenge_completed_at,
+              isNotStarted: !challengeStartDate,
+              daysRemaining: 7,
+              progressPercentage: 0,
+              displayText: challengeStartDate ? 'Participando' : 'Dados básicos',
+              hasError: false,
+              errorMessage: ''
+            }
+          };
+        });
+        
+        return rankingUsers;
+      }
+
+      if (!pontuacoesData || pontuacoesData.length === 0) {
+        console.log('⚠️ Nenhum dado encontrado na tabela pontuacoes');
+        return [];
+      }
+
+      console.log(`✅ Encontrados ${pontuacoesData.length} registros na tabela pontuacoes`);
+
+      // Buscar dados do desafio dos usuários
+      const userIds = pontuacoesData.map(item => item.user_id);
+      const { data: challengeData } = await supabase
+        .from('profiles')
+        .select('user_id, challenge_start_date, challenge_completed_at')
+        .in('user_id', userIds);
+
+      // Converter dados para o formato esperado
+      const rankingUsers: RankingUser[] = pontuacoesData.map((item) => {
+        const challenge = challengeData?.find(c => c.user_id === item.user_id);
+        
+        // Processar data de início do desafio
+        let challengeStartDate: Date | null = null;
+        if (challenge?.challenge_start_date) {
+          try {
+            challengeStartDate = new Date(challenge.challenge_start_date);
+            if (isNaN(challengeStartDate.getTime())) {
+              challengeStartDate = null;
+            }
+          } catch (error) {
+            console.error(`Erro ao processar data de início para usuário ${item.user_id}:`, error);
+            challengeStartDate = null;
+          }
+        }
+        
+        return {
+          id: item.user_id,
+          name: item.profiles?.nome || 'Usuário sem nome',
+          avatar: item.profiles?.foto_url,
+          totalPoints: item.pontuacao_total || 0,
+          challengeStartDate,
+          challengeProgress: {
+            currentDay: 0,
+            totalDays: 7,
+            isCompleted: !!challenge?.challenge_completed_at,
+            isNotStarted: !challengeStartDate,
+            daysRemaining: 7,
+            progressPercentage: 0,
+            displayText: challengeStartDate ? 'Participando' : 'Dados básicos',
+            hasError: false,
+            errorMessage: ''
+          }
+        };
+      });
+
+      return rankingUsers;
+    } catch (error) {
+      console.error('❌ Erro na função de fallback:', error);
+      return [];
+    }
+  };
 
   const carregarRanking = async () => {
     try {
-      const rankingData = await getRankingData();
+      console.log('🚀 Iniciando carregamento do ranking...');
+      setHasError(false);
+      setErrorMessage('');
+      
+      console.log('🔄 Tentando getRankingData()...');
+      let rankingData = await getRankingData();
+      console.log(`📊 getRankingData() retornou ${rankingData.length} registros`);
+      
+      // Debug: verificar dados dos usuários
+      if (rankingData.length > 0) {
+        console.log('🔍 Debug - Primeiros 3 usuários do ranking principal:', 
+          rankingData.slice(0, 3).map(u => ({
+            name: u.name,
+            totalPoints: u.totalPoints,
+            challengeStartDate: u.challengeStartDate,
+            isNotStarted: u.challengeProgress.isNotStarted
+          }))
+        );
+      }
+      
+      // Se getRankingData retornou array vazio, tentar buscar diretamente da tabela pontuacoes
+      if (rankingData.length === 0) {
+        console.log('🔄 Array vazio, tentando fallback...');
+        rankingData = await getRankingDataFallback();
+        console.log(`📊 Fallback retornou ${rankingData.length} registros`);
+        
+        // Debug: verificar dados do fallback
+        if (rankingData.length > 0) {
+          console.log('🔍 Debug - Primeiros 3 usuários do fallback:', 
+            rankingData.slice(0, 3).map(u => ({
+              name: u.name,
+              totalPoints: u.totalPoints,
+              challengeStartDate: u.challengeStartDate,
+              isNotStarted: u.challengeProgress.isNotStarted
+            }))
+          );
+        }
+      }
+      
+      console.log('✅ Definindo usuários no estado:', rankingData);
       setUsuarios(rankingData);
       
       // Encontrar posição do usuário atual
       if (user && rankingData.length > 0) {
         const posicao = rankingData.findIndex(u => u.id === user.id);
         setMinhaPosicao(posicao !== -1 ? posicao + 1 : null);
+        console.log(`👤 Posição do usuário atual: ${posicao !== -1 ? posicao + 1 : 'não encontrado'}`);
       }
     } catch (error) {
-      console.error('Erro ao carregar ranking:', error);
+      console.error('❌ Erro ao carregar ranking:', error);
+      setHasError(true);
+      
+      // Determine error type based on error message
+      const errorMsg = error instanceof Error ? error.message : String(error);
+      if (errorMsg.includes('network') || errorMsg.includes('fetch')) {
+        setErrorMessage('Erro de conexão ao carregar ranking. Verifique sua internet.');
+      } else if (errorMsg.includes('timezone') || errorMsg.includes('horário')) {
+        setErrorMessage('Erro ao processar horários do ranking. Tente recarregar.');
+      } else {
+        setErrorMessage('Erro inesperado ao carregar ranking. Tente novamente.');
+      }
     } finally {
       setLoading(false);
     }
@@ -75,34 +297,59 @@ export default function Ranking() {
       .slice(0, 2);
   };
 
-  const getChallengeStatusBadge = (challengeProgress: RankingUser['challengeProgress']) => {
-    if (challengeProgress.isNotStarted) {
-      return (
-        <Badge variant="outline" className="text-xs bg-gray-100 text-gray-600 border-gray-300">
-          Não iniciado
-        </Badge>
-      );
+  const getStatusText = (usuario: RankingUser) => {
+    // Prioridade 1: Se tem data de início, mostrar ela
+    if (usuario.challengeStartDate) {
+      return `Iniciado em ${usuario.challengeStartDate.toLocaleDateString('pt-BR')}`;
     }
     
-    if (challengeProgress.isCompleted) {
-      return (
-        <Badge variant="outline" className="text-xs bg-green-100 text-green-700 border-green-300">
-          Concluído
-        </Badge>
-      );
+    // Prioridade 2: Se está concluído
+    if (usuario.challengeProgress.isCompleted) {
+      return 'Concluído';
     }
     
-    return (
-      <Badge variant="outline" className="text-xs bg-blue-100 text-blue-700 border-blue-300">
-        Dia {challengeProgress.currentDay}/7
-      </Badge>
-    );
+    // Prioridade 3: Se tem pontos mas não tem data (inconsistência de dados)
+    if (usuario.totalPoints > 0) {
+      return 'Participando';
+    }
+    
+    // Prioridade 4: Realmente não iniciou
+    return 'Não iniciado';
   };
 
+
+
   if (loading) {
+    return <ChallengeLoadingDisplay message="Carregando ranking do desafio..." />;
+  }
+
+  if (hasError) {
+    const errorType = errorMessage.includes('conexão') ? 'network' :
+                     errorMessage.includes('horário') ? 'timezone' : 'general';
+
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      <div className="space-y-6">
+        <div className="text-center space-y-4">
+          <div className="inline-flex items-center gap-2 bg-gradient-gold text-gold-foreground px-4 py-2 rounded-full font-bold">
+            <Trophy className="w-5 h-5" />
+            Ranking do Desafio
+          </div>
+        </div>
+
+        <ChallengeErrorBoundary
+          hasError={true}
+          errorMessage={errorMessage}
+          errorType={errorType}
+          onRetry={carregarRanking}
+          onReload={() => window.location.reload()}
+        />
+
+        <ChallengeFallbackDisplay
+          title="Ranking Indisponível"
+          message="Não foi possível carregar o ranking no momento. Seus pontos estão sendo salvos normalmente."
+          showBasicInterface={false}
+          onRetry={carregarRanking}
+        />
       </div>
     );
   }
@@ -119,10 +366,12 @@ export default function Ranking() {
           Veja como você está se saindo comparado aos outros participantes
         </p>
         
+
+        
         {minhaPosicao && (
           <div className="text-center">
-            <div className="text-2xl font-bold text-foreground">#{minhaPosicao}</div>
-            <div className="text-sm text-muted-foreground">Sua posição atual</div>
+            <div className="text-2xl font-bold text-white">#{minhaPosicao}</div>
+            <div className="text-sm text-white">Sua posição atual</div>
           </div>
         )}
       </div>
@@ -152,7 +401,9 @@ export default function Ranking() {
                 <div>
                   <p className="font-semibold text-sm">{usuarios[1]?.name}</p>
                   <p className="text-xs text-muted-foreground">{usuarios[1]?.totalPoints} pts</p>
-                  {usuarios[1] && getChallengeStatusBadge(usuarios[1].challengeProgress)}
+                  <p className="text-xs text-muted-foreground">
+                    {usuarios[1] ? getStatusText(usuarios[1]) : 'Não iniciado'}
+                  </p>
                 </div>
               </div>
 
@@ -170,7 +421,9 @@ export default function Ranking() {
                 <div>
                   <p className="font-bold">{usuarios[0]?.name}</p>
                   <p className="text-sm text-muted-foreground">{usuarios[0]?.totalPoints} pts</p>
-                  {usuarios[0] && getChallengeStatusBadge(usuarios[0].challengeProgress)}
+                  <p className="text-sm text-muted-foreground">
+                    {usuarios[0] ? getStatusText(usuarios[0]) : 'Não iniciado'}
+                  </p>
                 </div>
               </div>
 
@@ -188,7 +441,9 @@ export default function Ranking() {
                 <div>
                   <p className="font-semibold text-sm">{usuarios[2]?.name}</p>
                   <p className="text-xs text-muted-foreground">{usuarios[2]?.totalPoints} pts</p>
-                  {usuarios[2] && getChallengeStatusBadge(usuarios[2].challengeProgress)}
+                  <p className="text-xs text-muted-foreground">
+                    {usuarios[2] ? getStatusText(usuarios[2]) : 'Não iniciado'}
+                  </p>
                 </div>
               </div>
             </div>
@@ -237,9 +492,9 @@ export default function Ranking() {
                         {usuario.name}
                       </h3>
                       {isUsuarioAtual && (
-                        <Badge variant="secondary" className="bg-gold-foreground/20 text-gold-foreground">
+                        <span className="bg-gold-foreground/20 text-gold-foreground px-2 py-1 rounded text-xs font-medium">
                           Você
-                        </Badge>
+                        </span>
                       )}
                     </div>
                     <div className="flex items-center gap-4 mt-1">
@@ -260,12 +515,7 @@ export default function Ranking() {
                         <span className={`text-sm ${
                           isUsuarioAtual ? 'text-gold-foreground/80' : 'text-muted-foreground'
                         }`}>
-                          {usuario.challengeProgress.isNotStarted 
-                            ? 'Não iniciado'
-                            : usuario.challengeProgress.isCompleted 
-                              ? 'Concluído'
-                              : `Dia ${usuario.challengeProgress.currentDay}/7`
-                          }
+                          {getStatusText(usuario)}
                         </span>
                       </div>
                     </div>
@@ -277,15 +527,20 @@ export default function Ranking() {
         })}
       </div>
 
-      {usuarios.length === 0 && (
+      {usuarios.length === 0 && !loading && !hasError && (
         <Card className="bg-gradient-card border-border/20">
           <CardContent className="text-center py-12">
             <Trophy className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-foreground mb-2">
               Nenhum participante ainda
             </h3>
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground mb-4">
               Seja o primeiro a completar tarefas e aparecer no ranking!
+            </p>
+            <p className="text-xs text-muted-foreground">
+              Se você já completou tarefas e não aparece aqui, pode haver um problema de sincronização.
+              <br />
+              Tente recarregar a página ou entre em contato com o suporte.
             </p>
           </CardContent>
         </Card>

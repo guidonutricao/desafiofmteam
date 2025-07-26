@@ -4,17 +4,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-<<<<<<< HEAD
-import { 
-  Droplets, 
-  Moon, 
-  Dumbbell, 
-  UtensilsCrossed, 
-  Camera,
-  Trophy,
-  Flame,
-  Star
-=======
 import { useChallengeProgress } from '@/hooks/useChallengeProgress';
 import { ChallengeErrorDisplay, TimezoneErrorDisplay, ChallengeLoadingDisplay } from '@/components/ChallengeErrorDisplay';
 import {
@@ -31,7 +20,6 @@ import {
   ShieldX,
   Smartphone,
   CalendarCheck
->>>>>>> 2673e5a (falta configurar as datas do desafio)
 } from 'lucide-react';
 
 interface DesafioDiario {
@@ -156,46 +144,79 @@ export default function DesafioDiario() {
     carregarDados();
   }, [user]);
 
+  // Re-calculate challenge progress when challengeStartDate changes
+  useEffect(() => {
+    if (challengeStartDate) {
+      console.log('Challenge start date updated:', challengeStartDate);
+      console.log('Challenge progress:', challengeProgress);
+    }
+  }, [challengeStartDate, challengeProgress]);
+
   const carregarDados = async () => {
     if (!user) return;
 
     try {
       const hoje = new Date().toISOString().split('T')[0];
 
-      // Carregar dados do perfil incluindo challenge_start_date
-      const { data: profileData } = await supabase
-        .from('profiles')
-        .select('challenge_start_date, challenge_completed_at')
+      // Load pontuacao data to determine challenge status and get points
+      const { data: pontuacaoData, error: pontuacaoError } = await supabase
+        .from('pontuacoes')
+        .select('*')
         .eq('user_id', user.id)
         .single();
 
-      if (profileData?.challenge_start_date) {
-        setChallengeStartDate(new Date(profileData.challenge_start_date));
+      if (pontuacaoError && pontuacaoError.code !== 'PGRST116') {
+        console.error('Error loading points data:', pontuacaoError);
+        setChallengeStartDate(null);
+        setPontuacaoTotal(0);
+        setDiasConsecutivos(0);
+      } else if (pontuacaoData) {
+        // Update pontuacao state
+        setPontuacaoTotal(pontuacaoData.pontuacao_total || 0);
+        setDiasConsecutivos(pontuacaoData.dias_consecutivos || 0);
+        
+        // Determine if challenge has been started based on participation
+        if (pontuacaoData.ultima_data_participacao || pontuacaoData.pontuacao_total > 0) {
+          // If user has participated or has points, consider challenge as started
+          // Use created_at as the challenge start date
+          setChallengeStartDate(new Date(pontuacaoData.created_at));
+        } else {
+          setChallengeStartDate(null);
+        }
+      } else {
+        setChallengeStartDate(null);
+        setPontuacaoTotal(0);
+        setDiasConsecutivos(0);
       }
 
       // Carregar desafio do dia
-      const { data: desafioData } = await supabase
+      const { data: desafioData, error: desafioError } = await supabase
         .from('desafios_diarios')
         .select('*')
         .eq('user_id', user.id)
         .eq('data', hoje)
         .single();
 
-      if (desafioData) {
+      if (desafioError && desafioError.code !== 'PGRST116') {
+        console.error('Error loading challenge data:', desafioError);
+      } else if (desafioData) {
         setDesafio(desafioData);
+      } else {
+        // Reset to default state if no challenge data for today
+        setDesafio({
+          hidratacao: false,
+          sono_qualidade: false,
+          atividade_fisica: false,
+          seguiu_dieta: false,
+          registro_visual: false,
+          evitar_ultraprocessados: false,
+          dormir_sem_celular: false,
+          organizar_refeicoes: false,
+          pontuacao_total: 0
+        });
       }
 
-      // Carregar pontuação total e dias consecutivos
-      const { data: pontuacaoData } = await supabase
-        .from('pontuacoes')
-        .select('*')
-        .eq('user_id', user.id)
-        .single();
-
-      if (pontuacaoData) {
-        setPontuacaoTotal(pontuacaoData.pontuacao_total);
-        setDiasConsecutivos(pontuacaoData.dias_consecutivos);
-      }
+      // Pontuacao data is already handled above
 
       // Carregar mensagem motivacional aleatória
       const { data: mensagens } = await supabase
@@ -349,25 +370,130 @@ export default function DesafioDiario() {
             </p>
             <Button 
               onClick={async () => {
+                if (!user) {
+                  toast({
+                    title: "Erro de autenticação",
+                    description: "Usuário não autenticado. Faça login novamente.",
+                    variant: "destructive"
+                  });
+                  return;
+                }
+                
                 try {
-                  await supabase.rpc('start_user_challenge', { user_id_param: user?.id });
-                  await carregarDados(); // Reload data after starting challenge
+                  setLoading(true);
+                  
+                  console.log('Starting challenge for user:', user.id);
+                  console.log('User object:', user);
+                  
+                  // Test Supabase connection
+                  const { data: connectionTest, error: connectionError } = await supabase
+                    .from('profiles')
+                    .select('user_id')
+                    .eq('user_id', user.id)
+                    .limit(1);
+                  
+                  if (connectionError) {
+                    console.error('Connection test failed:', connectionError);
+                    throw new Error(`Erro de conexão: ${connectionError.message}`);
+                  }
+                  
+                  if (!connectionTest || connectionTest.length === 0) {
+                    throw new Error('Perfil do usuário não encontrado no banco de dados');
+                  }
+                  
+                  console.log('Connection test passed');
+                  
+                  // This check is already done by the parent component logic
+                  // since we only show this button when challengeStartDate is null
+                  
+                  console.log('Profile check passed, starting challenge...');
+                  
+                  // Since challenge columns don't exist in profiles, we'll use pontuacoes table
+                  // to track challenge start by setting ultima_data_participacao to today
+                  const hoje = new Date().toISOString().split('T')[0];
+                  
+                  const { data: updateResult, error: updateError } = await supabase
+                    .from('pontuacoes')
+                    .update({
+                      ultima_data_participacao: hoje,
+                      updated_at: new Date().toISOString()
+                    })
+                    .eq('user_id', user.id)
+                    .select();
+                  
+                  if (updateError) {
+                    console.error('Update Error:', updateError);
+                    throw updateError;
+                  }
+                  
+                  if (!updateResult || updateResult.length === 0) {
+                    throw new Error('Falha ao atualizar os dados do usuário');
+                  }
+                  
+                  console.log('Challenge started successfully:', updateResult[0]);
+                  
+                  // Set challenge start date to today for the component state
+                  setChallengeStartDate(new Date());
+                  
+                  // Verify the challenge was started by fetching the updated profile
+                  const { data: updatedProfile, error: profileError } = await supabase
+                    .from('profiles')
+                    .select('challenge_start_date')
+                    .eq('user_id', user.id)
+                    .single();
+                  
+                  if (profileError) {
+                    throw profileError;
+                  }
+                  
+                  if (updatedProfile?.challenge_start_date) {
+                    const startDate = new Date(updatedProfile.challenge_start_date);
+                    console.log('Challenge start date from DB:', startDate);
+                    setChallengeStartDate(startDate);
+                  }
+                  
+                  // Reload all data to ensure everything is in sync
+                  await carregarDados();
+                  
                   toast({
                     title: "Desafio iniciado! 🎉",
-                    description: "Sua jornada de 7 dias começou. Boa sorte!",
+                    description: "Sua jornada de 7 dias começou, bora pra cima!",
                   });
                 } catch (error) {
                   console.error('Error starting challenge:', error);
+                  
+                  // More detailed error handling
+                  let errorMessage = "Não foi possível iniciar o desafio. Tente novamente.";
+                  
+                  if (error && typeof error === 'object') {
+                    if ('message' in error) {
+                      errorMessage = `Erro: ${error.message}`;
+                    } else if ('details' in error) {
+                      errorMessage = `Erro: ${error.details}`;
+                    } else if ('hint' in error) {
+                      errorMessage = `Erro: ${error.hint}`;
+                    }
+                  }
+                  
+                  console.error('Detailed error info:', {
+                    error,
+                    user: user?.id,
+                    timestamp: new Date().toISOString()
+                  });
+                  
                   toast({
-                    title: "Erro",
-                    description: "Não foi possível iniciar o desafio. Tente novamente.",
+                    title: "Erro ao iniciar desafio",
+                    description: errorMessage,
                     variant: "destructive"
                   });
+                } finally {
+                  setLoading(false);
                 }
               }}
               className="w-full bg-gradient-gold hover:opacity-90 text-gold-foreground"
+              disabled={loading}
             >
-              Iniciar Desafio
+              {loading ? "Iniciando..." : "Iniciar Desafio"}
             </Button>
           </CardContent>
         </Card>
@@ -508,28 +634,18 @@ export default function DesafioDiario() {
         
         <div className="flex items-center justify-center gap-8">
           <div className="text-center">
-            <div className="text-2xl font-bold text-foreground">{pontuacaoTotal}</div>
-            <div className="text-sm text-muted-foreground">Pontos Totais</div>
+            <div className="text-2xl font-bold text-white">{pontuacaoTotal}</div>
+            <div className="text-sm text-white">Pontos Totais</div>
           </div>
           
           <div className="text-center">
-<<<<<<< HEAD
-            <div className="text-2xl font-bold text-foreground">{tarefasConcluidas}/5</div>
-            <div className="text-sm text-muted-foreground">Tarefas Hoje</div>
-=======
             <div className="text-2xl font-bold text-white">{desafio.pontuacao_total}/{pontuacaoMaxima}</div>
             <div className="text-sm text-white">Pontos Hoje</div>
->>>>>>> 2673e5a (falta configurar as datas do desafio)
           </div>
           
           <div className="text-center">
-<<<<<<< HEAD
-            <div className="text-2xl font-bold text-foreground">{diasConsecutivos}</div>
-            <div className="text-sm text-muted-foreground">Dias Seguidos</div>
-=======
             <div className="text-2xl font-bold text-white">{challengeProgress.currentDay}/{challengeProgress.totalDays}</div>
             <div className="text-sm text-white">Dia do Desafio</div>
->>>>>>> 2673e5a (falta configurar as datas do desafio)
           </div>
         </div>
 
@@ -591,18 +707,6 @@ export default function DesafioDiario() {
               </CardHeader>
               
               <CardContent>
-<<<<<<< HEAD
-                <p className={`text-sm ${concluida ? 'text-gold-foreground/80' : 'text-muted-foreground'}`}>
-                  {tarefa.descricao}
-                </p>
-                
-                {concluida && (
-                  <div className="flex items-center gap-1 mt-3">
-                    <Star className="w-4 h-4 fill-current" />
-                    <span className="text-sm font-medium">Concluída!</span>
-                  </div>
-                )}
-=======
                 <p className={`text-sm mb-3 ${concluida ? 'text-gold-foreground/80' : 'text-muted-foreground'}`}>
                   {tarefa.descricao}
                 </p>
@@ -639,11 +743,39 @@ export default function DesafioDiario() {
                     </>
                   )}
                 </Button>
->>>>>>> 2673e5a (falta configurar as datas do desafio)
               </CardContent>
             </Card>
           );
         })}
+        
+        {/* Card Premium */}
+        <Card 
+          className="bg-amber-500 text-white cursor-pointer hover:bg-amber-600 transition-colors duration-200"
+          onClick={() => window.open('https://example.com/premium', '_blank')}
+        >
+          <CardContent className="p-6 text-center space-y-4">
+            <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto">
+              <Award className="w-6 h-6 text-white" />
+            </div>
+            
+            <div className="space-y-2">
+              <h3 className="text-xl font-bold text-white">
+                Quer Resultados Ainda Melhores?
+              </h3>
+              <p className="text-white/90 text-sm">
+                Acompanhamento individual personalizado para participantes do desafio
+              </p>
+            </div>
+            
+            <div className="pt-2">
+              <div className="bg-white/20 hover:bg-white/30 transition-colors duration-200 rounded-lg px-6 py-3 inline-block">
+                <span className="text-white font-semibold">
+                  Conhecer Acompanhamento Premium
+                </span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Mensagem motivacional */}
@@ -685,16 +817,7 @@ export default function DesafioDiario() {
         </Card>
       )}
 
-      {/* Botão premium fixo */}
-      <div className="fixed bottom-20 right-4 lg:bottom-4 lg:right-4">
-        <Button 
-          className="bg-gradient-gold hover:opacity-90 text-gold-foreground shadow-lg"
-          onClick={() => window.open('https://example.com/premium', '_blank')}
-        >
-          <Trophy className="w-4 h-4 mr-2" />
-          Conhecer Acompanhamento Premium
-        </Button>
-      </div>
+
     </div>
   );
 }

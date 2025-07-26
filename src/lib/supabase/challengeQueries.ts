@@ -1,6 +1,7 @@
 /**
- * Supabase query functions for challenge tracking
+ * Supabase query functions for challenge tracking with caching
  * Requirements: 4.1, 4.2, 4.3, 5.1, 5.2 - Multi-user challenge management with individual timelines
+ * Requirements: 4.3, 4.4, 5.1, 5.2 - Performance optimization with caching
  */
 
 import { supabase } from '@/integrations/supabase/client';
@@ -11,6 +12,18 @@ import {
   InvalidDateError 
 } from '../timezoneUtils';
 import { calculateChallengeProgress, type ChallengeProgress } from '../../hooks/useChallengeProgress';
+import {
+  getCachedChallengeProgress,
+  setCachedChallengeProgress,
+  getCachedUserPoints,
+  setCachedUserPoints,
+  getCachedRankingData,
+  setCachedRankingData,
+  invalidateUserCache,
+  invalidateRankingCache,
+  createBatchCacheOperation
+} from '../challengeCache';
+import { timeAsync, OPERATIONS } from '../performanceMonitor';
 
 // Types for database operations
 export interface UserChallengeData {
@@ -42,8 +55,9 @@ export interface RankingUser {
 }
 
 /**
- * Initialize user challenge by setting start date
+ * Initialize user challenge by setting start date with cache invalidation
  * Requirement 4.1: Multiple users with different start dates
+ * Requirement 4.3: Performance optimization with caching
  */
 export async function startChallenge(userId: string): Promise<void> {
   try {
@@ -66,6 +80,10 @@ export async function startChallenge(userId: string): Promise<void> {
     if (error) {
       throw new Error(`Failed to start challenge: ${error.message}`);
     }
+    
+    // Invalidate cache after successful update
+    invalidateUserCache(userId);
+    invalidateRankingCache();
   } catch (error) {
     console.error('Error starting challenge:', error);
     
@@ -79,23 +97,35 @@ export async function startChallenge(userId: string): Promise<void> {
 }
 
 /**
- * Get user's challenge progress data from database
+ * Get user's challenge progress data from database with caching
  * Requirement 4.2: Individual challenge timeline calculation
+ * Requirement 4.3: Performance optimization with caching
  */
 export async function getUserChallengeProgress(userId: string): Promise<ChallengeProgress | null> {
-  try {
-    // Validate userId
-    if (!userId || typeof userId !== 'string') {
-      console.error('Invalid user ID provided to getUserChallengeProgress');
-      return null;
-    }
-    
-    // Get user's challenge data
-    const { data: profile, error: profileError } = await supabase
-      .from('profiles')
-      .select('challenge_start_date, challenge_completed_at')
-      .eq('user_id', userId)
-      .single();
+  return timeAsync(OPERATIONS.GET_CHALLENGE_PROGRESS, async () => {
+    try {
+      // Validate userId
+      if (!userId || typeof userId !== 'string') {
+        console.error('Invalid user ID provided to getUserChallengeProgress');
+        return null;
+      }
+      
+      // Check cache first
+      const cachedProgress = getCachedChallengeProgress(userId);
+      if (cachedProgress) {
+        return cachedProgress;
+      }
+      
+      // Get user's challenge data
+      const { data: profile, error: profileError } = await timeAsync(
+        OPERATIONS.DATABASE_QUERY,
+        () => supabase
+          .from('profiles')
+          .select('challenge_start_date, challenge_completed_at')
+          .eq('user_id', userId)
+          .single(),
+        { table: 'profiles', operation: 'select', userId }
+      );
 
     if (profileError) {
       console.error('Database error fetching user profile:', profileError);
@@ -118,13 +148,39 @@ export async function getUserChallengeProgress(userId: string): Promise<Challeng
       return null;
     }
 
-    // Safely parse and calculate progress using the challenge start date
-    try {
-      const startDate = new Date(profile.challenge_start_date);
-      return calculateChallengeProgress(startDate);
-    } catch (dateError) {
-      console.error('Error parsing challenge start date:', dateError);
+      // Safely parse and calculate progress using the challenge start date
+      try {
+        const startDate = new Date(profile.challenge_start_date);
+        const progress = calculateChallengeProgress(startDate);
+        
+        // Cache the result
+        setCachedChallengeProgress(userId, progress);
+        
+        return progress;
+      } catch (dateError) {
+        console.error('Error parsing challenge start date:', dateError);
+        
+        const errorProgress = {
+          currentDay: 0,
+          totalDays: 7,
+          isCompleted: false,
+          isNotStarted: true,
+          daysRemaining: 7,
+          progressPercentage: 0,
+          displayText: 'Erro ao calcular progresso',
+          hasError: true,
+          errorMessage: 'Data de início inválida. Entre em contato com o suporte.'
+        };
+        
+        // Cache error state for short duration to avoid repeated failures
+        setCachedChallengeProgress(userId, errorProgress);
+        
+        return errorProgress;
+      }
+    } catch (error) {
+      console.error('Error getting user challenge progress:', error);
       
+      // Return error state with user-friendly message
       return {
         currentDay: 0,
         totalDays: 7,
@@ -132,46 +188,37 @@ export async function getUserChallengeProgress(userId: string): Promise<Challeng
         isNotStarted: true,
         daysRemaining: 7,
         progressPercentage: 0,
-        displayText: 'Erro ao calcular progresso',
+        displayText: 'Erro ao carregar dados',
         hasError: true,
-        errorMessage: 'Data de início inválida. Entre em contato com o suporte.'
+        errorMessage: getTimezoneErrorMessage(error)
       };
     }
-  } catch (error) {
-    console.error('Error getting user challenge progress:', error);
-    
-    // Return error state with user-friendly message
-    return {
-      currentDay: 0,
-      totalDays: 7,
-      isCompleted: false,
-      isNotStarted: true,
-      daysRemaining: 7,
-      progressPercentage: 0,
-      displayText: 'Erro ao carregar dados',
-      hasError: true,
-      errorMessage: getTimezoneErrorMessage(error)
-    };
-  }
+  }, { userId });
 }
 
 /**
- * Get ranking data with individual challenge progress for all users
+ * Get ranking data with individual challenge progress for all users with caching
  * Requirements 4.3, 5.1, 5.2: Multi-user ranking with individual progress and points persistence
+ * Requirement 4.3: Performance optimization with caching
  */
 export async function getRankingData(): Promise<RankingUser[]> {
-  try {
-    // Get all users with their challenge data and daily progress
-    const { data: users, error: usersError } = await supabase
-      .from('profiles')
-      .select(`
-        user_id,
-        nome,
-        foto_url,
-        challenge_start_date,
-        challenge_completed_at
-      `)
-      .not('challenge_start_date', 'is', null);
+  return timeAsync(OPERATIONS.GET_RANKING_DATA, async () => {
+    try {
+      // Check cache first
+      const cachedRanking = getCachedRankingData();
+      if (cachedRanking) {
+        return cachedRanking;
+      }
+      
+      // Use optimized view for better performance
+      const { data: users, error: usersError } = await timeAsync(
+        OPERATIONS.DATABASE_QUERY,
+        () => supabase
+          .from('ranking_with_challenge_progress')
+          .select('*')
+          .order('total_points', { ascending: false }),
+        { table: 'ranking_with_challenge_progress', operation: 'select' }
+      );
 
     if (usersError) {
       console.error('Database error fetching users for ranking:', usersError);
@@ -179,90 +226,100 @@ export async function getRankingData(): Promise<RankingUser[]> {
     }
 
     if (!users || users.length === 0) {
-      return [];
+      const emptyRanking: RankingUser[] = [];
+      setCachedRankingData(emptyRanking);
+      return emptyRanking;
     }
 
-    // Calculate total points for each user using the new cumulative function
-    const rankingUsers: RankingUser[] = await Promise.all(
-      users.map(async (user) => {
-        try {
-          // Safely parse start date
-          let startDate: Date | null = null;
-          if (user.challenge_start_date) {
-            try {
-              startDate = new Date(user.challenge_start_date);
-              // Validate the parsed date
-              if (isNaN(startDate.getTime())) {
-                console.error(`Invalid start date for user ${user.user_id}:`, user.challenge_start_date);
-                startDate = null;
-              }
-            } catch (dateError) {
-              console.error(`Error parsing start date for user ${user.user_id}:`, dateError);
+    // Process users with batch caching for efficiency
+    const batchCache = createBatchCacheOperation();
+    
+    const rankingUsers: RankingUser[] = users.map((user) => {
+      try {
+        // Safely parse start date
+        let startDate: Date | null = null;
+        if (user.challenge_start_date) {
+          try {
+            startDate = new Date(user.challenge_start_date);
+            // Validate the parsed date
+            if (isNaN(startDate.getTime())) {
+              console.error(`Invalid start date for user ${user.user_id}:`, user.challenge_start_date);
               startDate = null;
             }
+          } catch (dateError) {
+            console.error(`Error parsing start date for user ${user.user_id}:`, dateError);
+            startDate = null;
           }
-          
-          // Calculate challenge progress with error handling
-          const challengeProgress = calculateChallengeProgress(startDate);
-          
-          // Use the new cumulative points calculation with error handling
-          let totalPoints = 0;
-          try {
-            totalPoints = await calculateTotalChallengePoints(user.user_id);
-          } catch (pointsError) {
-            console.error(`Error calculating points for user ${user.user_id}:`, pointsError);
-            totalPoints = 0;
-          }
-          
-          return {
-            id: user.user_id,
-            name: user.nome || 'Usuário sem nome',
-            avatar: user.foto_url,
-            totalPoints,
-            challengeStartDate: startDate,
-            challengeProgress
-          };
-        } catch (userError) {
-          console.error(`Error processing user ${user.user_id} for ranking:`, userError);
-          
-          // Return safe fallback for this user
-          return {
-            id: user.user_id,
-            name: user.nome || 'Usuário sem nome',
-            avatar: user.foto_url,
-            totalPoints: 0,
-            challengeStartDate: null,
-            challengeProgress: {
-              currentDay: 0,
-              totalDays: 7,
-              isCompleted: false,
-              isNotStarted: true,
-              daysRemaining: 7,
-              progressPercentage: 0,
-              displayText: 'Erro ao calcular progresso',
-              hasError: true,
-              errorMessage: 'Erro ao processar dados do usuário'
-            }
-          };
         }
-      })
-    );
+        
+        // Calculate challenge progress with error handling
+        const challengeProgress = calculateChallengeProgress(startDate);
+        
+        // Use total_points from the optimized view
+        const totalPoints = user.total_points || 0;
+        
+        // Cache individual user data
+        batchCache.setChallengeProgress(user.user_id, challengeProgress);
+        batchCache.setUserPoints(user.user_id, totalPoints);
+        
+        return {
+          id: user.user_id,
+          name: user.nome || 'Usuário sem nome',
+          avatar: user.foto_url,
+          totalPoints,
+          challengeStartDate: startDate,
+          challengeProgress
+        };
+      } catch (userError) {
+        console.error(`Error processing user ${user.user_id} for ranking:`, userError);
+        
+        // Return safe fallback for this user
+        return {
+          id: user.user_id,
+          name: user.nome || 'Usuário sem nome',
+          avatar: user.foto_url,
+          totalPoints: 0,
+          challengeStartDate: null,
+          challengeProgress: {
+            currentDay: 0,
+            totalDays: 7,
+            isCompleted: false,
+            isNotStarted: true,
+            daysRemaining: 7,
+            progressPercentage: 0,
+            displayText: 'Erro ao calcular progresso',
+            hasError: true,
+            errorMessage: 'Erro ao processar dados do usuário'
+          }
+        };
+      }
+    });
 
-    // Sort by total points (descending), handling potential undefined values
-    return rankingUsers.sort((a, b) => {
+    // Execute batch cache operations
+    batchCache.execute();
+    
+    // Data is already sorted by the database view
+    const sortedRanking = rankingUsers.sort((a, b) => {
       const pointsA = a.totalPoints || 0;
       const pointsB = b.totalPoints || 0;
       return pointsB - pointsA;
     });
-  } catch (error) {
-    console.error('Error getting ranking data:', error);
-    return [];
-  }
+    
+      // Cache the final ranking
+      setCachedRankingData(sortedRanking);
+      
+      return sortedRanking;
+    } catch (error) {
+      console.error('Error getting ranking data:', error);
+      return [];
+    }
+  });
 }
 
 /**
- * Record daily progress for a user's challenge day
+ * Record daily progress for a user's challenge day with cache invalidation
  * Requirements 5.1, 5.2, 5.3: Points persistence across days without reset
+ * Requirement 4.3: Performance optimization with caching
  */
 export async function recordDailyProgress(
   userId: string,
@@ -286,6 +343,10 @@ export async function recordDailyProgress(
     if (error) {
       throw new Error(`Failed to record daily progress: ${error.message}`);
     }
+    
+    // Invalidate cache after successful update
+    invalidateUserCache(userId);
+    invalidateRankingCache();
   } catch (error) {
     console.error('Error recording daily progress:', error);
     throw error;
@@ -337,30 +398,49 @@ export async function updateDailyProgress(
 }
 
 /**
- * Calculate total points across all challenge days for a user
+ * Calculate total points across all challenge days for a user with caching
  * Requirements 5.4, 5.5: Cumulative scoring across all days
+ * Requirement 4.3: Performance optimization with caching
  */
 export async function calculateTotalChallengePoints(userId: string): Promise<number> {
-  try {
-    const { data, error } = await supabase
-      .from('daily_progress')
-      .select('points_earned')
-      .eq('user_id', userId);
+  return timeAsync(OPERATIONS.CALCULATE_TOTAL_POINTS, async () => {
+    try {
+      // Check cache first
+      const cachedPoints = getCachedUserPoints(userId);
+      if (cachedPoints !== null) {
+        return cachedPoints;
+      }
+      
+      const { data, error } = await timeAsync(
+        OPERATIONS.DATABASE_QUERY,
+        () => supabase
+          .from('daily_progress')
+          .select('points_earned')
+          .eq('user_id', userId),
+        { table: 'daily_progress', operation: 'select', userId }
+      );
 
-    if (error) {
-      throw new Error(`Failed to calculate total points: ${error.message}`);
-    }
+      if (error) {
+        throw new Error(`Failed to calculate total points: ${error.message}`);
+      }
 
-    if (!data || data.length === 0) {
+      if (!data || data.length === 0) {
+        setCachedUserPoints(userId, 0);
+        return 0;
+      }
+
+      // Sum all points earned across all challenge days
+      const totalPoints = data.reduce((total, progress) => total + (progress.points_earned || 0), 0);
+      
+      // Cache the result
+      setCachedUserPoints(userId, totalPoints);
+      
+      return totalPoints;
+    } catch (error) {
+      console.error('Error calculating total challenge points:', error);
       return 0;
     }
-
-    // Sum all points earned across all challenge days
-    return data.reduce((total, progress) => total + (progress.points_earned || 0), 0);
-  } catch (error) {
-    console.error('Error calculating total challenge points:', error);
-    return 0;
-  }
+  }, { userId });
 }
 
 /**
@@ -499,8 +579,9 @@ export async function getUserDailyProgress(userId: string): Promise<DailyProgres
 }
 
 /**
- * Complete user's challenge by setting completion date
+ * Complete user's challenge by setting completion date with cache invalidation
  * Requirement 4.4: Mark challenge as completed
+ * Requirement 4.3: Performance optimization with caching
  */
 export async function completeChallenge(userId: string): Promise<void> {
   try {
@@ -524,6 +605,10 @@ export async function completeChallenge(userId: string): Promise<void> {
     if (error) {
       throw new Error(`Failed to complete challenge: ${error.message}`);
     }
+    
+    // Invalidate cache after successful update
+    invalidateUserCache(userId);
+    invalidateRankingCache();
   } catch (error) {
     console.error('Error completing challenge:', error);
     
