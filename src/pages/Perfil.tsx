@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from '@/hooks/use-auth';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { weightFromDatabase, formatWeight } from '@/lib/weightUtils';
 import { Loader2, AlertCircle, RefreshCw, User, Camera, Save, Eye, EyeOff, Upload } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,6 +13,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 interface Profile {
   nome: string;
   foto_url?: string;
+  peso_inicial?: number;
 }
 
 export default function Perfil() {
@@ -45,7 +47,7 @@ export default function Perfil() {
     try {
       const { data, error } = await supabase
         .from('profiles')
-        .select('nome, foto_url')
+        .select('nome, foto_url, peso_inicial')
         .eq('user_id', user.id)
         .single();
 
@@ -53,9 +55,16 @@ export default function Perfil() {
         throw error;
       }
 
-      const profileData = data || { nome: '' };
-      setProfile(profileData);
-      setTempName(profileData.nome);
+      const profileData = data || { nome: '', peso_inicial: undefined };
+      
+      // Processar peso_inicial com função utilitária para garantir precisão
+      const processedProfile = {
+        ...profileData,
+        peso_inicial: weightFromDatabase(profileData.peso_inicial)
+      };
+      
+      setProfile(processedProfile);
+      setTempName(processedProfile.nome);
     } catch (error: any) {
       const errorMessage = error?.message || 'Erro ao carregar perfil';
       setError(errorMessage);
@@ -400,6 +409,21 @@ export default function Perfil() {
                   O email não pode ser alterado por questões de segurança
                 </p>
               </div>
+
+              {/* Peso Inicial Field (Read-only) */}
+              <div className="space-y-2">
+                <Label className="text-zinc-200">Peso Inicial</Label>
+                <Input
+                  value={formatWeight(profile.peso_inicial)}
+                  disabled
+                  className="bg-zinc-700 border-zinc-600 text-zinc-300 cursor-not-allowed"
+                />
+                <p className="text-xs text-zinc-400">
+                  Peso registrado no momento do cadastro
+                </p>
+              </div>
+
+
             </CardContent>
           </Card>
 

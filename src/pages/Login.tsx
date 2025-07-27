@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/hooks/use-auth';
 import { useToast } from '@/hooks/use-toast';
+import { parseWeight } from '@/lib/weightUtils';
 import { Dumbbell, Trophy, Target } from 'lucide-react';
 
 export default function Login() {
@@ -16,7 +17,7 @@ export default function Login() {
 
   // Formulários
   const [loginData, setLoginData] = useState({ email: '', password: '' });
-  const [signupData, setSignupData] = useState({ nome: '', email: '', password: '' });
+  const [signupData, setSignupData] = useState({ nome: '', email: '', password: '', pesoInicial: '' });
 
   // Redirecionar se já estiver logado
   if (user && !loading) {
@@ -43,7 +44,10 @@ export default function Login() {
     e.preventDefault();
     setIsLoading(true);
 
-    const { error } = await signUp(signupData.email, signupData.password, signupData.nome);
+    // Converter peso inicial para número se fornecido (usando função utilitária)
+    const pesoInicial = signupData.pesoInicial ? parseWeight(signupData.pesoInicial) : undefined;
+
+    const { error } = await signUp(signupData.email, signupData.password, signupData.nome, pesoInicial);
     
     if (error) {
       toast({
@@ -163,6 +167,22 @@ export default function Login() {
                       onChange={(e) => setSignupData({ ...signupData, password: e.target.value })}
                       required
                     />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="signup-peso">Peso inicial (kg) - Opcional</Label>
+                    <Input
+                      id="signup-peso"
+                      type="number"
+                      step="0.1"
+                      min="30"
+                      max="300"
+                      placeholder="Ex: 70.5"
+                      value={signupData.pesoInicial}
+                      onChange={(e) => setSignupData({ ...signupData, pesoInicial: e.target.value })}
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      Ajuda a personalizar seus planos de dieta e treino
+                    </p>
                   </div>
                   <Button 
                     type="submit" 

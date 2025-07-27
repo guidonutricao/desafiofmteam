@@ -299,8 +299,9 @@ export default function Dietas() {
     <div className="min-h-screen bg-gray-900 text-white">
       {/* Header */}
       <div className="text-center py-8">
-        <h1 className="text-4xl font-bold text-orange-400 mb-2">Planos Alimentares</h1>
-        <p className="text-gray-400">Escolha o plano ideal para seu peso e objetivo</p>
+        <h1 className="text-4xl font-bold text-amber-500 mb-2">Planos Alimentares</h1>
+        <p className="text-gray-400">Escolha o plano ideal para seu peso
+        </p>
       </div>
 
       {/* Botões de seleção */}
@@ -308,66 +309,60 @@ export default function Dietas() {
         <Button
           variant="outline"
           onClick={() => setPlanoSelecionado('60kg')}
-          className={`rounded-full px-6 py-2 border transition-all ${
-            planoSelecionado === '60kg' 
-              ? 'bg-orange-400 text-black border-orange-400 hover:bg-orange-500' 
+          className={`rounded-full px-6 py-2 border transition-all ${planoSelecionado === '60kg'
+              ? 'bg-amber-500 text-black border-amber-500 hover:bg-amber-600'
               : 'bg-gray-800 text-gray-300 border-gray-600 hover:bg-gray-700 hover:border-gray-500'
-          }`}
+            }`}
         >
           Plano até 60kg
         </Button>
         <Button
           variant="outline"
           onClick={() => setPlanoSelecionado('70kg')}
-          className={`rounded-full px-6 py-2 border transition-all ${
-            planoSelecionado === '70kg' 
-              ? 'bg-orange-400 text-black border-orange-400 hover:bg-orange-500' 
+          className={`rounded-full px-6 py-2 border transition-all ${planoSelecionado === '70kg'
+              ? 'bg-amber-500 text-black border-amber-500 hover:bg-amber-600'
               : 'bg-gray-800 text-gray-300 border-gray-600 hover:bg-gray-700 hover:border-gray-500'
-          }`}
+            }`}
         >
           Plano 60-70kg
         </Button>
         <Button
           variant="outline"
           onClick={() => setPlanoSelecionado('80kg')}
-          className={`rounded-full px-6 py-2 border transition-all ${
-            planoSelecionado === '80kg' 
-              ? 'bg-orange-400 text-black border-orange-400 hover:bg-orange-500' 
+          className={`rounded-full px-6 py-2 border transition-all ${planoSelecionado === '80kg'
+              ? 'bg-amber-500 text-black border-amber-500 hover:bg-amber-600'
               : 'bg-gray-800 text-gray-300 border-gray-600 hover:bg-gray-700 hover:border-gray-500'
-          }`}
+            }`}
         >
           Plano 70-80kg
         </Button>
         <Button
           variant="outline"
           onClick={() => setPlanoSelecionado('80kg-veg')}
-          className={`rounded-full px-6 py-2 border transition-all ${
-            planoSelecionado === '80kg-veg' 
-              ? 'bg-orange-400 text-black border-orange-400 hover:bg-orange-500' 
+          className={`rounded-full px-6 py-2 border transition-all ${planoSelecionado === '80kg-veg'
+              ? 'bg-amber-500 text-black border-amber-500 hover:bg-amber-600'
               : 'bg-gray-800 text-gray-300 border-gray-600 hover:bg-gray-700 hover:border-gray-500'
-          }`}
+            }`}
         >
           Plano 70-80kg (Vegetariano)
         </Button>
         <Button
           variant="outline"
           onClick={() => setPlanoSelecionado('90kg')}
-          className={`rounded-full px-6 py-2 border transition-all ${
-            planoSelecionado === '90kg' 
-              ? 'bg-orange-400 text-black border-orange-400 hover:bg-orange-500' 
+          className={`rounded-full px-6 py-2 border transition-all ${planoSelecionado === '90kg'
+              ? 'bg-amber-500 text-black border-amber-500 hover:bg-amber-600'
               : 'bg-gray-800 text-gray-300 border-gray-600 hover:bg-gray-700 hover:border-gray-500'
-          }`}
+            }`}
         >
           Plano 80-90kg
         </Button>
         <Button
           variant="outline"
           onClick={() => setPlanoSelecionado('90kg+')}
-          className={`rounded-full px-6 py-2 border transition-all ${
-            planoSelecionado === '90kg+' 
-              ? 'bg-orange-400 text-black border-orange-400 hover:bg-orange-500' 
+          className={`rounded-full px-6 py-2 border transition-all ${planoSelecionado === '90kg+'
+              ? 'bg-amber-500 text-black border-amber-500 hover:bg-amber-600'
               : 'bg-gray-800 text-gray-300 border-gray-600 hover:bg-gray-700 hover:border-gray-500'
-          }`}
+            }`}
         >
           Plano 90kg ou mais
         </Button>
@@ -377,9 +372,7 @@ export default function Dietas() {
       <div className="max-w-6xl mx-auto px-4 pb-8">
         {/* Título e descrição do plano */}
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold mb-2 text-white">{plano.nome}</h2>
-          <p className="text-gray-400 mb-4">{plano.descricao}</p>
-          <div className="inline-block bg-orange-400/20 text-orange-400 px-4 py-2 rounded-full font-medium border border-orange-400/30">
+          <div className="inline-block bg-amber-500/20 text-amber-500 px-4 py-2 rounded-full font-medium border border-amber-500/30">
             {plano.faixaPeso}
           </div>
         </div>
@@ -390,13 +383,13 @@ export default function Dietas() {
           <Card className="bg-gray-800 border-gray-700">
             <CardContent className="p-6">
               <div className="flex items-center gap-2 mb-4">
-                <Coffee className="w-5 h-5 text-orange-400" />
-                <h3 className="font-semibold text-orange-400">Café da Manhã</h3>
+                <Coffee className="w-5 h-5 text-amber-500" />
+                <h3 className="font-semibold text-amber-500">Café da Manhã</h3>
               </div>
               <ul className="space-y-2 text-sm">
                 {plano.refeicoes.cafe.map((item, index) => (
                   <li key={index} className="flex items-start gap-2">
-                    <span className="text-orange-400 mt-1">•</span>
+                    <span className="text-amber-500 mt-1">•</span>
                     <span className="text-gray-300">{item}</span>
                   </li>
                 ))}
@@ -408,13 +401,13 @@ export default function Dietas() {
           <Card className="bg-gray-800 border-gray-700">
             <CardContent className="p-6">
               <div className="flex items-center gap-2 mb-4">
-                <Utensils className="w-5 h-5 text-orange-400" />
-                <h3 className="font-semibold text-orange-400">Almoço</h3>
+                <Utensils className="w-5 h-5 text-amber-500" />
+                <h3 className="font-semibold text-amber-500">Almoço</h3>
               </div>
               <ul className="space-y-2 text-sm">
                 {plano.refeicoes.almoco.map((item, index) => (
                   <li key={index} className="flex items-start gap-2">
-                    <span className="text-orange-400 mt-1">•</span>
+                    <span className="text-amber-500 mt-1">•</span>
                     <span className="text-gray-300">{item}</span>
                   </li>
                 ))}
@@ -426,13 +419,13 @@ export default function Dietas() {
           <Card className="bg-gray-800 border-gray-700">
             <CardContent className="p-6">
               <div className="flex items-center gap-2 mb-4">
-                <Coffee className="w-5 h-5 text-orange-400" />
-                <h3 className="font-semibold text-orange-400">Lanche da Tarde</h3>
+                <Coffee className="w-5 h-5 text-amber-500" />
+                <h3 className="font-semibold text-amber-500">Lanche da Tarde</h3>
               </div>
               <ul className="space-y-2 text-sm">
                 {plano.refeicoes.lanche.map((item, index) => (
                   <li key={index} className="flex items-start gap-2">
-                    <span className="text-orange-400 mt-1">•</span>
+                    <span className="text-amber-500 mt-1">•</span>
                     <span className="text-gray-300">{item}</span>
                   </li>
                 ))}
@@ -444,13 +437,13 @@ export default function Dietas() {
           <Card className="bg-gray-800 border-gray-700">
             <CardContent className="p-6">
               <div className="flex items-center gap-2 mb-4">
-                <Utensils className="w-5 h-5 text-orange-400" />
-                <h3 className="font-semibold text-orange-400">Jantar</h3>
+                <Utensils className="w-5 h-5 text-amber-500" />
+                <h3 className="font-semibold text-amber-500">Jantar</h3>
               </div>
               <ul className="space-y-2 text-sm">
                 {plano.refeicoes.jantar.map((item, index) => (
                   <li key={index} className="flex items-start gap-2">
-                    <span className="text-orange-400 mt-1">•</span>
+                    <span className="text-amber-500 mt-1">•</span>
                     <span className="text-gray-300">{item}</span>
                   </li>
                 ))}
@@ -465,13 +458,13 @@ export default function Dietas() {
           <Card className="bg-gray-800 border-gray-700">
             <CardContent className="p-6">
               <div className="flex items-center gap-2 mb-4">
-                <Utensils className="w-5 h-5 text-orange-400" />
-                <h3 className="font-semibold text-orange-400">Lista de Substituição de Alimentos</h3>
+                <Utensils className="w-5 h-5 text-amber-500" />
+                <h3 className="font-semibold text-amber-500">Lista de Substituição de Alimentos</h3>
               </div>
               <p className="text-sm text-gray-400 mb-4">
                 Acesse nossa tabela completa de substituições alimentares
               </p>
-              <Button className="w-full bg-orange-400 hover:bg-orange-500 text-black font-medium">
+              <Button className="w-full bg-amber-500 hover:bg-amber-600 text-black font-medium">
                 Acessar Tabela
                 <ExternalLink className="w-4 h-4 ml-2" />
               </Button>
@@ -482,13 +475,13 @@ export default function Dietas() {
           <Card className="bg-gray-800 border-gray-700">
             <CardContent className="p-6">
               <div className="flex items-center gap-2 mb-4">
-                <Clock className="w-5 h-5 text-orange-400" />
-                <h3 className="font-semibold text-orange-400">Dicas de Horários</h3>
+                <Clock className="w-5 h-5 text-amber-500" />
+                <h3 className="font-semibold text-amber-500">Dicas de Horários</h3>
               </div>
               <ul className="space-y-2 text-sm">
                 {plano.horarios.map((horario, index) => (
                   <li key={index} className="flex items-start gap-2">
-                    <span className="text-orange-400 mt-1">•</span>
+                    <span className="text-amber-500 mt-1">•</span>
                     <span className="text-gray-300">{horario}</span>
                   </li>
                 ))}
@@ -500,13 +493,13 @@ export default function Dietas() {
           <Card className="bg-gray-800 border-gray-700">
             <CardContent className="p-6">
               <div className="flex items-center gap-2 mb-4">
-                <Lightbulb className="w-5 h-5 text-orange-400" />
-                <h3 className="font-semibold text-orange-400">Dicas Importantes</h3>
+                <Lightbulb className="w-5 h-5 text-amber-500" />
+                <h3 className="font-semibold text-amber-500">Dicas Importantes</h3>
               </div>
               <ul className="space-y-2 text-sm">
                 {plano.dicas.map((dica, index) => (
                   <li key={index} className="flex items-start gap-2">
-                    <span className="text-orange-400 mt-1">•</span>
+                    <span className="text-amber-500 mt-1">•</span>
                     <span className="text-gray-300">{dica}</span>
                   </li>
                 ))}

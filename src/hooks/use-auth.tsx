@@ -1,12 +1,13 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
+import { weightToDatabase } from '@/lib/weightUtils';
 
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
-  signUp: (email: string, password: string, nome: string) => Promise<{ error: any }>;
+  signUp: (email: string, password: string, nome: string, pesoInicial?: number) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
 }
@@ -38,19 +39,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
-  const signUp = async (email: string, password: string, nome: string) => {
+  const signUp = async (email: string, password: string, nome: string, pesoInicial?: number) => {
     const redirectUrl = `${window.location.origin}/`;
     
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         emailRedirectTo: redirectUrl,
         data: {
-          nome
+          nome,
+          peso_inicial: pesoInicial
         }
       }
     });
+
+    // Se o usuário foi criado com sucesso e temos o peso inicial, atualize o perfil
+    if (!error && data.user && pesoInicial) {
+      try {
+        await supabase
+          .from('profiles')
+          .update({ 
+            peso_inicial: weightToDatabase(pesoInicial)
+          })
+          .eq('user_id', data.user.id);
+      } catch (profileError) {
+        console.warn('Erro ao salvar peso inicial no perfil:', profileError);
+      }
+    }
+
     return { error };
   };
 
