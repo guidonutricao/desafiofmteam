@@ -1,13 +1,13 @@
 import { ReactNode } from 'react';
 import { useAuth } from '@/hooks/use-auth';
 import { Navigate } from 'react-router-dom';
-import { 
-  Calendar, 
-  Trophy, 
-  UtensilsCrossed, 
-  Dumbbell, 
+import {
+  Calendar,
+  Trophy,
+  UtensilsCrossed,
+  Dumbbell,
   User,
-  LogOut 
+  LogOut
 } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -84,23 +84,20 @@ export default function Layout({ children }: LayoutProps) {
                 key={item.to}
                 to={item.to}
                 className={({ isActive }) =>
-                  `flex items-center gap-4 p-4 rounded-2xl transition-all group relative ${
-                    isActive
-                      ? 'bg-yellow-500/10 text-yellow-400 shadow-sm border border-yellow-500/20'
-                      : 'text-gray-300 hover:bg-gray-700/50 hover:text-white'
+                  `flex items-center gap-4 p-4 rounded-2xl transition-all group relative ${isActive
+                    ? 'bg-yellow-500/10 text-yellow-400 shadow-sm border border-yellow-500/20'
+                    : 'text-gray-300 hover:bg-gray-700/50 hover:text-white'
                   }`
                 }
               >
                 {({ isActive }) => (
                   <>
-                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                      isActive 
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${isActive
                         ? getActiveIconBg(index)
                         : 'bg-gray-700 group-hover:bg-gray-600'
-                    }`}>
-                      <item.icon className={`w-5 h-5 ${
-                        isActive ? 'text-white' : 'text-gray-400 group-hover:text-gray-200'
-                      }`} />
+                      }`}>
+                      <item.icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-gray-400 group-hover:text-gray-200'
+                        }`} />
                     </div>
                     <span className="font-medium">{item.label}</span>
                     {isActive && (
@@ -114,9 +111,9 @@ export default function Layout({ children }: LayoutProps) {
 
           {/* Logout button */}
           <div className="mt-auto">
-            <Button 
-              variant="ghost" 
-              size="sm" 
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={signOut}
               className="w-full justify-start text-gray-400 hover:text-white hover:bg-gray-700"
             >
@@ -140,10 +137,10 @@ export default function Layout({ children }: LayoutProps) {
                 <p className="text-xs text-gray-400">Seu app de transformação</p>
               </div>
             </div>
-            
-            <Button 
-              variant="ghost" 
-              size="sm" 
+
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={signOut}
               className="text-gray-400 hover:text-white"
             >
@@ -166,23 +163,20 @@ export default function Layout({ children }: LayoutProps) {
               key={item.to}
               to={item.to}
               className={({ isActive }) =>
-                `flex flex-col items-center gap-1 p-2 rounded-xl transition-all ${
-                  isActive
-                    ? 'text-yellow-400'
-                    : 'text-gray-400 hover:text-gray-200'
+                `flex flex-col items-center gap-1 p-2 rounded-xl transition-all ${isActive
+                  ? 'text-yellow-400'
+                  : 'text-gray-400 hover:text-gray-200'
                 }`
               }
             >
               {({ isActive }) => (
                 <>
-                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                    isActive 
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${isActive
                       ? getMobileActiveIconBg(index)
                       : 'bg-gray-700'
-                  }`}>
-                    <item.icon className={`w-4 h-4 ${
-                      isActive ? 'text-white' : 'text-gray-400'
-                    }`} />
+                    }`}>
+                    <item.icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-gray-400'
+                      }`} />
                   </div>
                   <span className="text-xs font-medium">{item.label}</span>
                 </>

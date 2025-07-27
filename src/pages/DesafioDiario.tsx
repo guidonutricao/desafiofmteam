@@ -669,7 +669,7 @@ export default function DesafioDiario() {
           </div>
           <div className="w-full bg-gray-700 h-3 rounded-full overflow-hidden">
             <div
-              className="h-full bg-blue-500 transition-all duration-500 ease-out"
+              className="h-full bg-gradient-to-r from-yellow-400 to-orange-500 transition-all duration-500 ease-out"
               style={{ width: `${challengeProgress.progressPercentage}%` }}
             />
           </div>
@@ -724,7 +724,7 @@ export default function DesafioDiario() {
                     marcarTarefa(tarefa.key);
                   }}
                   className={`w-full transition-all duration-200 ${concluida
-                    ? 'bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-400 border border-yellow-500/30'
+                    ? 'bg-green-500 hover:bg-green-600 text-white border border-green-500'
                     : 'bg-gradient-to-r from-yellow-400 to-orange-500 hover:opacity-90 text-white'
                     }`}
                   variant={concluida ? "outline" : "default"}
