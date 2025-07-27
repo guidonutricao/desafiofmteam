@@ -330,7 +330,7 @@ export default function Ranking() {
     return (
       <div className="space-y-6">
         <div className="text-center space-y-4">
-          <div className="inline-flex items-center gap-2 bg-gradient-gold text-gold-foreground px-4 py-2 rounded-full font-bold">
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full font-bold">
             <Trophy className="w-5 h-5" />
             Ranking do Desafio
           </div>
@@ -358,7 +358,7 @@ export default function Ranking() {
     <div className="space-y-6">
       {/* Header */}
       <div className="text-center space-y-4">
-        <div className="inline-flex items-center gap-2 bg-gradient-gold text-gold-foreground px-4 py-2 rounded-full font-bold">
+        <div className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full font-bold">
           <Trophy className="w-5 h-5" />
           Ranking do Desafio
         </div>
@@ -378,10 +378,10 @@ export default function Ranking() {
 
       {/* Pódio - Top 3 */}
       {usuarios.length >= 3 && (
-        <Card className="bg-gradient-card border-border/20">
+        <Card className="bg-white dark:bg-white border-gray-200 dark:border-gray-200 text-gray-900">
           <CardHeader>
             <CardTitle className="text-center flex items-center justify-center gap-2">
-              <Trophy className="w-5 h-5 text-gold" />
+              <Trophy className="w-5 h-5 text-yellow-600" />
               Classificação Completa
             </CardTitle>
           </CardHeader>
@@ -399,9 +399,9 @@ export default function Ranking() {
                   </AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="font-semibold text-sm">{usuarios[1]?.name}</p>
-                  <p className="text-xs text-muted-foreground">{usuarios[1]?.totalPoints} pts</p>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="font-semibold text-sm text-gray-900">{usuarios[1]?.name}</p>
+                  <p className="text-xs text-gray-600">{usuarios[1]?.totalPoints} pts</p>
+                  <p className="text-xs text-gray-600">
                     {usuarios[1] ? getStatusText(usuarios[1]) : 'Não iniciado'}
                   </p>
                 </div>
@@ -419,9 +419,9 @@ export default function Ranking() {
                   </AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="font-bold">{usuarios[0]?.name}</p>
-                  <p className="text-sm text-muted-foreground">{usuarios[0]?.totalPoints} pts</p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="font-bold text-gray-900">{usuarios[0]?.name}</p>
+                  <p className="text-sm text-gray-600">{usuarios[0]?.totalPoints} pts</p>
+                  <p className="text-sm text-gray-600">
                     {usuarios[0] ? getStatusText(usuarios[0]) : 'Não iniciado'}
                   </p>
                 </div>
@@ -439,9 +439,9 @@ export default function Ranking() {
                   </AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="font-semibold text-sm">{usuarios[2]?.name}</p>
-                  <p className="text-xs text-muted-foreground">{usuarios[2]?.totalPoints} pts</p>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="font-semibold text-sm text-gray-900">{usuarios[2]?.name}</p>
+                  <p className="text-xs text-gray-600">{usuarios[2]?.totalPoints} pts</p>
+                  <p className="text-xs text-gray-600">
                     {usuarios[2] ? getStatusText(usuarios[2]) : 'Não iniciado'}
                   </p>
                 </div>
@@ -492,7 +492,7 @@ export default function Ranking() {
                         {usuario.name}
                       </h3>
                       {isUsuarioAtual && (
-                        <span className="bg-gold-foreground/20 text-gold-foreground px-2 py-1 rounded text-xs font-medium">
+                        <span className="bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded text-xs font-medium">
                           Você
                         </span>
                       )}
@@ -528,16 +528,16 @@ export default function Ranking() {
       </div>
 
       {usuarios.length === 0 && !loading && !hasError && (
-        <Card className="bg-gradient-card border-border/20">
+        <Card className="bg-white dark:bg-white border-gray-200 dark:border-gray-200 text-gray-900">
           <CardContent className="text-center py-12">
-            <Trophy className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-foreground mb-2">
+            <Trophy className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
               Nenhum participante ainda
             </h3>
-            <p className="text-muted-foreground mb-4">
+            <p className="text-gray-600 mb-4">
               Seja o primeiro a completar tarefas e aparecer no ranking!
             </p>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-gray-600">
               Se você já completou tarefas e não aparece aqui, pode haver um problema de sincronização.
               <br />
               Tente recarregar a página ou entre em contato com o suporte.

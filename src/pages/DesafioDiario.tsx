@@ -50,7 +50,7 @@ interface CardResultado {
 export default function DesafioDiario() {
   const { user } = useAuth();
   const { toast } = useToast();
-  
+
   const [desafio, setDesafio] = useState<DesafioDiario>({
     hidratacao: false,
     sono_qualidade: false,
@@ -62,7 +62,7 @@ export default function DesafioDiario() {
     organizar_refeicoes: false,
     pontuacao_total: 0
   });
-  
+
   const [mensagem, setMensagem] = useState<MensagemMotivacional | null>(null);
   const [cardResultado, setCardResultado] = useState<CardResultado | null>(null);
   const [pontuacaoTotal, setPontuacaoTotal] = useState(0);
@@ -174,7 +174,7 @@ export default function DesafioDiario() {
         // Update pontuacao state
         setPontuacaoTotal(pontuacaoData.pontuacao_total || 0);
         setDiasConsecutivos(pontuacaoData.dias_consecutivos || 0);
-        
+
         // Determine if challenge has been started based on participation
         if (pontuacaoData.ultima_data_participacao || pontuacaoData.pontuacao_total > 0) {
           // If user has participated or has points, consider challenge as started
@@ -279,7 +279,7 @@ export default function DesafioDiario() {
           .eq('id', desafio.id)
           .select()
           .single();
-        
+
         desafioAtualizado = data;
       } else {
         // Criar novo desafio
@@ -305,7 +305,7 @@ export default function DesafioDiario() {
 
       if (desafioAtualizado) {
         setDesafio(desafioAtualizado);
-        
+
         // Recalcular pontuação total do usuário
         await supabase.rpc('recalcular_pontuacao_usuario', {
           user_id_param: user.id
@@ -356,19 +356,19 @@ export default function DesafioDiario() {
   if (!challengeStartDate) {
     return (
       <div className="text-center space-y-6">
-        <div className="inline-flex items-center gap-2 bg-gradient-gold text-gold-foreground px-4 py-2 rounded-full font-bold">
+        <div className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full font-bold">
           <Trophy className="w-5 h-5" />
           Desafio Shape Express - Não iniciado
         </div>
-        <Card className="max-w-md mx-auto bg-gradient-card">
+        <Card className="max-w-md mx-auto bg-white dark:bg-white border-gray-200 dark:border-gray-200 text-gray-900">
           <CardHeader>
             <CardTitle className="text-center">Bem-vindo ao Desafio!</CardTitle>
           </CardHeader>
           <CardContent className="text-center space-y-4">
-            <p className="text-muted-foreground">
+            <p className="text-gray-600">
               Seu desafio de 7 dias ainda não foi iniciado. Clique no botão abaixo para começar sua jornada!
             </p>
-            <Button 
+            <Button
               onClick={async () => {
                 if (!user) {
                   toast({
@@ -378,40 +378,40 @@ export default function DesafioDiario() {
                   });
                   return;
                 }
-                
+
                 try {
                   setLoading(true);
-                  
+
                   console.log('Starting challenge for user:', user.id);
                   console.log('User object:', user);
-                  
+
                   // Test Supabase connection
                   const { data: connectionTest, error: connectionError } = await supabase
                     .from('profiles')
                     .select('user_id')
                     .eq('user_id', user.id)
                     .limit(1);
-                  
+
                   if (connectionError) {
                     console.error('Connection test failed:', connectionError);
                     throw new Error(`Erro de conexão: ${connectionError.message}`);
                   }
-                  
+
                   if (!connectionTest || connectionTest.length === 0) {
                     throw new Error('Perfil do usuário não encontrado no banco de dados');
                   }
-                  
+
                   console.log('Connection test passed');
-                  
+
                   // This check is already done by the parent component logic
                   // since we only show this button when challengeStartDate is null
-                  
+
                   console.log('Profile check passed, starting challenge...');
-                  
+
                   // Since challenge columns don't exist in profiles, we'll use pontuacoes table
                   // to track challenge start by setting ultima_data_participacao to today
                   const hoje = new Date().toISOString().split('T')[0];
-                  
+
                   const { data: updateResult, error: updateError } = await supabase
                     .from('pontuacoes')
                     .update({
@@ -420,51 +420,51 @@ export default function DesafioDiario() {
                     })
                     .eq('user_id', user.id)
                     .select();
-                  
+
                   if (updateError) {
                     console.error('Update Error:', updateError);
                     throw updateError;
                   }
-                  
+
                   if (!updateResult || updateResult.length === 0) {
                     throw new Error('Falha ao atualizar os dados do usuário');
                   }
-                  
+
                   console.log('Challenge started successfully:', updateResult[0]);
-                  
+
                   // Set challenge start date to today for the component state
                   setChallengeStartDate(new Date());
-                  
+
                   // Verify the challenge was started by fetching the updated profile
                   const { data: updatedProfile, error: profileError } = await supabase
                     .from('profiles')
                     .select('challenge_start_date')
                     .eq('user_id', user.id)
                     .single();
-                  
+
                   if (profileError) {
                     throw profileError;
                   }
-                  
+
                   if (updatedProfile?.challenge_start_date) {
                     const startDate = new Date(updatedProfile.challenge_start_date);
                     console.log('Challenge start date from DB:', startDate);
                     setChallengeStartDate(startDate);
                   }
-                  
+
                   // Reload all data to ensure everything is in sync
                   await carregarDados();
-                  
+
                   toast({
                     title: "Desafio iniciado! 🎉",
                     description: "Sua jornada de 7 dias começou, bora pra cima!",
                   });
                 } catch (error) {
                   console.error('Error starting challenge:', error);
-                  
+
                   // More detailed error handling
                   let errorMessage = "Não foi possível iniciar o desafio. Tente novamente.";
-                  
+
                   if (error && typeof error === 'object') {
                     if ('message' in error) {
                       errorMessage = `Erro: ${error.message}`;
@@ -474,13 +474,13 @@ export default function DesafioDiario() {
                       errorMessage = `Erro: ${error.hint}`;
                     }
                   }
-                  
+
                   console.error('Detailed error info:', {
                     error,
                     user: user?.id,
                     timestamp: new Date().toISOString()
                   });
-                  
+
                   toast({
                     title: "Erro ao iniciar desafio",
                     description: errorMessage,
@@ -490,7 +490,7 @@ export default function DesafioDiario() {
                   setLoading(false);
                 }
               }}
-              className="w-full bg-gradient-gold hover:opacity-90 text-gold-foreground"
+              className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 hover:opacity-90 text-white"
               disabled={loading}
             >
               {loading ? "Iniciando..." : "Iniciar Desafio"}
@@ -506,12 +506,12 @@ export default function DesafioDiario() {
     return (
       <div className="space-y-6">
         <div className="text-center">
-          <div className="inline-flex items-center gap-2 bg-gradient-gold text-gold-foreground px-4 py-2 rounded-full font-bold">
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full font-bold">
             <Trophy className="w-5 h-5" />
             Desafio Shape Express
           </div>
         </div>
-        
+
         <TimezoneErrorDisplay
           hasError={true}
           errorMessage={challengeProgress.errorMessage}
@@ -519,11 +519,11 @@ export default function DesafioDiario() {
             carregarDados();
           }}
         />
-        
+
         {/* Still show basic interface even with errors */}
-        <Card className="bg-gradient-card border-border/20">
+        <Card className="bg-white dark:bg-white border-gray-200 dark:border-gray-200 text-gray-900">
           <CardContent className="text-center py-12">
-            <p className="text-muted-foreground">
+            <p className="text-gray-600">
               Alguns recursos podem estar limitados devido ao erro acima.
               Tente recarregar a página ou entre em contato com o suporte se o problema persistir.
             </p>
@@ -539,11 +539,11 @@ export default function DesafioDiario() {
   if (challengeProgress.isCompleted) {
     return (
       <div className="text-center space-y-6">
-        <div className="inline-flex items-center gap-2 bg-gradient-gold text-gold-foreground px-4 py-2 rounded-full font-bold">
+        <div className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full font-bold">
           <Trophy className="w-5 h-5" />
           {challengeProgress.displayText}
         </div>
-        <Card className="max-w-md mx-auto bg-gradient-gold text-gold-foreground">
+        <Card className="max-w-md mx-auto bg-gradient-to-r from-yellow-400 to-orange-500 text-white">
           <CardHeader>
             <CardTitle className="text-center flex items-center justify-center gap-2">
               <Trophy className="w-6 h-6" />
@@ -552,7 +552,7 @@ export default function DesafioDiario() {
           </CardHeader>
           <CardContent className="text-center space-y-4">
             <p className="text-gold-foreground/90">
-              Você completou com sucesso o Desafio Shape Express de 7 dias! 
+              Você completou com sucesso o Desafio Shape Express de 7 dias!
               Continue mantendo esses hábitos saudáveis em sua rotina.
             </p>
             <div className="text-2xl font-bold">
@@ -560,22 +560,22 @@ export default function DesafioDiario() {
             </div>
           </CardContent>
         </Card>
-        
+
         {/* Show motivational message and result card even when completed */}
         {mensagem && (
-          <Card className="bg-gradient-card border-border/20">
+          <Card className="bg-white dark:bg-white border-gray-200 dark:border-gray-200 text-gray-900">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
-                <Flame className="w-5 h-5 text-gold" />
+                <Flame className="w-5 h-5 text-yellow-600" />
                 Motivação Diária
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <blockquote className="text-foreground italic">
+              <blockquote className="text-gray-900 italic">
                 "{mensagem.mensagem}"
               </blockquote>
               {mensagem.autor && (
-                <cite className="text-sm text-muted-foreground mt-2 block">
+                <cite className="text-sm text-gray-600 mt-2 block">
                   - {mensagem.autor}
                 </cite>
               )}
@@ -584,7 +584,7 @@ export default function DesafioDiario() {
         )}
 
         {cardResultado && (
-          <Card className="bg-gradient-gold text-gold-foreground">
+          <Card className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Trophy className="w-5 h-5" />
@@ -617,7 +617,7 @@ export default function DesafioDiario() {
                 🌅 Seu desafio começará amanhã!
               </div>
               <p className="text-sm text-muted-foreground">
-                Você pode começar a se preparar completando as tarefas abaixo. 
+                Você pode começar a se preparar completando as tarefas abaixo.
                 Elas contarão oficialmente a partir de amanhã.
               </p>
             </div>
@@ -627,22 +627,22 @@ export default function DesafioDiario() {
 
       {/* Header com progresso */}
       <div className="text-center space-y-4">
-        <div className="inline-flex items-center gap-2 bg-gradient-gold text-gold-foreground px-4 py-2 rounded-full font-bold">
+        <div className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full font-bold">
           <Trophy className="w-5 h-5" />
           {challengeProgress.displayText}
         </div>
-        
+
         <div className="flex items-center justify-center gap-8">
           <div className="text-center">
             <div className="text-2xl font-bold text-white">{pontuacaoTotal}</div>
             <div className="text-sm text-white">Pontos Totais</div>
           </div>
-          
+
           <div className="text-center">
             <div className="text-2xl font-bold text-white">{desafio.pontuacao_total}/{pontuacaoMaxima}</div>
             <div className="text-sm text-white">Pontos Hoje</div>
           </div>
-          
+
           <div className="text-center">
             <div className="text-2xl font-bold text-white">{challengeProgress.currentDay}/{challengeProgress.totalDays}</div>
             <div className="text-sm text-white">Dia do Desafio</div>
@@ -653,21 +653,21 @@ export default function DesafioDiario() {
         <div className="max-w-md mx-auto space-y-3">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm text-muted-foreground">Progresso do dia</span>
-            <span className="text-sm font-medium text-foreground">{Math.round(progresso)}%</span>
+            <span className="text-sm font-medium text-white">{Math.round(progresso)}%</span>
           </div>
-          <div className="w-full bg-secondary h-3 rounded-full overflow-hidden">
-            <div 
-              className="h-full bg-gradient-gold transition-all duration-500 ease-out"
+          <div className="w-full bg-gray-700 h-3 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-gradient-to-r from-yellow-400 to-orange-500 transition-all duration-500 ease-out"
               style={{ width: `${progresso}%` }}
             />
           </div>
-          
+
           {/* Barra de progresso do desafio geral */}
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm text-muted-foreground">Progresso do desafio</span>
-            <span className="text-sm font-medium text-foreground">{Math.round(challengeProgress.progressPercentage)}%</span>
+            <span className="text-sm font-medium text-white">{Math.round(challengeProgress.progressPercentage)}%</span>
           </div>
-          <div className="w-full bg-secondary h-3 rounded-full overflow-hidden">
+          <div className="w-full bg-gray-700 h-3 rounded-full overflow-hidden">
             <div
               className="h-full bg-blue-500 transition-all duration-500 ease-out"
               style={{ width: `${challengeProgress.progressPercentage}%` }}
@@ -681,21 +681,20 @@ export default function DesafioDiario() {
         {tarefas.map((tarefa) => {
           const concluida = desafio[tarefa.key] as boolean;
           const IconComponent = tarefa.icon;
-          
+
           return (
-            <Card 
+            <Card
               key={tarefa.key}
-              className={`relative transition-all duration-300 hover:scale-[1.02] cursor-pointer ${
-                concluida 
-                  ? 'bg-gradient-gold text-gold-foreground border-gold shadow-lg' 
-                  : 'bg-gradient-card hover:bg-accent/5'
-              }`}
+              className={`relative transition-all duration-300 hover:scale-[1.02] cursor-pointer ${concluida
+                ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white border-yellow-500 shadow-lg'
+                : 'bg-white dark:bg-white border-gray-200 dark:border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-50 text-gray-900'
+                }`}
               onClick={() => marcarTarefa(tarefa.key)}
             >
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-3">
-                  <div className={`p-2 rounded-lg ${concluida ? 'bg-gold-foreground/20' : 'bg-accent'}`}>
-                    <IconComponent className={`w-5 h-5 ${concluida ? 'text-gold-foreground' : 'text-muted-foreground'}`} />
+                  <div className={`p-2 rounded-lg ${concluida ? 'bg-yellow-500/20' : 'bg-gray-100'}`}>
+                    <IconComponent className={`w-5 h-5 ${concluida ? 'text-yellow-400' : 'text-gray-600'}`} />
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
@@ -705,16 +704,15 @@ export default function DesafioDiario() {
                   </div>
                 </CardTitle>
               </CardHeader>
-              
+
               <CardContent>
-                <p className={`text-sm mb-3 ${concluida ? 'text-gold-foreground/80' : 'text-muted-foreground'}`}>
+                <p className={`text-sm mb-3 ${concluida ? 'text-white/90' : 'text-gray-600'}`}>
                   {tarefa.descricao}
                 </p>
 
                 {/* Pontuação da tarefa */}
-                <div className={`flex items-center gap-1 mb-4 text-sm font-medium ${
-                  concluida ? 'text-gold-foreground' : 'text-gold'
-                }`}>
+                <div className={`flex items-center gap-1 mb-4 text-sm font-medium ${concluida ? 'text-white' : 'text-yellow-600'
+                  }`}>
                   <Trophy className="w-4 h-4" />
                   {tarefa.pontos} pontos
                 </div>
@@ -726,8 +724,8 @@ export default function DesafioDiario() {
                     marcarTarefa(tarefa.key);
                   }}
                   className={`w-full transition-all duration-200 ${concluida
-                    ? 'bg-gold-foreground/20 hover:bg-gold-foreground/30 text-gold-foreground border border-gold-foreground/30'
-                    : 'bg-gradient-gold hover:opacity-90 text-gold-foreground'
+                    ? 'bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-400 border border-yellow-500/30'
+                    : 'bg-gradient-to-r from-yellow-400 to-orange-500 hover:opacity-90 text-white'
                     }`}
                   variant={concluida ? "outline" : "default"}
                 >
@@ -747,17 +745,17 @@ export default function DesafioDiario() {
             </Card>
           );
         })}
-        
+
         {/* Card Premium */}
-        <Card 
+        <Card
           className="bg-amber-500 text-white cursor-pointer hover:bg-amber-600 transition-colors duration-200"
-          onClick={() => window.open('https://example.com/premium', '_blank')}
+          onClick={() => window.open('https://wa.me/5511948464441?text=Ol%C3%A1%2C%20vim%20do%20desafio%20e%20gostaria%20de%20saber%20mais%20sobre%20o%20acompanhamento%20premium.', '_blank')}
         >
           <CardContent className="p-6 text-center space-y-4">
             <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto">
               <Award className="w-6 h-6 text-white" />
             </div>
-            
+
             <div className="space-y-2">
               <h3 className="text-xl font-bold text-white">
                 Quer Resultados Ainda Melhores?
@@ -766,7 +764,7 @@ export default function DesafioDiario() {
                 Acompanhamento individual personalizado para participantes do desafio
               </p>
             </div>
-            
+
             <div className="pt-2">
               <div className="bg-white/20 hover:bg-white/30 transition-colors duration-200 rounded-lg px-6 py-3 inline-block">
                 <span className="text-white font-semibold">
@@ -780,19 +778,19 @@ export default function DesafioDiario() {
 
       {/* Mensagem motivacional */}
       {mensagem && (
-        <Card className="bg-gradient-card border-border/20">
+        <Card className="bg-white dark:bg-white border-gray-200 dark:border-gray-200 text-gray-900">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-lg">
-              <Flame className="w-5 h-5 text-gold" />
+              <Flame className="w-5 h-5 text-yellow-600" />
               Motivação Diária
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <blockquote className="text-foreground italic">
+            <blockquote className="text-gray-900 italic">
               "{mensagem.mensagem}"
             </blockquote>
             {mensagem.autor && (
-              <cite className="text-sm text-muted-foreground mt-2 block">
+              <cite className="text-sm text-gray-600 mt-2 block">
                 - {mensagem.autor}
               </cite>
             )}
@@ -802,7 +800,7 @@ export default function DesafioDiario() {
 
       {/* Card de resultado */}
       {cardResultado && (
-        <Card className="bg-gradient-gold text-gold-foreground">
+        <Card className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Trophy className="w-5 h-5" />
