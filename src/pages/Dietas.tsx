@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Coffee, Utensils, Clock, Lightbulb, ExternalLink } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Coffee, Utensils, Clock, Lightbulb, ExternalLink, Trophy, Award, Star, Crown, Apple } from 'lucide-react';
 
 interface PlanoDetalhes {
   nome: string;
@@ -59,7 +60,7 @@ const planosDetalhados: Record<string, PlanoDetalhes> = {
     dicas: [
       'Beba 2-3 litros de água por dia',
       'Evite frituras e doces',
-      'Mantenha bem os alimentos',
+      'Não pule refeições',
       'Respeite os intervalos entre refeições'
     ]
   },
@@ -104,7 +105,7 @@ const planosDetalhados: Record<string, PlanoDetalhes> = {
     dicas: [
       'Beba 2-3 litros de água por dia',
       'Evite frituras e doces',
-      'Mantenha bem os alimentos',
+      'Não pule refeições',
       'Respeite os intervalos entre refeições'
     ]
   },
@@ -194,7 +195,7 @@ const planosDetalhados: Record<string, PlanoDetalhes> = {
     dicas: [
       'Beba 2-3 litros de água por dia',
       'Evite frituras e doces',
-      'Mantenha bem os alimentos',
+      'Não pule refeições',
       'Respeite os intervalos entre refeições'
     ]
   },
@@ -239,7 +240,7 @@ const planosDetalhados: Record<string, PlanoDetalhes> = {
     dicas: [
       'Beba 3-4 litros de água por dia',
       'Evite frituras e doces',
-      'Mantenha bem os alimentos',
+      'Não pule refeições',
       'Respeite os intervalos entre refeições'
     ]
   },
@@ -284,7 +285,7 @@ const planosDetalhados: Record<string, PlanoDetalhes> = {
     dicas: [
       'Beba 3-4 litros de água por dia',
       'Evite frituras e doces',
-      'Mantenha bem os alimentos',
+      'Não pule refeições',
       'Respeite os intervalos entre refeições'
     ]
   }
@@ -296,175 +297,190 @@ export default function Dietas() {
   const plano = planosDetalhados[planoSelecionado];
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      {/* Header */}
-      <div className="text-center py-8">
-        <h1 className="text-4xl font-bold text-amber-500 mb-2">Planos Alimentares</h1>
-        <p className="text-gray-400">Escolha o plano ideal para seu peso
-        </p>
-      </div>
+    <div className="min-h-screen text-white p-6" style={{ backgroundColor: '#0B111F' }}>
+      <div className="space-y-6">
+        {/* Header com título centralizado */}
+        <div className="text-center space-y-4">
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full font-bold">
+            <Trophy className="w-5 h-5" />
+            Planos Alimentares Shape Express
+          </div>
+          <p className="text-gray-300 max-w-2xl mx-auto">
+            Planos nutricionais personalizados para todos os pesos. Escolha o plano ideal para seus objetivos.
+          </p>
+        </div>
 
-      {/* Botões de seleção */}
-      <div className="flex flex-wrap justify-center gap-3 mb-8 px-4">
-        <Button
-          variant="outline"
-          onClick={() => setPlanoSelecionado('60kg')}
-          className={`rounded-full px-6 py-2 border transition-all ${planoSelecionado === '60kg'
-              ? 'bg-amber-500 text-black border-amber-500 hover:bg-amber-600'
-              : 'bg-gray-800 text-gray-300 border-gray-600 hover:bg-gray-700 hover:border-gray-500'
-            }`}
-        >
-          Plano até 60kg
-        </Button>
-        <Button
-          variant="outline"
-          onClick={() => setPlanoSelecionado('70kg')}
-          className={`rounded-full px-6 py-2 border transition-all ${planoSelecionado === '70kg'
-              ? 'bg-amber-500 text-black border-amber-500 hover:bg-amber-600'
-              : 'bg-gray-800 text-gray-300 border-gray-600 hover:bg-gray-700 hover:border-gray-500'
-            }`}
-        >
-          Plano 60-70kg
-        </Button>
-        <Button
-          variant="outline"
-          onClick={() => setPlanoSelecionado('80kg')}
-          className={`rounded-full px-6 py-2 border transition-all ${planoSelecionado === '80kg'
-              ? 'bg-amber-500 text-black border-amber-500 hover:bg-amber-600'
-              : 'bg-gray-800 text-gray-300 border-gray-600 hover:bg-gray-700 hover:border-gray-500'
-            }`}
-        >
-          Plano 70-80kg
-        </Button>
-        <Button
-          variant="outline"
-          onClick={() => setPlanoSelecionado('80kg-veg')}
-          className={`rounded-full px-6 py-2 border transition-all ${planoSelecionado === '80kg-veg'
-              ? 'bg-amber-500 text-black border-amber-500 hover:bg-amber-600'
-              : 'bg-gray-800 text-gray-300 border-gray-600 hover:bg-gray-700 hover:border-gray-500'
-            }`}
-        >
-          Plano 70-80kg (Vegetariano)
-        </Button>
-        <Button
-          variant="outline"
-          onClick={() => setPlanoSelecionado('90kg')}
-          className={`rounded-full px-6 py-2 border transition-all ${planoSelecionado === '90kg'
-              ? 'bg-amber-500 text-black border-amber-500 hover:bg-amber-600'
-              : 'bg-gray-800 text-gray-300 border-gray-600 hover:bg-gray-700 hover:border-gray-500'
-            }`}
-        >
-          Plano 80-90kg
-        </Button>
-        <Button
-          variant="outline"
-          onClick={() => setPlanoSelecionado('90kg+')}
-          className={`rounded-full px-6 py-2 border transition-all ${planoSelecionado === '90kg+'
-              ? 'bg-amber-500 text-black border-amber-500 hover:bg-amber-600'
-              : 'bg-gray-800 text-gray-300 border-gray-600 hover:bg-gray-700 hover:border-gray-500'
-            }`}
-        >
-          Plano 90kg ou mais
-        </Button>
-      </div>
+        {/* Botões de Seleção */}
+        <div className="flex flex-wrap gap-3 justify-center">
+          {Object.entries(planosDetalhados).map(([key, plano]) => (
+            <Button
+              key={key}
+              variant={planoSelecionado === key ? "default" : "outline"}
+              onClick={() => setPlanoSelecionado(key)}
+              className={`${planoSelecionado === key
+                ? 'bg-gradient-to-r from-yellow-400 to-orange-500 hover:opacity-90 text-white'
+                : 'bg-white border-gray-300 text-gray-900 hover:bg-gray-50'
+                }`}
+            >
+              <Apple className="w-4 h-4" />
+              <span className="ml-2">{plano.nome}</span>
+            </Button>
+          ))}
+        </div>
 
-      {/* Conteúdo do plano selecionado */}
-      <div className="max-w-6xl mx-auto px-4 pb-8">
-        {/* Título e descrição do plano */}
-        <div className="text-center mb-8">
-          <div className="inline-block bg-amber-500/20 text-amber-500 px-4 py-2 rounded-full font-medium border border-amber-500/30">
-            {plano.faixaPeso}
+        {/* Informações do plano selecionado */}
+        <div className="text-center space-y-2">
+          <h1 className="text-2xl font-bold text-white flex items-center justify-center gap-2">
+            <Apple className="w-6 h-6" />
+            {plano.nome}
+          </h1>
+          <p className="text-gray-300">{plano.descricao}</p>
+          <div className="flex items-center justify-center gap-8">
+            <div className="text-center">
+              <div className="text-lg font-bold text-white">{plano.faixaPeso}</div>
+              <div className="text-sm text-gray-300">Faixa de Peso</div>
+            </div>
+            <div className="text-center">
+              <div className="text-lg font-bold text-white">4</div>
+              <div className="text-sm text-gray-300">Refeições Diárias</div>
+            </div>
           </div>
         </div>
 
-        {/* Cards das refeições */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {/* Grid de Refeições Premium */}
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {/* Café da Manhã */}
-          <Card className="bg-gray-800 border-gray-700">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <Coffee className="w-5 h-5 text-amber-500" />
-                <h3 className="font-semibold text-amber-500">Café da Manhã</h3>
-              </div>
-              <ul className="space-y-2 text-sm">
-                {plano.refeicoes.cafe.map((item, index) => (
-                  <li key={index} className="flex items-start gap-2">
-                    <span className="text-amber-500 mt-1">•</span>
-                    <span className="text-gray-300">{item}</span>
-                  </li>
-                ))}
-              </ul>
+          <Card className="bg-gradient-to-br from-orange-50 to-yellow-50 border-orange-200 text-gray-900 hover:shadow-xl transition-all duration-300 hover:scale-[1.03] hover:-translate-y-1 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-orange-200/30 to-yellow-200/30 rounded-full -translate-y-10 translate-x-10"></div>
+            <CardHeader className="pb-4 relative z-10">
+              <CardTitle className="flex items-center gap-3">
+                <div className="p-3 rounded-xl bg-gradient-to-br from-orange-400 to-yellow-400 shadow-lg">
+                  <Coffee className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl">☕</span>
+                    <span className="font-bold text-gray-800">Café da Manhã</span>
+                  </div>
+                  <p className="text-xs text-gray-600 mt-1">Energia para começar o dia</p>
+                </div>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3 relative z-10">
+              {plano.refeicoes.cafe.map((item, index) => (
+                <div key={index} className="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-orange-100 shadow-sm hover:shadow-md transition-all duration-200 hover:bg-white/90">
+                  <div className="flex items-center gap-3">
+                    <div className="w-2 h-2 bg-gradient-to-r from-orange-400 to-yellow-400 rounded-full flex-shrink-0"></div>
+                    <p className="text-gray-800 text-sm font-medium leading-relaxed">{item}</p>
+                  </div>
+                </div>
+              ))}
             </CardContent>
           </Card>
 
           {/* Almoço */}
-          <Card className="bg-gray-800 border-gray-700">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <Utensils className="w-5 h-5 text-amber-500" />
-                <h3 className="font-semibold text-amber-500">Almoço</h3>
-              </div>
-              <ul className="space-y-2 text-sm">
-                {plano.refeicoes.almoco.map((item, index) => (
-                  <li key={index} className="flex items-start gap-2">
-                    <span className="text-amber-500 mt-1">•</span>
-                    <span className="text-gray-300">{item}</span>
-                  </li>
-                ))}
-              </ul>
+          <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-200 text-gray-900 hover:shadow-xl transition-all duration-300 hover:scale-[1.03] hover:-translate-y-1 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-green-200/30 to-emerald-200/30 rounded-full -translate-y-10 translate-x-10"></div>
+            <CardHeader className="pb-4 relative z-10">
+              <CardTitle className="flex items-center gap-3">
+                <div className="p-3 rounded-xl bg-gradient-to-br from-green-400 to-emerald-400 shadow-lg">
+                  <Utensils className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl">🍽️</span>
+                    <span className="font-bold text-gray-800">Almoço</span>
+                  </div>
+                  <p className="text-xs text-gray-600 mt-1">Refeição principal do dia</p>
+                </div>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3 relative z-10">
+              {plano.refeicoes.almoco.map((item, index) => (
+                <div key={index} className="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-green-100 shadow-sm hover:shadow-md transition-all duration-200 hover:bg-white/90">
+                  <div className="flex items-center gap-3">
+                    <div className="w-2 h-2 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full flex-shrink-0"></div>
+                    <p className="text-gray-800 text-sm font-medium leading-relaxed">{item}</p>
+                  </div>
+                </div>
+              ))}
             </CardContent>
           </Card>
 
           {/* Lanche da Tarde */}
-          <Card className="bg-gray-800 border-gray-700">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <Coffee className="w-5 h-5 text-amber-500" />
-                <h3 className="font-semibold text-amber-500">Lanche da Tarde</h3>
-              </div>
-              <ul className="space-y-2 text-sm">
-                {plano.refeicoes.lanche.map((item, index) => (
-                  <li key={index} className="flex items-start gap-2">
-                    <span className="text-amber-500 mt-1">•</span>
-                    <span className="text-gray-300">{item}</span>
-                  </li>
-                ))}
-              </ul>
+          <Card className="bg-gradient-to-br from-purple-50 to-pink-50 border-purple-200 text-gray-900 hover:shadow-xl transition-all duration-300 hover:scale-[1.03] hover:-translate-y-1 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-purple-200/30 to-pink-200/30 rounded-full -translate-y-10 translate-x-10"></div>
+            <CardHeader className="pb-4 relative z-10">
+              <CardTitle className="flex items-center gap-3">
+                <div className="p-3 rounded-xl bg-gradient-to-br from-purple-400 to-pink-400 shadow-lg">
+                  <Coffee className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl">🥤</span>
+                    <span className="font-bold text-gray-800">Lanche da Tarde</span>
+                  </div>
+                  <p className="text-xs text-gray-600 mt-1">Energia para a tarde</p>
+                </div>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3 relative z-10">
+              {plano.refeicoes.lanche.map((item, index) => (
+                <div key={index} className="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-purple-100 shadow-sm hover:shadow-md transition-all duration-200 hover:bg-white/90">
+                  <div className="flex items-center gap-3">
+                    <div className="w-2 h-2 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full flex-shrink-0"></div>
+                    <p className="text-gray-800 text-sm font-medium leading-relaxed">{item}</p>
+                  </div>
+                </div>
+              ))}
             </CardContent>
           </Card>
 
           {/* Jantar */}
-          <Card className="bg-gray-800 border-gray-700">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <Utensils className="w-5 h-5 text-amber-500" />
-                <h3 className="font-semibold text-amber-500">Jantar</h3>
-              </div>
-              <ul className="space-y-2 text-sm">
-                {plano.refeicoes.jantar.map((item, index) => (
-                  <li key={index} className="flex items-start gap-2">
-                    <span className="text-amber-500 mt-1">•</span>
-                    <span className="text-gray-300">{item}</span>
-                  </li>
-                ))}
-              </ul>
+          <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200 text-gray-900 hover:shadow-xl transition-all duration-300 hover:scale-[1.03] hover:-translate-y-1 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-blue-200/30 to-indigo-200/30 rounded-full -translate-y-10 translate-x-10"></div>
+            <CardHeader className="pb-4 relative z-10">
+              <CardTitle className="flex items-center gap-3">
+                <div className="p-3 rounded-xl bg-gradient-to-br from-blue-400 to-indigo-400 shadow-lg">
+                  <Utensils className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl">🌙</span>
+                    <span className="font-bold text-gray-800">Jantar</span>
+                  </div>
+                  <p className="text-xs text-gray-600 mt-1">Refeição noturna leve</p>
+                </div>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3 relative z-10">
+              {plano.refeicoes.jantar.map((item, index) => (
+                <div key={index} className="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-blue-100 shadow-sm hover:shadow-md transition-all duration-200 hover:bg-white/90">
+                  <div className="flex items-center gap-3">
+                    <div className="w-2 h-2 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-full flex-shrink-0"></div>
+                    <p className="text-gray-800 text-sm font-medium leading-relaxed">{item}</p>
+                  </div>
+                </div>
+              ))}
             </CardContent>
           </Card>
         </div>
 
-        {/* Cards de informações adicionais */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Seções Informativas */}
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {/* Lista de Substituição */}
-          <Card className="bg-gray-800 border-gray-700">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <Utensils className="w-5 h-5 text-amber-500" />
-                <h3 className="font-semibold text-amber-500">Lista de Substituição de Alimentos</h3>
-              </div>
-              <p className="text-sm text-gray-400 mb-4">
+          <Card className="bg-white dark:bg-white border-gray-200 dark:border-gray-200 text-gray-900">
+            <CardHeader>
+              <CardTitle className="text-yellow-600 flex items-center gap-2">
+                <Utensils className="w-5 h-5" />
+                Lista de Substituição
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3 text-gray-700">
+              <p className="text-sm mb-4">
                 Acesse nossa tabela completa de substituições alimentares
               </p>
-              <Button className="w-full bg-amber-500 hover:bg-amber-600 text-black font-medium">
+              <Button className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 hover:opacity-90 text-white font-medium">
                 Acessar Tabela
                 <ExternalLink className="w-4 h-4 ml-2" />
               </Button>
@@ -472,41 +488,70 @@ export default function Dietas() {
           </Card>
 
           {/* Dicas de Horários */}
-          <Card className="bg-gray-800 border-gray-700">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <Clock className="w-5 h-5 text-amber-500" />
-                <h3 className="font-semibold text-amber-500">Dicas de Horários</h3>
-              </div>
-              <ul className="space-y-2 text-sm">
-                {plano.horarios.map((horario, index) => (
-                  <li key={index} className="flex items-start gap-2">
-                    <span className="text-amber-500 mt-1">•</span>
-                    <span className="text-gray-300">{horario}</span>
-                  </li>
-                ))}
-              </ul>
+          <Card className="bg-white dark:bg-white border-gray-200 dark:border-gray-200 text-gray-900">
+            <CardHeader>
+              <CardTitle className="text-yellow-600 flex items-center gap-2">
+                <Clock className="w-5 h-5" />
+                Horários Recomendados
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3 text-gray-700">
+              {plano.horarios.map((horario, index) => (
+                <div key={index} className="flex items-start gap-2">
+                  <span className="text-orange-500 font-bold">•</span>
+                  <p className="text-sm">{horario}</p>
+                </div>
+              ))}
             </CardContent>
           </Card>
 
           {/* Dicas Importantes */}
-          <Card className="bg-gray-800 border-gray-700">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <Lightbulb className="w-5 h-5 text-amber-500" />
-                <h3 className="font-semibold text-amber-500">Dicas Importantes</h3>
-              </div>
-              <ul className="space-y-2 text-sm">
-                {plano.dicas.map((dica, index) => (
-                  <li key={index} className="flex items-start gap-2">
-                    <span className="text-amber-500 mt-1">•</span>
-                    <span className="text-gray-300">{dica}</span>
-                  </li>
-                ))}
-              </ul>
+          <Card className="bg-white dark:bg-white border-gray-200 dark:border-gray-200 text-gray-900">
+            <CardHeader>
+              <CardTitle className="text-yellow-600 flex items-center gap-2">
+                <Lightbulb className="w-5 h-5" />
+                Dicas Importantes
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3 text-gray-700">
+              {plano.dicas.map((dica, index) => (
+                <div key={index} className="flex items-start gap-2">
+                  <span className="text-orange-500 font-bold">•</span>
+                  <p className="text-sm">{dica}</p>
+                </div>
+              ))}
             </CardContent>
           </Card>
         </div>
+
+        {/* Card Premium Final */}
+        <Card
+          className="bg-amber-500 text-white cursor-pointer hover:bg-amber-600 transition-colors duration-200"
+          onClick={() => window.open('https://wa.me/5511948464441?text=Ol%C3%A1%2C%20vim%20da%20p%C3%A1gina%20de%20dietas%20e%20gostaria%20de%20saber%20mais%20sobre%20o%20acompanhamento%20nutricional%20premium.', '_blank')}
+        >
+          <CardContent className="p-6 text-center space-y-4">
+            <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto">
+              <Award className="w-6 h-6 text-white" />
+            </div>
+
+            <div className="space-y-2">
+              <h3 className="text-xl font-bold text-white">
+                Quer um Plano Ainda Mais Personalizado?
+              </h3>
+              <p className="text-white/90 text-sm">
+                Acompanhamento nutricional individual com ajustes personalizados
+              </p>
+            </div>
+
+            <div className="pt-2">
+              <div className="bg-white/20 hover:bg-white/30 transition-colors duration-200 rounded-lg px-6 py-3 inline-block">
+                <span className="text-white font-semibold">
+                  Conhecer Acompanhamento Nutricional Premium
+                </span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

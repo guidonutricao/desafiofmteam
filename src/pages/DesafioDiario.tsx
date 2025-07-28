@@ -78,7 +78,7 @@ export default function DesafioDiario() {
       key: 'hidratacao' as keyof DesafioDiario,
       icon: Droplets,
       titulo: 'Hidratação',
-      descricao: 'Beba 2 litros de água hoje',
+      descricao: 'Beba 2 litros de água no dia',
       emoji: '💧',
       pontos: 100
     },
@@ -86,23 +86,23 @@ export default function DesafioDiario() {
       key: 'sono_qualidade' as keyof DesafioDiario,
       icon: Moon,
       titulo: 'Sono de Qualidade',
-      descricao: 'Durma pelo menos 7-8 horas',
+      descricao: 'Durma pelo menos 6 horas',
       emoji: '😴',
       pontos: 100
     },
     {
       key: 'evitar_ultraprocessados' as keyof DesafioDiario,
       icon: ShieldX,
-      titulo: 'Evitar Ultraprocessados',
-      descricao: 'Passar o dia todo sem consumir alimentos ultraprocessados (biscoitos, embutidos, salgadinhos etc.)',
+      titulo: 'Evite Ultraprocessados',
+      descricao: 'Passe o dia todo sem consumir alimentos ultraprocessados (biscoitos, embutidos, salgadinhos etc)',
       emoji: '🚫',
       pontos: 150
     },
     {
       key: 'dormir_sem_celular' as keyof DesafioDiario,
       icon: Smartphone,
-      titulo: 'Dormir sem Mexer no Celular',
-      descricao: 'Evitar celular por pelo menos 1h antes de dormir',
+      titulo: 'Dormir sem Celular',
+      descricao: 'Evitar celular por pelo menos 1 hora antes de dormir',
       emoji: '📵',
       pontos: 150
     },
@@ -110,15 +110,15 @@ export default function DesafioDiario() {
       key: 'atividade_fisica' as keyof DesafioDiario,
       icon: Dumbbell,
       titulo: 'Atividade Física',
-      descricao: 'Pratique pelo menos 30min de exercício',
+      descricao: 'Pratique pelo menos 30 minutos de exercício no dia',
       emoji: '🏋️‍♀️',
       pontos: 200
     },
     {
       key: 'seguiu_dieta' as keyof DesafioDiario,
       icon: UtensilsCrossed,
-      titulo: 'Seguir a Dieta',
-      descricao: 'Siga seu plano alimentar',
+      titulo: 'Siga a Dieta',
+      descricao: 'Siga seu plano alimentar corretamente no dia (sem comer a mais nem a menos)',
       emoji: '🥗',
       pontos: 200
     },
@@ -126,14 +126,14 @@ export default function DesafioDiario() {
       key: 'registro_visual' as keyof DesafioDiario,
       icon: Camera,
       titulo: 'Registro Visual',
-      descricao: 'Tire uma foto do seu progresso',
+      descricao: 'Tire uma foto de alguma refeição ou do treino e marque nos Stories do Instagram @fabriciomourateam',
       emoji: '📸',
       pontos: 250
     },
     {
       key: 'organizar_refeicoes' as keyof DesafioDiario,
       icon: CalendarCheck,
-      titulo: 'Organizar as Refeições do Dia Seguinte',
+      titulo: 'Organize suas refeições do dia seguinte',
       descricao: 'Planejar ou separar o que vai comer no dia seguinte (pode incluir marmitas, lanches, frutas etc.)',
       emoji: '📋',
       pontos: 250
@@ -693,8 +693,8 @@ export default function DesafioDiario() {
             >
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-3">
-                  <div className={`p-2 rounded-lg ${concluida ? 'bg-yellow-500/20' : 'bg-gray-100'}`}>
-                    <IconComponent className={`w-5 h-5 ${concluida ? 'text-yellow-400' : 'text-gray-600'}`} />
+                  <div className={`p-2 rounded-lg ${concluida ? 'bg-white/30' : 'bg-gray-100'}`}>
+                    <IconComponent className={`w-5 h-5 ${concluida ? 'text-white' : 'text-gray-600'}`} />
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
@@ -758,10 +758,10 @@ export default function DesafioDiario() {
 
             <div className="space-y-2">
               <h3 className="text-xl font-bold text-white">
-                Quer Resultados Ainda Melhores?
+                Quer Resultados ainda melhores?
               </h3>
               <p className="text-white/90 text-sm">
-                Acompanhamento individual personalizado para participantes do desafio
+                Acompanhamento individual personalizado com Bônus para os participantes do desafio!
               </p>
             </div>
 

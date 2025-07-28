@@ -252,7 +252,7 @@ export default function Perfil() {
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen bg-zinc-900 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#0B111F' }}>
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
           <p className="text-zinc-400">Carregando perfil...</p>
@@ -264,7 +264,7 @@ export default function Perfil() {
   // Error state with retry option
   if (error && !profile.nome) {
     return (
-      <div className="min-h-screen bg-zinc-900 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#0B111F' }}>
         <div className="flex flex-col items-center gap-4 max-w-md text-center">
           <AlertCircle className="w-12 h-12 text-red-500" />
           <h2 className="text-xl font-semibold text-zinc-100">
@@ -284,39 +284,44 @@ export default function Perfil() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-900 py-8 px-4">
-      {/* Page Header */}
-      <header className="max-w-4xl mx-auto mb-8">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold text-zinc-100 mb-2">Meu Perfil</h1>
-          <p className="text-zinc-400">
-            Gerencie suas informações pessoais e configurações de conta
+    <div className="min-h-screen py-6 px-4" style={{ backgroundColor: '#0B111F' }}>
+      <div className="space-y-6">
+        {/* Header Premium com Título Dourado */}
+        <div className="text-center space-y-4">
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full font-bold">
+            <User className="w-5 h-5" />
+            Meu Perfil Premium
+          </div>
+          <p className="text-gray-300 max-w-2xl mx-auto">
+            Gerencie suas informações pessoais e configurações de conta com acesso premium
           </p>
         </div>
-      </header>
 
-      {/* Main Content */}
-      <main className="max-w-4xl mx-auto space-y-6">
-        {/* Profile Photo Section */}
-        <Card className="bg-zinc-800 border-zinc-700">
-          <CardHeader>
-            <CardTitle className="text-zinc-100 text-center">Foto de Perfil</CardTitle>
-          </CardHeader>
-          <CardContent className="flex flex-col items-center gap-4">
-            <Avatar className="h-32 w-32 border-4 border-amber-500/20">
-              <AvatarImage src={profile.foto_url} alt="Foto de perfil" />
-              <AvatarFallback className="bg-zinc-700 text-zinc-100 text-2xl">
-                <User className="w-12 h-12" />
-              </AvatarFallback>
-            </Avatar>
+        {/* Profile Photo Section Premium */}
+        <Card className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white hover:shadow-lg transition-all duration-300">
+          <CardContent className="p-8 text-center space-y-6">
+            <div className="flex flex-col items-center gap-4">
+              <Avatar className="h-32 w-32 border-4 border-white/30 shadow-2xl">
+                <AvatarImage src={profile.foto_url} alt="Foto de perfil" />
+                <AvatarFallback className="bg-white/20 text-white text-2xl">
+                  <User className="w-12 h-12" />
+                </AvatarFallback>
+              </Avatar>
 
-            <div className="flex gap-2">
+              <div className="space-y-2">
+                <h2 className="text-2xl font-bold text-white">
+                  {profile.nome || 'Usuário Premium'}
+                </h2>
+                <p className="text-white/90">
+                  Membro Shape Express Premium
+                </p>
+              </div>
+
               <Button
                 variant="outline"
-                size="sm"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={uploadingPhoto}
-                className="border-amber-500 text-amber-500 hover:bg-amber-500 hover:text-zinc-900 transition-colors"
+                className="border-white/30 text-white hover:bg-white/20 hover:text-white transition-colors bg-white/10"
               >
                 {uploadingPhoto ? (
                   <>
@@ -330,46 +335,51 @@ export default function Perfil() {
                   </>
                 )}
               </Button>
-            </div>
 
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              onChange={handlePhotoUpload}
-              className="hidden"
-            />
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handlePhotoUpload}
+                className="hidden"
+              />
+            </div>
           </CardContent>
         </Card>
 
         {/* Two-column layout for larger screens */}
-        <div className="grid gap-6 lg:grid-cols-2">
+        <div className="grid gap-4 md:grid-cols-2">
           {/* Personal Data Section */}
-          <Card className="bg-zinc-800 border-zinc-700">
+          <Card className="bg-white dark:bg-white border-gray-200 dark:border-gray-200 text-gray-900 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-zinc-100">
-                <User className="w-5 h-5 text-amber-500" />
-                Dados Pessoais
+              <CardTitle className="flex items-center gap-2 text-yellow-600">
+                <div className="p-2 rounded-lg bg-yellow-100">
+                  <User className="w-5 h-5 text-yellow-600" />
+                </div>
+                <div>
+                  <span className="text-lg">👤</span>
+                  <span className="font-semibold ml-2">Dados Pessoais</span>
+                </div>
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               {/* Name Field */}
               <div className="space-y-2">
-                <Label htmlFor="nome" className="text-zinc-200">Nome Completo</Label>
+                <Label htmlFor="nome" className="text-gray-700 font-medium">Nome Completo</Label>
                 {editingName ? (
                   <div className="flex gap-2">
                     <Input
                       id="nome"
                       value={tempName}
                       onChange={(e) => setTempName(e.target.value)}
-                      className="bg-zinc-700 border-zinc-600 text-zinc-100"
+                      className="bg-gray-50 border-gray-200 text-gray-900"
                       placeholder="Digite seu nome"
                     />
                     <Button
                       size="sm"
                       onClick={handleSaveName}
                       disabled={saving || !tempName.trim()}
-                      className="bg-amber-500 hover:bg-amber-600 text-zinc-900"
+                      className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:opacity-90 text-white"
                     >
                       {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                     </Button>
@@ -377,75 +387,76 @@ export default function Perfil() {
                       size="sm"
                       variant="outline"
                       onClick={handleCancelName}
-                      className="border-zinc-500 text-zinc-300 hover:bg-zinc-700 hover:text-zinc-100 transition-colors"
+                      className="border-gray-300 text-gray-600 hover:bg-gray-50"
                     >
                       Cancelar
                     </Button>
                   </div>
                 ) : (
-                  <div className="flex items-center justify-between">
-                    <span className="text-zinc-100">{profile.nome || 'Não informado'}</span>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => setEditingName(true)}
-                      className="border-amber-500 text-amber-500 hover:bg-amber-500 hover:text-zinc-900 transition-colors"
-                    >
-                      Editar
-                    </Button>
+                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-900">{profile.nome || 'Não informado'}</span>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => setEditingName(true)}
+                        className="border-yellow-400 text-yellow-600 hover:bg-yellow-50"
+                      >
+                        Editar
+                      </Button>
+                    </div>
                   </div>
                 )}
               </div>
 
               {/* Email Field (Read-only) */}
               <div className="space-y-2">
-                <Label className="text-zinc-200">Email</Label>
-                <Input
-                  value={user?.email || ''}
-                  disabled
-                  className="bg-zinc-700 border-zinc-600 text-zinc-300 cursor-not-allowed"
-                />
-                <p className="text-xs text-zinc-400">
-                  O email não pode ser alterado por questões de segurança
-                </p>
+                <Label className="text-gray-700 font-medium">Email</Label>
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
+                  <span className="text-gray-600">{user?.email || ''}</span>
+                  <p className="text-xs text-gray-500 mt-1">
+                    O email não pode ser alterado por questões de segurança
+                  </p>
+                </div>
               </div>
 
               {/* Peso Inicial Field (Read-only) */}
               <div className="space-y-2">
-                <Label className="text-zinc-200">Peso Inicial</Label>
-                <Input
-                  value={formatWeight(profile.peso_inicial)}
-                  disabled
-                  className="bg-zinc-700 border-zinc-600 text-zinc-300 cursor-not-allowed"
-                />
-                <p className="text-xs text-zinc-400">
-                  Peso registrado no momento do cadastro
-                </p>
+                <Label className="text-gray-700 font-medium">Peso Inicial</Label>
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
+                  <span className="text-gray-900 font-medium">{formatWeight(profile.peso_inicial)}</span>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Peso registrado no momento do cadastro
+                  </p>
+                </div>
               </div>
-
-
             </CardContent>
           </Card>
 
           {/* Password Section */}
-          <Card className="bg-zinc-800 border-zinc-700">
+          <Card className="bg-white dark:bg-white border-gray-200 dark:border-gray-200 text-gray-900 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-zinc-100">
-                <Save className="w-5 h-5 text-amber-500" />
-                Alterar Senha
+              <CardTitle className="flex items-center gap-2 text-yellow-600">
+                <div className="p-2 rounded-lg bg-yellow-100">
+                  <Save className="w-5 h-5 text-yellow-600" />
+                </div>
+                <div>
+                  <span className="text-lg">🔒</span>
+                  <span className="font-semibold ml-2">Alterar Senha</span>
+                </div>
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               {/* New Password */}
               <div className="space-y-2">
-                <Label htmlFor="newPassword" className="text-zinc-200">Nova Senha</Label>
+                <Label htmlFor="newPassword" className="text-gray-700 font-medium">Nova Senha</Label>
                 <div className="relative">
                   <Input
                     id="newPassword"
                     type={showPassword ? 'text' : 'password'}
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
-                    className="bg-zinc-700 border-zinc-600 text-zinc-100 pr-10"
+                    className="bg-gray-50 border-gray-200 text-gray-900 pr-10"
                     placeholder="Digite sua nova senha"
                   />
                   <Button
@@ -456,9 +467,9 @@ export default function Perfil() {
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? (
-                      <EyeOff className="h-4 w-4 text-zinc-400" />
+                      <EyeOff className="h-4 w-4 text-gray-400" />
                     ) : (
-                      <Eye className="h-4 w-4 text-zinc-400" />
+                      <Eye className="h-4 w-4 text-gray-400" />
                     )}
                   </Button>
                 </div>
@@ -466,14 +477,14 @@ export default function Perfil() {
 
               {/* Confirm Password */}
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword" className="text-zinc-200">Confirmar Nova Senha</Label>
+                <Label htmlFor="confirmPassword" className="text-gray-700 font-medium">Confirmar Nova Senha</Label>
                 <div className="relative">
                   <Input
                     id="confirmPassword"
                     type={showConfirmPassword ? 'text' : 'password'}
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="bg-zinc-700 border-zinc-600 text-zinc-100 pr-10"
+                    className="bg-gray-50 border-gray-200 text-gray-900 pr-10"
                     placeholder="Confirme sua nova senha"
                   />
                   <Button
@@ -484,9 +495,9 @@ export default function Perfil() {
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   >
                     {showConfirmPassword ? (
-                      <EyeOff className="h-4 w-4 text-zinc-400" />
+                      <EyeOff className="h-4 w-4 text-gray-400" />
                     ) : (
-                      <Eye className="h-4 w-4 text-zinc-400" />
+                      <Eye className="h-4 w-4 text-gray-400" />
                     )}
                   </Button>
                 </div>
@@ -494,17 +505,17 @@ export default function Perfil() {
 
               {/* Password validation feedback */}
               {newPassword && newPassword.length < 6 && (
-                <p className="text-red-400 text-sm">A senha deve ter pelo menos 6 caracteres</p>
+                <p className="text-red-500 text-sm">A senha deve ter pelo menos 6 caracteres</p>
               )}
               {newPassword && confirmPassword && newPassword !== confirmPassword && (
-                <p className="text-red-400 text-sm">As senhas não coincidem</p>
+                <p className="text-red-500 text-sm">As senhas não coincidem</p>
               )}
 
               {/* Update Password Button */}
               <Button
                 onClick={handlePasswordUpdate}
                 disabled={updatingPassword || !newPassword || !confirmPassword || newPassword !== confirmPassword || newPassword.length < 6}
-                className="w-full bg-amber-500 hover:bg-amber-600 text-zinc-900"
+                className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 hover:opacity-90 text-white"
               >
                 {updatingPassword ? (
                   <>
@@ -521,7 +532,7 @@ export default function Perfil() {
             </CardContent>
           </Card>
         </div>
-      </main>
+      </div>
     </div>
   );
 }
