@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Toggle } from '@/components/ui/toggle';
 import { Coffee, Utensils, Clock, Lightbulb, ExternalLink, Trophy, Award, Star, Crown, Apple } from 'lucide-react';
 
 interface PlanoDetalhes {
@@ -19,7 +20,301 @@ interface PlanoDetalhes {
   dicas: string[];
 }
 
-const planosDetalhados: Record<string, PlanoDetalhes> = {
+const planosDetalhadosMasculino: Record<string, PlanoDetalhes> = {
+  '60kg': {
+    nome: 'Plano até 60kg',
+    descricao: 'Plano nutricional equilibrado para manutenção de peso',
+    faixaPeso: 'Ideal para: até 60kg',
+    refeicoes: {
+      refeicao01: [
+        '2 fatias de pão integral',
+        '1 ovo mexido + 1 clara',
+        '1 xícara de café com leite desnatado',
+        '1 fruta + 1 colher de mel',
+        '1 fatia de queijo branco'
+      ],
+      refeicao02: [
+        '1 iogurte grego',
+        '1 colher de granola',
+        '8 castanhas'
+      ],
+      refeicao03: [
+        '150g de peito de frango grelhado',
+        '2 xícaras de arroz integral',
+        '2/3 xícara de feijão',
+        'Salada verde à vontade',
+        '1 colher de azeite'
+      ],
+      refeicao04: [
+        '1 fruta média',
+        '1 iogurte natural'
+      ],
+      refeicao05: [
+        '120g de peixe ou carne vermelha magra',
+        'Legumes refogados',
+        '1 batata doce pequena',
+        'Salada de folhas verdes'
+      ]
+    },
+    horarios: [
+      'Refeição 01: 7h – 9h',
+      'Refeição 02: 10h – 11h',
+      'Refeição 03: 12h – 14h',
+      'Refeição 04: 15h – 17h',
+      'Refeição 05: 19h – 21h'
+    ],
+    dicas: [
+      'Beba 2-3 litros de água por dia',
+      'Evite frituras e doces',
+      'Não pule refeições',
+      'Respeite os intervalos entre refeições'
+    ]
+  },
+  '70kg': {
+    nome: 'Plano 60-70kg',
+    descricao: 'Plano nutricional balanceado para energia sustentada',
+    faixaPeso: 'Ideal para: 60kg - 70kg',
+    refeicoes: {
+      refeicao01: [
+        '1 Pão francês sem miolo (40g)',
+        'Ovo inteiro - 2 unidades (100g)',
+        'Mamão Papaia - 0.5 unidade média (155g)',
+        'Café sem açúcar ou com adoçante - À vontade'
+      ],
+      refeicao02: [
+        'Aveia - 15g',
+        'Banana - 1 unidade média (70g)'
+      ],
+      refeicao03: [
+        'Arroz branco ou integral cozido - 75g',
+        'Feijão cozido - 50g',
+        'Peito de frango cozido, assado ou grelhado - 100g',
+        'Legumes crus ou cozidos (cenoura, beterraba, couve flor, brócolis, etc) - À vontade',
+        'Salada de folhas, tomate e cebola (sem azeite) - À vontade'
+      ],
+      refeicao04: [
+        'Iogurte desnatado, zero ou light - 1 unidade (170ml)',
+        'Aveia - 20g',
+        'Banana - 1 unidade média (70g)'
+      ],
+      refeicao05: [
+        'Peito de frango cozido, assado ou grelhado - 100g',
+        'Legumes crus ou cozidos (cenoura, beterraba, couve flor, brócolis, etc) - 150g',
+        'Salada de folhas, tomate e cebola (sem azeite) - À vontade'
+      ]
+    },
+    horarios: [
+      'Refeição 01: 7h – 9h',
+      'Refeição 02: 10h – 11h',
+      'Refeição 03: 12h – 14h',
+      'Refeição 04: 15h – 17h',
+      'Refeição 05: 19h – 21h'
+    ],
+    dicas: [
+      'Beba 2-3 litros de água por dia',
+      'Evite frituras e doces',
+      'Não pule refeições',
+      'Respeite os intervalos entre refeições'
+    ]
+  },
+  '80kg': {
+    nome: 'Plano 70-80kg',
+    descricao: 'Plano nutricional robusto para maior demanda energética',
+    faixaPeso: 'Ideal para: 70kg - 80kg',
+    refeicoes: {
+      refeicao01: [
+        '1 Pão francês sem miolo (40g)',
+        'Ovo inteiro - 2 unidades (100g)',
+        'Mamão Papaia - 0.5 unidade média (155g)',
+        'Café sem açúcar ou com adoçante - À vontade'
+      ],
+      refeicao02: [
+        'Aveia - 25g',
+        'Banana - 1 unidade média (70g)'
+      ],
+      refeicao03: [
+        'Arroz branco ou integral cozido - 100g',
+        'Feijão cozido - 80g',
+        'Peito de frango cozido, assado ou grelhado - 100g',
+        'Legumes crus ou cozidos (cenoura, beterraba, couve flor, brócolis, etc) - À vontade',
+        'Salada de folhas, tomate e cebola (sem azeite) - À vontade'
+      ],
+      refeicao04: [
+        'Iogurte desnatado, zero ou light - 1 unidade (170ml)',
+        'Granola Zero ou Light - 30g',
+        'Banana - 1 unidade média (70g)'
+      ],
+      refeicao05: [
+        'Arroz branco ou integral cozido - 100g',
+        'Peito de frango cozido, assado ou grelhado - 100g',
+        'Legumes crus ou cozidos (cenoura, beterraba, couve flor, brócolis, etc) - 100g',
+        'Salada de folhas, tomate e cebola (sem azeite) - À vontade'
+      ]
+    },
+    horarios: [
+      'Refeição 01: 7h – 9h',
+      'Refeição 02: 10h – 11h',
+      'Refeição 03: 12h – 14h',
+      'Refeição 04: 15h – 17h',
+      'Refeição 05: 19h – 21h'
+    ],
+    dicas: [
+      'Beba 2-3 litros de água por dia',
+      'Evite frituras e doces',
+      'Mantenha bem os alimentos',
+      'Respeite os intervalos entre refeições'
+    ]
+  },
+  '80kg-veg': {
+    nome: 'Plano 70-80kg (Vegetariano)',
+    descricao: 'Plano nutricional vegetariano completo e balanceado',
+    faixaPeso: 'Ideal para: 70kg - 80kg',
+    refeicoes: {
+      refeicao01: [
+        '3 fatias de pão integral',
+        '2 ovos mexidos + 2 claras',
+        '1 xícara de café com leite de aveia',
+        '1 fruta + 1 colher de mel',
+        '1 fatia de queijo vegano'
+      ],
+      refeicao02: [
+        '1 iogurte de coco',
+        '2 colheres de granola',
+        '10 castanhas'
+      ],
+      refeicao03: [
+        '200g de tofu grelhado ou leguminosas',
+        '2 xícaras de arroz integral',
+        '3/4 xícara de feijão',
+        'Salada verde à vontade',
+        '1 colher de azeite'
+      ],
+      refeicao04: [
+        '1 fruta média',
+        '1 iogurte de coco'
+      ],
+      refeicao05: [
+        '150g de proteína vegetal',
+        'Legumes refogados',
+        '1 batata doce grande',
+        'Salada de folhas verdes'
+      ]
+    },
+    horarios: [
+      'Refeição 01: 7h – 9h',
+      'Refeição 02: 10h – 11h',
+      'Refeição 03: 12h – 14h',
+      'Refeição 04: 15h – 17h',
+      'Refeição 05: 19h – 21h'
+    ],
+    dicas: [
+      'Beba 2-3 litros de água por dia',
+      'Evite frituras e doces',
+      'Não pule refeições',
+      'Respeite os intervalos entre refeições'
+    ]
+  },
+  '90kg': {
+    nome: 'Plano 80-90kg',
+    descricao: 'Plano nutricional intensivo para alta demanda energética',
+    faixaPeso: 'Ideal para: 80kg - 90kg',
+    refeicoes: {
+      refeicao01: [
+        '1 Pão francês sem miolo (40g)',
+        'Ovo inteiro - 3 unidades (150g)',
+        'Mamão Papaia - 0.5 unidade média (155g)',
+        'Café sem açúcar ou com adoçante - À vontade'
+      ],
+      refeicao02: [
+        'Aveia - 25g',
+        'Banana - 1 unidade média (70g)'
+      ],
+      refeicao03: [
+        'Arroz branco ou integral cozido - 100g',
+        'Feijão cozido - 80g',
+        'Peito de frango cozido, assado ou grelhado - 125g',
+        'Legumes crus ou cozidos (cenoura, beterraba, couve flor, brócolis, etc) - À vontade',
+        'Salada de folhas, tomate e cebola (sem azeite) - À vontade'
+      ],
+      refeicao04: [
+        'Iogurte desnatado, zero ou light - 1 unidade (170ml)',
+        'Granola Zero ou Light - 40g',
+        'Banana - 1 unidade média (70g)'
+      ],
+      refeicao05: [
+        'Arroz branco ou integral cozido - 100g',
+        'Peito de frango cozido, assado ou grelhado - 125g',
+        'Legumes crus ou cozidos (cenoura, beterraba, couve flor, brócolis, etc) - 100g',
+        'Salada de folhas, tomate e cebola (sem azeite) - À vontade'
+      ]
+    },
+    horarios: [
+      'Refeição 01: 7h – 9h',
+      'Refeição 02: 10h – 11h',
+      'Refeição 03: 12h – 14h',
+      'Refeição 04: 15h – 17h',
+      'Refeição 05: 19h – 21h'
+    ],
+    dicas: [
+      'Beba 3-4 litros de água por dia',
+      'Evite frituras e doces',
+      'Não pule refeições',
+      'Respeite os intervalos entre refeições'
+    ]
+  },
+  '90kg+': {
+    nome: 'Plano 90kg ou mais',
+    descricao: 'Plano nutricional completo para máxima performance',
+    faixaPeso: 'Ideal para: 90kg ou mais',
+    refeicoes: {
+      refeicao01: [
+        '1 Pão francês sem miolo (40g)',
+        'Ovo inteiro - 3 unidades (150g)',
+        'Mamão Papaia - 0.5 unidade média (155g)',
+        'Café sem açúcar ou com adoçante - À vontade'
+      ],
+      refeicao02: [
+        'Aveia - 30g',
+        'Mel de abelha - 10g',
+        'Banana - 1 unidade média (70g)'
+      ],
+      refeicao03: [
+        'Arroz branco ou integral cozido - 125g',
+        'Feijão cozido - 80g',
+        'Peito de frango cozido, assado ou grelhado - 125g',
+        'Legumes crus ou cozidos (cenoura, beterraba, couve flor, brócolis, etc) - À vontade',
+        'Salada de folhas, tomate e cebola (sem azeite) - À vontade'
+      ],
+      refeicao04: [
+        'Iogurte desnatado, zero ou light - 1 unidade (170ml)',
+        'Granola Zero ou Light - 40g',
+        'Banana - 2 unidades médias (140g)'
+      ],
+      refeicao05: [
+        'Arroz branco ou integral cozido - 125g',
+        'Peito de frango cozido, assado ou grelhado - 150g',
+        'Legumes crus ou cozidos (cenoura, beterraba, couve flor, brócolis, etc) - 150g',
+        'Salada de folhas, tomate e cebola (sem azeite) - À vontade'
+      ]
+    },
+    horarios: [
+      'Refeição 01: 7h – 9h',
+      'Refeição 02: 10h – 11h',
+      'Refeição 03: 12h – 14h',
+      'Refeição 04: 15h – 17h',
+      'Refeição 05: 19h – 21h'
+    ],
+    dicas: [
+      'Beba 3-4 litros de água por dia',
+      'Evite frituras e doces',
+      'Não pule refeições',
+      'Respeite os intervalos entre refeições'
+    ]
+  }
+};
+
+// Duplicando os planos para versão feminina (mesmo conteúdo por enquanto)
+const planosDetalhadosFeminino: Record<string, PlanoDetalhes> = {
   '60kg': {
     nome: 'Plano até 60kg',
     descricao: 'Plano nutricional equilibrado para manutenção de peso',
@@ -314,14 +609,44 @@ const planosDetalhados: Record<string, PlanoDetalhes> = {
 
 export default function Dietas() {
   const [planoSelecionado, setPlanoSelecionado] = useState('80kg');
+  const [generoSelecionado, setGeneroSelecionado] = useState<'masculino' | 'feminino'>('masculino');
 
+  const planosDetalhados = generoSelecionado === 'masculino' ? planosDetalhadosMasculino : planosDetalhadosFeminino;
   const plano = planosDetalhados[planoSelecionado];
 
   return (
     <div className="min-h-screen text-white p-6 pb-6 lg:pb-6" style={{ backgroundColor: '#0B111F' }}>
       <div className="space-y-6">
-        {/* Header com título centralizado */}
-        <div className="text-center space-y-4">
+        {/* Header com título centralizado e toggle de gênero */}
+        <div className="text-center space-y-4 relative">
+          {/* Toggle de Gênero - Responsivo */}
+          <div className="absolute top-0 right-0 sm:right-0 max-sm:relative max-sm:flex max-sm:justify-center max-sm:mb-4">
+            <div className="flex items-center bg-white/10 backdrop-blur-sm rounded-full p-1 gap-1 max-sm:scale-90">
+              <Toggle
+                pressed={generoSelecionado === 'masculino'}
+                onPressedChange={() => setGeneroSelecionado('masculino')}
+                className={`px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 whitespace-nowrap ${
+                  generoSelecionado === 'masculino'
+                    ? 'bg-gradient-to-r from-blue-400 to-blue-500 text-white shadow-sm'
+                    : 'text-gray-300 hover:text-white hover:bg-white/10'
+                }`}
+              >
+                👨 Masculino
+              </Toggle>
+              <Toggle
+                pressed={generoSelecionado === 'feminino'}
+                onPressedChange={() => setGeneroSelecionado('feminino')}
+                className={`px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 whitespace-nowrap ${
+                  generoSelecionado === 'feminino'
+                    ? 'bg-gradient-to-r from-pink-400 to-pink-500 text-white shadow-sm'
+                    : 'text-gray-300 hover:text-white hover:bg-white/10'
+                }`}
+              >
+                👩 Feminino
+              </Toggle>
+            </div>
+          </div>
+
           <div className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full font-bold">
             <Trophy className="w-5 h-5" />
             Planos Alimentares Shape Express
