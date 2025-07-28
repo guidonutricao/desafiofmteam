@@ -298,22 +298,33 @@ export default function Ranking() {
   };
 
   const getStatusText = (usuario: RankingUser) => {
-    // Prioridade 1: Se tem data de início, mostrar ela
-    if (usuario.challengeStartDate) {
-      return `Iniciado em ${usuario.challengeStartDate.toLocaleDateString('pt-BR')}`;
-    }
-    
-    // Prioridade 2: Se está concluído
+    // Prioridade 1: Se está concluído
     if (usuario.challengeProgress.isCompleted) {
       return 'Concluído';
     }
     
-    // Prioridade 3: Se tem pontos mas não tem data (inconsistência de dados)
+    // Prioridade 2: Se tem data de início mas ainda não pode completar tarefas
+    if (usuario.challengeStartDate && usuario.challengeProgress.isNotStarted) {
+      const today = new Date();
+      const startDate = new Date(usuario.challengeStartDate);
+      const isSameDay = today.toDateString() === startDate.toDateString();
+      
+      if (isSameDay) {
+        return 'Inicia amanhã';
+      }
+    }
+    
+    // Prioridade 3: Se tem data de início e está participando
+    if (usuario.challengeStartDate && !usuario.challengeProgress.isNotStarted) {
+      return `Dia ${usuario.challengeProgress.currentDay}/7`;
+    }
+    
+    // Prioridade 4: Se tem pontos mas não tem data (inconsistência de dados)
     if (usuario.totalPoints > 0) {
       return 'Participando';
     }
     
-    // Prioridade 4: Realmente não iniciou
+    // Prioridade 5: Realmente não iniciou
     return 'Não iniciado';
   };
 
@@ -328,7 +339,7 @@ export default function Ranking() {
                      errorMessage.includes('horário') ? 'timezone' : 'general';
 
     return (
-      <div className="space-y-6">
+      <div className="space-y-6 pb-6 lg:pb-0">
         <div className="text-center space-y-4">
           <div className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full font-bold">
             <Trophy className="w-5 h-5" />
@@ -355,7 +366,7 @@ export default function Ranking() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-6 lg:pb-0">
       {/* Header */}
       <div className="text-center space-y-4">
         <div className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full font-bold">

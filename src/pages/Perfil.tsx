@@ -252,7 +252,7 @@ export default function Perfil() {
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#0B111F' }}>
+      <div className="min-h-screen flex items-center justify-center pb-24 lg:pb-0" style={{ backgroundColor: '#0B111F' }}>
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
           <p className="text-zinc-400">Carregando perfil...</p>
@@ -264,7 +264,7 @@ export default function Perfil() {
   // Error state with retry option
   if (error && !profile.nome) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#0B111F' }}>
+      <div className="min-h-screen flex items-center justify-center pb-24 lg:pb-0" style={{ backgroundColor: '#0B111F' }}>
         <div className="flex flex-col items-center gap-4 max-w-md text-center">
           <AlertCircle className="w-12 h-12 text-red-500" />
           <h2 className="text-xl font-semibold text-zinc-100">
@@ -284,7 +284,7 @@ export default function Perfil() {
   }
 
   return (
-    <div className="min-h-screen py-6 px-4" style={{ backgroundColor: '#0B111F' }}>
+    <div className="min-h-screen py-6 px-4 pb-24 lg:pb-6" style={{ backgroundColor: '#0B111F' }}>
       <div className="space-y-6">
         {/* Header Premium com Título Dourado */}
         <div className="text-center space-y-4">

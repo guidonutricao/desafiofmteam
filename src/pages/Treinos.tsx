@@ -375,7 +375,7 @@ export default function Treinos() {
 
 
   return (
-    <div className="min-h-screen text-white p-6" style={{ backgroundColor: '#0B111F' }}>
+    <div className="min-h-screen text-white p-6 pb-6 lg:pb-6" style={{ backgroundColor: '#0B111F' }}>
       {/* Header Premium com Título Dourado */}
       <div className="text-center space-y-4 mb-8">
         <div className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full font-bold">

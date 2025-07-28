@@ -151,12 +151,12 @@ export default function Layout({ children }: LayoutProps) {
       </header>
 
       {/* Conteúdo principal */}
-      <main className="flex-1 lg:ml-80 px-4 py-6">
+      <main className="flex-1 lg:ml-80 px-4 py-6 pb-24 lg:pb-6">
         {children}
       </main>
 
       {/* Bottom Navigation - Mobile */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-gray-800 border-t border-gray-700 px-4 py-2 safe-area-pb">
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-gray-800 border-t border-gray-700 px-4 py-2 safe-area-pb z-50">
         <div className="flex items-center justify-around">
           {navigationItems.map((item, index) => (
             <NavLink
@@ -185,9 +185,6 @@ export default function Layout({ children }: LayoutProps) {
           ))}
         </div>
       </nav>
-
-      {/* Espaçamento para mobile com bottom navigation */}
-      <div className="lg:hidden h-20"></div>
 
       {/* Estilos adicionais */}
       <style>{`

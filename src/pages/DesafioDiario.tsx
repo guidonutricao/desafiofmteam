@@ -5,6 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { useChallengeProgress } from '@/hooks/useChallengeProgress';
+import { useChallengeStatus } from '@/hooks/useChallengeStatus';
+import { ChallengeStartDialog } from '@/components/ChallengeStartDialog';
 import { ChallengeErrorDisplay, TimezoneErrorDisplay, ChallengeLoadingDisplay } from '@/components/ChallengeErrorDisplay';
 import {
   Droplets,
@@ -68,10 +70,13 @@ export default function DesafioDiario() {
   const [pontuacaoTotal, setPontuacaoTotal] = useState(0);
   const [diasConsecutivos, setDiasConsecutivos] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [challengeStartDate, setChallengeStartDate] = useState<Date | null>(null);
+  const [showStartDialog, setShowStartDialog] = useState(false);
 
-  // Use the challenge progress hook
-  const challengeProgress = useChallengeProgress(challengeStartDate);
+  // Use the new challenge status hook
+  const challengeStatus = useChallengeStatus();
+  
+  // Use the challenge progress hook with the start date from status
+  const challengeProgress = useChallengeProgress(challengeStatus.challengeStartDate);
 
   const tarefas = [
     {
@@ -144,13 +149,13 @@ export default function DesafioDiario() {
     carregarDados();
   }, [user]);
 
-  // Re-calculate challenge progress when challengeStartDate changes
+  // Re-calculate challenge progress when challenge status changes
   useEffect(() => {
-    if (challengeStartDate) {
-      console.log('Challenge start date updated:', challengeStartDate);
+    if (challengeStatus.challengeStartDate) {
+      console.log('Challenge start date updated:', challengeStatus.challengeStartDate);
       console.log('Challenge progress:', challengeProgress);
     }
-  }, [challengeStartDate, challengeProgress]);
+  }, [challengeStatus.challengeStartDate, challengeProgress]);
 
   const carregarDados = async () => {
     if (!user) return;
@@ -167,24 +172,13 @@ export default function DesafioDiario() {
 
       if (pontuacaoError && pontuacaoError.code !== 'PGRST116') {
         console.error('Error loading points data:', pontuacaoError);
-        setChallengeStartDate(null);
         setPontuacaoTotal(0);
         setDiasConsecutivos(0);
       } else if (pontuacaoData) {
         // Update pontuacao state
         setPontuacaoTotal(pontuacaoData.pontuacao_total || 0);
         setDiasConsecutivos(pontuacaoData.dias_consecutivos || 0);
-
-        // Determine if challenge has been started based on participation
-        if (pontuacaoData.ultima_data_participacao || pontuacaoData.pontuacao_total > 0) {
-          // If user has participated or has points, consider challenge as started
-          // Use created_at as the challenge start date
-          setChallengeStartDate(new Date(pontuacaoData.created_at));
-        } else {
-          setChallengeStartDate(null);
-        }
       } else {
-        setChallengeStartDate(null);
         setPontuacaoTotal(0);
         setDiasConsecutivos(0);
       }
@@ -252,6 +246,12 @@ export default function DesafioDiario() {
 
   const marcarTarefa = async (tarefa: keyof DesafioDiario) => {
     if (!user || typeof desafio[tarefa] !== 'boolean') return;
+
+    // Check if user can complete tasks
+    if (!challengeStatus.canCompleteTasks) {
+      setShowStartDialog(true);
+      return;
+    }
 
     const novoStatus = !desafio[tarefa];
     const tarefaInfo = tarefas.find(t => t.key === tarefa);
@@ -338,6 +338,16 @@ export default function DesafioDiario() {
 
     } catch (error) {
       console.error('Erro ao salvar tarefa:', error);
+      
+      // Check if error is related to challenge not started
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      if (errorMessage.includes('CHALLENGE_NOT_STARTED')) {
+        setShowStartDialog(true);
+        // Reverter estado
+        setDesafio(prev => ({ ...prev, [tarefa]: !novoStatus }));
+        return;
+      }
+      
       // Reverter estado em caso de erro
       setDesafio(prev => ({ ...prev, [tarefa]: !novoStatus }));
       toast({
@@ -348,14 +358,15 @@ export default function DesafioDiario() {
     }
   };
 
-  if (loading) {
+  if (loading || challengeStatus.loading) {
     return <ChallengeLoadingDisplay message="Carregando dados do desafio..." />;
   }
 
   // Handle case where user hasn't registered for challenge yet
-  if (!challengeStartDate) {
+  // Only show "Start Challenge" button for users who truly haven't started
+  if (!challengeStatus.hasStarted && !challengeStatus.challengeStartDate) {
     return (
-      <div className="text-center space-y-6">
+      <div className="text-center space-y-6 pb-6 lg:pb-0">
         <div className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full font-bold">
           <Trophy className="w-5 h-5" />
           Desafio Shape Express - Não iniciado
@@ -408,49 +419,63 @@ export default function DesafioDiario() {
 
                   console.log('Profile check passed, starting challenge...');
 
-                  // Since challenge columns don't exist in profiles, we'll use pontuacoes table
-                  // to track challenge start by setting ultima_data_participacao to today
-                  const hoje = new Date().toISOString().split('T')[0];
+                  // Try to use the proper start_user_challenge function first
+                  try {
+                    const { error: rpcError } = await supabase
+                      .rpc('start_user_challenge', { user_id_param: user.id });
 
-                  const { data: updateResult, error: updateError } = await supabase
-                    .from('pontuacoes')
-                    .update({
-                      ultima_data_participacao: hoje,
-                      updated_at: new Date().toISOString()
-                    })
-                    .eq('user_id', user.id)
-                    .select();
+                    if (rpcError) {
+                      throw rpcError;
+                    }
 
-                  if (updateError) {
-                    console.error('Update Error:', updateError);
-                    throw updateError;
+                    console.log('Challenge started using RPC function');
+                  } catch (rpcError) {
+                    console.log('RPC function not available, using fallback method');
+                    
+                    // Fallback: Try to update profiles table directly
+                    try {
+                      const { error: profileError } = await supabase
+                        .from('profiles')
+                        .update({
+                          challenge_start_date: new Date().toISOString(),
+                          challenge_completed_at: null,
+                          updated_at: new Date().toISOString()
+                        })
+                        .eq('user_id', user.id);
+
+                      if (profileError) {
+                        throw profileError;
+                      }
+
+                      console.log('Challenge started by updating profiles table');
+                    } catch (profileError) {
+                      console.log('Profiles table update failed, using pontuacoes fallback');
+                      
+                      // Final fallback: use pontuacoes table
+                      const hoje = new Date().toISOString().split('T')[0];
+                      const { data: updateResult, error: updateError } = await supabase
+                        .from('pontuacoes')
+                        .update({
+                          ultima_data_participacao: hoje,
+                          updated_at: new Date().toISOString()
+                        })
+                        .eq('user_id', user.id)
+                        .select();
+
+                      if (updateError) {
+                        throw updateError;
+                      }
+
+                      if (!updateResult || updateResult.length === 0) {
+                        throw new Error('Falha ao atualizar os dados do usuário');
+                      }
+
+                      console.log('Challenge started using pontuacoes fallback:', updateResult[0]);
+                    }
                   }
 
-                  if (!updateResult || updateResult.length === 0) {
-                    throw new Error('Falha ao atualizar os dados do usuário');
-                  }
-
-                  console.log('Challenge started successfully:', updateResult[0]);
-
-                  // Set challenge start date to today for the component state
-                  setChallengeStartDate(new Date());
-
-                  // Verify the challenge was started by fetching the updated profile
-                  const { data: updatedProfile, error: profileError } = await supabase
-                    .from('profiles')
-                    .select('challenge_start_date')
-                    .eq('user_id', user.id)
-                    .single();
-
-                  if (profileError) {
-                    throw profileError;
-                  }
-
-                  if (updatedProfile?.challenge_start_date) {
-                    const startDate = new Date(updatedProfile.challenge_start_date);
-                    console.log('Challenge start date from DB:', startDate);
-                    setChallengeStartDate(startDate);
-                  }
+                  // Force refresh of challenge status
+                  await challengeStatus.refresh();
 
                   // Reload all data to ensure everything is in sync
                   await carregarDados();
@@ -504,7 +529,7 @@ export default function DesafioDiario() {
   // Show error state if challenge progress has errors
   if (challengeProgress.hasError) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-6 pb-6 lg:pb-0">
         <div className="text-center">
           <div className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full font-bold">
             <Trophy className="w-5 h-5" />
@@ -534,11 +559,11 @@ export default function DesafioDiario() {
   }
 
   // Show special message for "starts tomorrow" state but still show tasks
-  const showTasksWithMessage = challengeProgress.isNotStarted && challengeStartDate;
+  const showTasksWithMessage = challengeStatus.hasStarted && !challengeStatus.canCompleteTasks;
 
   if (challengeProgress.isCompleted) {
     return (
-      <div className="text-center space-y-6">
+      <div className="text-center space-y-6 pb-6 lg:pb-0">
         <div className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full font-bold">
           <Trophy className="w-5 h-5" />
           {challengeProgress.displayText}
@@ -607,7 +632,7 @@ export default function DesafioDiario() {
   const progresso = (desafio.pontuacao_total / pontuacaoMaxima) * 100;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-6 lg:pb-0">
       {/* Special message for "starts tomorrow" state */}
       {showTasksWithMessage && (
         <Card className="bg-blue-500/10 border-blue-500/20">
@@ -815,7 +840,12 @@ export default function DesafioDiario() {
         </Card>
       )}
 
-
+      {/* Dialog informativo para usuários que tentam marcar tarefas antes do início */}
+      <ChallengeStartDialog
+        open={showStartDialog}
+        onOpenChange={setShowStartDialog}
+        challengeStartDate={challengeStatus.challengeStartDate}
+      />
     </div>
   );
 }

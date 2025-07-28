@@ -297,7 +297,7 @@ export default function Dietas() {
   const plano = planosDetalhados[planoSelecionado];
 
   return (
-    <div className="min-h-screen text-white p-6" style={{ backgroundColor: '#0B111F' }}>
+    <div className="min-h-screen text-white p-6 pb-6 lg:pb-6" style={{ backgroundColor: '#0B111F' }}>
       <div className="space-y-6">
         {/* Header com título centralizado */}
         <div className="text-center space-y-4">
