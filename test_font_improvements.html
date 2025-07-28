@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Melhorias de Fonte - Página de Dietas</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #0B111F;
+            color: white;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .test-section {
+            margin-bottom: 40px;
+            padding: 20px;
+            border: 1px solid #333;
+            border-radius: 8px;
+        }
+        
+        .old-style {
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        .new-style {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        .diet-item {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        
+        .diet-title {
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+        
+        .diet-description {
+            font-size: 14px;
+            line-height: 1.5;
+            opacity: 0.8;
+        }
+        
+        .card {
+            background: white;
+            color: #333;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 10px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .diet-item {
+                font-size: 15px;
+            }
+            
+            .diet-title {
+                font-size: 16px;
+            }
+            
+            .diet-description {
+                font-size: 13px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .diet-item {
+                font-size: 14px;
+            }
+            
+            .diet-title {
+                font-size: 15px;
+            }
+            
+            .diet-description {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Teste de Melhorias de Fonte - Página de Dietas</h1>
+        
+        <div class="test-section">
+            <h2>Comparação: Antes vs Depois</h2>
+            
+            <div class="card">
+                <h3>Estilo Antigo (14px)</h3>
+                <div class="old-style">
+                    <p><strong>Refeição 01</strong></p>
+                    <p>2 fatias de pão integral</p>
+                    <p>1 ovo mexido + 1 clara</p>
+                    <p>1 xícara de café com leite desnatado</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>Estilo Novo (16px)</h3>
+                <div class="new-style">
+                    <p class="diet-title">Refeição 01</p>
+                    <p class="diet-description">Energia para começar o dia</p>
+                    <p class="diet-item">2 fatias de pão integral</p>
+                    <p class="diet-item">1 ovo mexido + 1 clara</p>
+                    <p class="diet-item">1 xícara de café com leite desnatado</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>Teste de Responsividade</h2>
+            <p>Redimensione a janela para testar os breakpoints:</p>
+            <ul>
+                <li>Desktop (>768px): 16px base</li>
+                <li>Tablet (≤768px): 15px base</li>
+                <li>Mobile (≤480px): 14px base</li>
+            </ul>
+            
+            <div class="card">
+                <p class="diet-title">Título da Refeição (responsivo)</p>
+                <p class="diet-description">Descrição da refeição (responsivo)</p>
+                <p class="diet-item">Item da refeição com texto mais longo para testar a legibilidade em diferentes tamanhos de tela</p>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>Hierarquia Tipográfica</h2>
+            <h1>H1 - Título Principal (36px/30px/24px)</h1>
+            <h2>H2 - Subtítulo (30px/24px/20px)</h2>
+            <h3>H3 - Seção (24px/20px/18px)</h3>
+            <h4>H4 - Subseção (20px/18px/16px)</h4>
+            <p class="diet-title">Título de Refeição (18px/16px/15px)</p>
+            <p class="diet-item">Item de Refeição (16px/15px/14px)</p>
+            <p class="diet-description">Descrição (14px/13px/12px)</p>
+        </div>
+    </div>
+</body>
+</html>

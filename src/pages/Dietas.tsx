@@ -326,7 +326,7 @@ export default function Dietas() {
             <Trophy className="w-5 h-5" />
             Planos Alimentares Shape Express
           </div>
-          <p className="text-gray-300 max-w-2xl mx-auto">
+          <p className="text-gray-300 max-w-2xl mx-auto diet-item">
             Planos nutricionais personalizados para todos os pesos. Escolha o plano ideal para seus objetivos.
           </p>
         </div>
@@ -364,9 +364,9 @@ export default function Dietas() {
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="text-2xl">☕</span>
-                    <span className="font-bold text-gray-800">Refeição 01</span>
+                    <span className="diet-title text-gray-800">Refeição 01</span>
                   </div>
-                  <p className="text-xs text-gray-600 mt-1">Energia para começar o dia</p>
+                  <p className="diet-description text-gray-600 mt-1">Energia para começar o dia</p>
                 </div>
               </CardTitle>
             </CardHeader>
@@ -375,7 +375,7 @@ export default function Dietas() {
                 <div key={index} className="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-orange-100 shadow-sm hover:shadow-md transition-all duration-200 hover:bg-white/90">
                   <div className="flex items-center gap-3">
                     <div className="w-2 h-2 bg-gradient-to-r from-orange-400 to-yellow-400 rounded-full flex-shrink-0"></div>
-                    <p className="text-gray-800 text-sm font-medium leading-relaxed">{item}</p>
+                    <p className="text-gray-800 diet-item font-medium leading-relaxed">{item}</p>
                   </div>
                 </div>
               ))}
@@ -393,9 +393,9 @@ export default function Dietas() {
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="text-2xl">🍎</span>
-                    <span className="font-bold text-gray-800">Refeição 02</span>
+                    <span className="diet-title text-gray-800">Refeição 02</span>
                   </div>
-                  <p className="text-xs text-gray-600 mt-1">Lanche da manhã</p>
+                  <p className="diet-description text-gray-600 mt-1">Lanche da manhã</p>
                 </div>
               </CardTitle>
             </CardHeader>
@@ -404,7 +404,7 @@ export default function Dietas() {
                 <div key={index} className="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-pink-100 shadow-sm hover:shadow-md transition-all duration-200 hover:bg-white/90">
                   <div className="flex items-center gap-3">
                     <div className="w-2 h-2 bg-gradient-to-r from-pink-400 to-rose-400 rounded-full flex-shrink-0"></div>
-                    <p className="text-gray-800 text-sm font-medium leading-relaxed">{item}</p>
+                    <p className="text-gray-800 diet-item font-medium leading-relaxed">{item}</p>
                   </div>
                 </div>
               ))}
@@ -422,9 +422,9 @@ export default function Dietas() {
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="text-2xl">🍽️</span>
-                    <span className="font-bold text-gray-800">Refeição 03</span>
+                    <span className="diet-title text-gray-800">Refeição 03</span>
                   </div>
-                  <p className="text-xs text-gray-600 mt-1">Refeição principal do dia</p>
+                  <p className="diet-description text-gray-600 mt-1">Refeição principal do dia</p>
                 </div>
               </CardTitle>
             </CardHeader>
@@ -433,7 +433,7 @@ export default function Dietas() {
                 <div key={index} className="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-green-100 shadow-sm hover:shadow-md transition-all duration-200 hover:bg-white/90">
                   <div className="flex items-center gap-3">
                     <div className="w-2 h-2 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full flex-shrink-0"></div>
-                    <p className="text-gray-800 text-sm font-medium leading-relaxed">{item}</p>
+                    <p className="text-gray-800 diet-item font-medium leading-relaxed">{item}</p>
                   </div>
                 </div>
               ))}
@@ -451,9 +451,9 @@ export default function Dietas() {
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="text-2xl">🥤</span>
-                    <span className="font-bold text-gray-800">Refeição 04</span>
+                    <span className="diet-title text-gray-800">Refeição 04</span>
                   </div>
-                  <p className="text-xs text-gray-600 mt-1">Lanche da tarde</p>
+                  <p className="diet-description text-gray-600 mt-1">Lanche da tarde</p>
                 </div>
               </CardTitle>
             </CardHeader>
@@ -462,7 +462,7 @@ export default function Dietas() {
                 <div key={index} className="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-purple-100 shadow-sm hover:shadow-md transition-all duration-200 hover:bg-white/90">
                   <div className="flex items-center gap-3">
                     <div className="w-2 h-2 bg-gradient-to-r from-purple-400 to-violet-400 rounded-full flex-shrink-0"></div>
-                    <p className="text-gray-800 text-sm font-medium leading-relaxed">{item}</p>
+                    <p className="text-gray-800 diet-item font-medium leading-relaxed">{item}</p>
                   </div>
                 </div>
               ))}
@@ -480,9 +480,9 @@ export default function Dietas() {
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="text-2xl">🌙</span>
-                    <span className="font-bold text-gray-800">Refeição 05</span>
+                    <span className="diet-title text-gray-800">Refeição 05</span>
                   </div>
-                  <p className="text-xs text-gray-600 mt-1">Refeição noturna leve</p>
+                  <p className="diet-description text-gray-600 mt-1">Refeição noturna leve</p>
                 </div>
               </CardTitle>
             </CardHeader>
@@ -491,7 +491,7 @@ export default function Dietas() {
                 <div key={index} className="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-blue-100 shadow-sm hover:shadow-md transition-all duration-200 hover:bg-white/90">
                   <div className="flex items-center gap-3">
                     <div className="w-2 h-2 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-full flex-shrink-0"></div>
-                    <p className="text-gray-800 text-sm font-medium leading-relaxed">{item}</p>
+                    <p className="text-gray-800 diet-item font-medium leading-relaxed">{item}</p>
                   </div>
                 </div>
               ))}
@@ -510,7 +510,7 @@ export default function Dietas() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 text-gray-700">
-              <p className="text-sm mb-4">
+              <p className="diet-item mb-4">
                 Acesse nossa tabela completa de substituições alimentares
               </p>
               <Button className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 hover:opacity-90 text-white font-medium">
@@ -532,7 +532,7 @@ export default function Dietas() {
               {plano.horarios.map((horario, index) => (
                 <div key={index} className="flex items-start gap-2">
                   <span className="text-orange-500 font-bold">•</span>
-                  <p className="text-sm">{horario}</p>
+                  <p className="diet-item">{horario}</p>
                 </div>
               ))}
             </CardContent>
@@ -550,7 +550,7 @@ export default function Dietas() {
               {plano.dicas.map((dica, index) => (
                 <div key={index} className="flex items-start gap-2">
                   <span className="text-orange-500 font-bold">•</span>
-                  <p className="text-sm">{dica}</p>
+                  <p className="diet-item">{dica}</p>
                 </div>
               ))}
             </CardContent>
@@ -571,7 +571,7 @@ export default function Dietas() {
               <h3 className="text-xl font-bold text-white">
                 Quer um Plano Ainda Mais Personalizado?
               </h3>
-              <p className="text-white/90 text-sm">
+              <p className="text-white/90 diet-item">
                 Acompanhamento nutricional individual com ajustes personalizados
               </p>
             </div>

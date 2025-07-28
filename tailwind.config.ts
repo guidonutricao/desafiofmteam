@@ -18,6 +18,11 @@ export default {
 			}
 		},
 		extend: {
+			fontSize: {
+				'diet-base': ['16px', '1.5'],
+				'diet-title': ['18px', '1.4'],
+				'diet-description': ['14px', '1.5'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
