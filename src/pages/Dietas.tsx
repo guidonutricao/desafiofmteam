@@ -81,20 +81,20 @@ const todosOsPlanos: Record<string, PlanoDetalhes> = {
     genero: 'masculino',
     refeicoes: {
       refeicao01: [
-        '1 Pão francês sem miolo (40g)',
-        'Ovo inteiro - 2 unidades (100g)',
+        '1 Pão francês sem miolo (60g)',
+        'Ovo inteiro - 3 unidades (150g)',
         'Mamão Papaia - 0.5 unidade média (155g)',
         'Café sem açúcar ou com adoçante - À vontade'
       ],
       refeicao02: [
-        'Aveia - 15g',
-        'Banana - 1 unidade média (70g)'
+        'Aveia - 30g',
+        'Banana - 2 unidades médias (140g)'
       ],
       refeicao03: [
-        'Arroz branco ou integral cozido - 75g',
+        'Arroz branco ou integral cozido - 100g',
         'Feijão cozido - 50g',
         'Peito de frango cozido, assado ou grelhado - 100g',
-        'Legumes crus ou cozidos (cenoura, beterraba, couve flor, brócolis, etc) - À vontade',
+        'Legumes crus ou cozidos (cenoura, beterraba, couve flor, brócolis, etc) - 100g',
         'Salada de folhas, tomate e cebola (sem azeite) - À vontade'
       ],
       refeicao04: [
@@ -130,20 +130,20 @@ const todosOsPlanos: Record<string, PlanoDetalhes> = {
     genero: 'masculino',
     refeicoes: {
       refeicao01: [
-        '1 Pão francês sem miolo (40g)',
-        'Ovo inteiro - 2 unidades (100g)',
-        'Mamão Papaia - 0.5 unidade média (155g)',
+        '1 Pão francês sem miolo (60g)',
+        'Ovo inteiro - 3 unidades (150g)',
+        'Mamão Papaia - 1 unidade média (310g)',
         'Café sem açúcar ou com adoçante - À vontade'
       ],
       refeicao02: [
-        'Aveia - 25g',
+        'Aveia - 30g',
         'Banana - 1 unidade média (70g)'
       ],
       refeicao03: [
-        'Arroz branco ou integral cozido - 100g',
+        'Arroz branco ou integral cozido - 125g',
         'Feijão cozido - 80g',
         'Peito de frango cozido, assado ou grelhado - 100g',
-        'Legumes crus ou cozidos (cenoura, beterraba, couve flor, brócolis, etc) - À vontade',
+        'Legumes crus ou cozidos (cenoura, beterraba, couve flor, brócolis, etc) - 100g',
         'Salada de folhas, tomate e cebola (sem azeite) - À vontade'
       ],
       refeicao04: [
@@ -180,33 +180,32 @@ const todosOsPlanos: Record<string, PlanoDetalhes> = {
     genero: 'masculino',
     refeicoes: {
       refeicao01: [
-        '3 fatias de pão integral',
-        '2 ovos mexidos + 2 claras',
-        '1 xícara de café com leite de aveia',
-        '1 fruta + 1 colher de mel',
-        '1 fatia de queijo vegano'
+        '1 Pão francês sem miolo (60g)',
+        'Ovo inteiro - 3 unidades (150g)',
+        'Mamão Papaia - 1 unidade média (310g)',
+        'Café sem açúcar ou com adoçante - À vontade'
       ],
       refeicao02: [
-        '1 iogurte de coco',
-        '2 colheres de granola',
-        '10 castanhas'
+        'Aveia - 30g',
+        'Banana - 1 unidade média (70g)'
       ],
       refeicao03: [
-        '200g de tofu grelhado ou leguminosas',
-        '2 xícaras de arroz integral',
-        '3/4 xícara de feijão',
-        'Salada verde à vontade',
-        '1 colher de azeite'
+        'Arroz branco ou integral cozido - 150g',
+        'Feijão cozido - 80g',
+        'Ovo inteiro - 2 unidades (100g)',
+        'Legumes crus ou cozidos (cenoura, beterraba, couve flor, brócolis, etc) - 100g',
+        'Salada de folhas, tomate e cebola (sem azeite) - À vontade'
       ],
       refeicao04: [
-        '1 fruta média',
-        '1 iogurte de coco'
+        'Iogurte desnatado, zero ou light - 1 unidade (170ml)',
+        'Granola Zero ou Light - 30g',
+        'Banana - 1 unidade média (70g)'
       ],
       refeicao05: [
-        '150g de proteína vegetal',
-        'Legumes refogados',
-        '1 batata doce grande',
-        'Salada de folhas verdes'
+        'Arroz branco ou integral cozido - 100g',
+        'Ovo inteiro - 2 unidades (100g)',
+        'Legumes crus ou cozidos (cenoura, beterraba, couve flor, brócolis, etc) - 100g',
+        'Salada de folhas, tomate e cebola (sem azeite) - À vontade'
       ]
     },
     horarios: [
@@ -231,20 +230,20 @@ const todosOsPlanos: Record<string, PlanoDetalhes> = {
     genero: 'masculino',
     refeicoes: {
       refeicao01: [
-        '1 Pão francês sem miolo (40g)',
+        '1 Pão francês sem miolo (60g)',
         'Ovo inteiro - 3 unidades (150g)',
-        'Mamão Papaia - 0.5 unidade média (155g)',
+        'Mamão Papaia - 1 unidade média (310g)',
         'Café sem açúcar ou com adoçante - À vontade'
       ],
       refeicao02: [
-        'Aveia - 25g',
-        'Banana - 1 unidade média (70g)'
+        'Aveia - 30g',
+        'Banana - 2 unidades médias (140g)'
       ],
       refeicao03: [
-        'Arroz branco ou integral cozido - 100g',
+        'Arroz branco ou integral cozido - 150g',
         'Feijão cozido - 80g',
-        'Peito de frango cozido, assado ou grelhado - 125g',
-        'Legumes crus ou cozidos (cenoura, beterraba, couve flor, brócolis, etc) - À vontade',
+        'Peito de frango cozido, assado ou grelhado - 150g',
+        'Legumes crus ou cozidos (cenoura, beterraba, couve flor, brócolis, etc) - 100g',
         'Salada de folhas, tomate e cebola (sem azeite) - À vontade'
       ],
       refeicao04: [
@@ -281,9 +280,9 @@ const todosOsPlanos: Record<string, PlanoDetalhes> = {
     genero: 'masculino',
     refeicoes: {
       refeicao01: [
-        '1 Pão francês sem miolo (40g)',
+        '1 Pão francês sem miolo (60g)',
         'Ovo inteiro - 3 unidades (150g)',
-        'Mamão Papaia - 0.5 unidade média (155g)',
+        'Mamão Papaia - 1 unidade média (310g)',
         'Café sem açúcar ou com adoçante - À vontade'
       ],
       refeicao02: [
@@ -292,10 +291,10 @@ const todosOsPlanos: Record<string, PlanoDetalhes> = {
         'Banana - 1 unidade média (70g)'
       ],
       refeicao03: [
-        'Arroz branco ou integral cozido - 125g',
+        'Arroz branco ou integral cozido - 150g',
         'Feijão cozido - 80g',
         'Peito de frango cozido, assado ou grelhado - 125g',
-        'Legumes crus ou cozidos (cenoura, beterraba, couve flor, brócolis, etc) - À vontade',
+        'Legumes crus ou cozidos (cenoura, beterraba, couve flor, brócolis, etc) - 100g',
         'Salada de folhas, tomate e cebola (sem azeite) - À vontade'
       ],
       refeicao04: [
@@ -304,7 +303,7 @@ const todosOsPlanos: Record<string, PlanoDetalhes> = {
         'Banana - 2 unidades médias (140g)'
       ],
       refeicao05: [
-        'Arroz branco ou integral cozido - 125g',
+        'Arroz branco ou integral cozido - 150g',
         'Peito de frango cozido, assado ou grelhado - 150g',
         'Legumes crus ou cozidos (cenoura, beterraba, couve flor, brócolis, etc) - 150g',
         'Salada de folhas, tomate e cebola (sem azeite) - À vontade'
@@ -383,32 +382,31 @@ const todosOsPlanos: Record<string, PlanoDetalhes> = {
     genero: 'feminino',
     refeicoes: {
       refeicao01: [
-        '1 pão francês sem miolo (40g)',
-        'Ovo inteiro – 2 unidades e 1 clara (120g)',
-        'Mamão papaia – 0,5 unidade média (155g)',
-        'Café sem açúcar ou com adoçante – à vontade'
+        '1 Pão francês sem miolo (40g)',
+        'Ovo inteiro - 2 unidades (100g)',
+        'Mamão Papaia - 0.5 unidade média (155g)',
+        'Café sem açúcar ou com adoçante - À vontade'
       ],
       refeicao02: [
-        'Aveia – 25g',
-        'Banana – 1 unidade média (70g)'
+        'Aveia - 15g',
+        'Banana - 1 unidade média (70g)'
       ],
       refeicao03: [
-        'Arroz cozido – 100g',
-        'Feijão cozido – 70g',
-        'Peito de frango grelhado – 120g',
-        'Legumes cozidos – à vontade',
-        'Salada crua (folhas, tomate e cebola, sem azeite) – à vontade'
+        'Arroz branco ou integral cozido - 75g',
+        'Feijão cozido - 50g',
+        'Peito de frango cozido, assado ou grelhado - 100g',
+        'Legumes crus ou cozidos (cenoura, beterraba, couve flor, brócolis, etc) - 100g',
+        'Salada de folhas, tomate e cebola (sem azeite) - À vontade'
       ],
       refeicao04: [
-        'Iogurte desnatado – 1 unidade (170ml)',
-        'Granola light – 35g',
-        'Banana – 1 unidade média (70g)'
+        'Iogurte desnatado, zero ou light - 1 unidade (170ml)',
+        'Aveia - 20g',
+        'Banana - 1 unidade média (70g)'
       ],
       refeicao05: [
-        'Arroz cozido – 100g',
-        'Peito de frango grelhado – 120g',
-        'Legumes cozidos – 100g',
-        'Salada crua – à vontade'
+        'Peito de frango cozido, assado ou grelhado - 100g',
+        'Legumes crus ou cozidos (cenoura, beterraba, couve flor, brócolis, etc) - 150g',
+        'Salada de folhas, tomate e cebola (sem azeite) - À vontade'
       ]
     },
     horarios: [
@@ -433,32 +431,32 @@ const todosOsPlanos: Record<string, PlanoDetalhes> = {
     genero: 'feminino',
     refeicoes: {
       refeicao01: [
-        '1 pão francês sem miolo (40g)',
-        'Ovo inteiro – 3 unidades (150g)',
-        'Mamão papaia – 0,5 unidade média (155g)',
-        'Café sem açúcar ou com adoçante – à vontade'
+        '1 Pão francês sem miolo (40g)',
+        'Ovo inteiro - 2 unidades (100g)',
+        'Mamão Papaia - 0.5 unidade média (155g)',
+        'Café sem açúcar ou com adoçante - À vontade'
       ],
       refeicao02: [
-        'Aveia – 30g',
-        'Banana – 1 unidade média (70g)'
+        'Aveia - 25g',
+        'Banana - 1 unidade média (70g)'
       ],
       refeicao03: [
-        'Arroz cozido – 110g',
-        'Feijão cozido – 80g',
-        'Peito de frango grelhado – 130g',
-        'Legumes cozidos – à vontade',
-        'Salada crua (folhas, tomate e cebola, sem azeite) – à vontade'
+        'Arroz branco ou integral cozido - 100g',
+        'Feijão cozido - 80g',
+        'Peito de frango cozido, assado ou grelhado - 100g',
+        'Legumes crus ou cozidos (cenoura, beterraba, couve flor, brócolis, etc) - 100g',
+        'Salada de folhas, tomate e cebola (sem azeite) - À vontade'
       ],
       refeicao04: [
-        'Iogurte desnatado – 1 unidade (170ml)',
-        'Granola light – 40g',
-        'Banana – 1 unidade média (70g)'
+        'Iogurte desnatado, zero ou light - 1 unidade (170ml)',
+        'Granola Zero ou Light - 30g',
+        'Banana - 1 unidade média (70g)'
       ],
       refeicao05: [
-        'Arroz cozido – 110g',
-        'Peito de frango grelhado – 130g',
-        'Legumes cozidos – 100g',
-        'Salada crua – à vontade'
+        'Arroz branco ou integral cozido - 100g',
+        'Peito de frango cozido, assado ou grelhado - 100g',
+        'Legumes crus ou cozidos (cenoura, beterraba, couve flor, brócolis, etc) - 100g',
+        'Salada de folhas, tomate e cebola (sem azeite) - À vontade'
       ]
     },
     horarios: [
@@ -483,32 +481,32 @@ const todosOsPlanos: Record<string, PlanoDetalhes> = {
     genero: 'feminino',
     refeicoes: {
       refeicao01: [
-        '1 pão francês sem miolo (40g)',
-        'Ovo inteiro – 2 unidades e 2 claras (140g)',
-        'Mamão papaia – 0,5 unidade média (155g)',
-        'Café sem açúcar ou com adoçante – à vontade'
+        '1 Pão francês sem miolo (40g)',
+        'Ovo inteiro - 2 unidades (100g)',
+        'Mamão Papaia - 0.5 unidade média (155g)',
+        'Café sem açúcar ou com adoçante - À vontade'
       ],
       refeicao02: [
-        'Aveia – 30g',
-        'Banana – 1 unidade média (70g)'
+        'Aveia - 25g',
+        'Banana - 1 unidade média (70g)'
       ],
       refeicao03: [
-        'Arroz integral cozido – 110g',
-        'Feijão cozido – 100g',
-        'Grão-de-bico cozido – 80g',
-        'Legumes cozidos – à vontade',
-        'Salada crua (folhas, tomate e cebola, sem azeite) – à vontade'
+        'Arroz branco ou integral cozido - 100g',
+        'Feijão cozido - 80g',
+        'Ovo inteiro - 2 unidades (100g)',
+        'Legumes crus ou cozidos (cenoura, beterraba, couve flor, brócolis, etc) - 100g',
+        'Salada de folhas, tomate e cebola (sem azeite) - À vontade'
       ],
       refeicao04: [
-        'Iogurte vegetal zero ou light – 1 unidade (170ml)',
-        'Granola sem mel (light/zero) – 40g',
-        'Banana – 1 unidade média (70g)'
+        'Iogurte desnatado, zero ou light - 1 unidade (170ml)',
+        'Granola Zero ou Light - 30g',
+        'Banana - 1 unidade média (70g)'
       ],
       refeicao05: [
-        'Arroz integral cozido – 110g',
-        'Tofu grelhado – 100g',
-        'Legumes cozidos – 100g',
-        'Salada crua – à vontade'
+        'Arroz branco ou integral cozido - 100g',
+        'Ovo inteiro - 2 unidades (100g)',
+        'Legumes crus ou cozidos (cenoura, beterraba, couve flor, brócolis, etc) - 100g',
+        'Salada de folhas, tomate e cebola (sem azeite) - À vontade'
       ]
     },
     horarios: [
@@ -533,32 +531,32 @@ const todosOsPlanos: Record<string, PlanoDetalhes> = {
     genero: 'feminino',
     refeicoes: {
       refeicao01: [
-        '1 pão francês sem miolo (40g)',
-        'Ovo inteiro – 3 unidades (150g)',
-        'Mamão papaia – 0,5 unidade média (155g)',
-        'Café sem açúcar ou com adoçante – à vontade'
+        '1 Pão francês sem miolo (40g)',
+        'Ovo inteiro - 3 unidades (150g)',
+        'Mamão Papaia - 0.5 unidade média (155g)',
+        'Café sem açúcar ou com adoçante - À vontade'
       ],
       refeicao02: [
-        'Aveia – 35g',
-        'Banana – 1 unidade média (70g)'
+        'Aveia - 25g',
+        'Banana - 1 unidade média (70g)'
       ],
       refeicao03: [
-        'Arroz cozido – 120g',
-        'Feijão cozido – 90g',
-        'Peito de frango grelhado – 140g',
-        'Legumes cozidos – à vontade',
-        'Salada crua (folhas, tomate e cebola, sem azeite) – à vontade'
+        'Arroz branco ou integral cozido - 100g',
+        'Feijão cozido - 80g',
+        'Peito de frango cozido, assado ou grelhado - 125g',
+        'Legumes crus ou cozidos (cenoura, beterraba, couve flor, brócolis, etc) - 100g',
+        'Salada de folhas, tomate e cebola (sem azeite) - À vontade'
       ],
       refeicao04: [
-        'Iogurte desnatado – 1 unidade (170ml)',
-        'Granola light – 45g',
-        'Banana – 1 unidade média (70g)'
+        'Iogurte desnatado, zero ou light - 1 unidade (170ml)',
+        'Granola Zero ou Light - 40g',
+        'Banana - 1 unidade média (70g)'
       ],
       refeicao05: [
-        'Arroz cozido – 120g',
-        'Peito de frango grelhado – 140g',
-        'Legumes cozidos – 100g',
-        'Salada crua – à vontade'
+        'Arroz branco ou integral cozido - 100g',
+        'Peito de frango cozido, assado ou grelhado - 125g',
+        'Legumes crus ou cozidos (cenoura, beterraba, couve flor, brócolis, etc) - 100g',
+        'Salada de folhas, tomate e cebola (sem azeite) - À vontade'
       ]
     },
     horarios: [
@@ -589,25 +587,25 @@ const todosOsPlanos: Record<string, PlanoDetalhes> = {
         'Café sem açúcar ou com adoçante – À vontade'
       ],
       refeicao02: [
-        'Aveia – 40g',
+        'Aveia – 30g',
         'Banana – 1 unidade média (70g)'
       ],
       refeicao03: [
-        'Arroz branco ou integral cozido – 130g',
-        'Feijão cozido – 100g',
-        'Peito de frango cozido, assado ou grelhado – 150g',
-        'Legumes crus ou cozidos (cenoura, beterraba, couve flor, brócolis, etc) – À vontade',
+        'Arroz branco ou integral cozido – 125g',
+        'Feijão cozido – 80g',
+        'Peito de frango cozido, assado ou grelhado – 125g',
+        'Legumes crus ou cozidos (cenoura, beterraba, couve flor, brócolis, etc) – 100g',
         'Salada de folhas, tomate e cebola (sem azeite) – À vontade'
       ],
       refeicao04: [
         'Iogurte desnatado, zero ou light – 1 unidade (170ml)',
-        'Granola Zero ou Light – 45g',
-        'Banana – 1 unidade média (70g)'
+        'Granola Zero ou Light – 40g',
+        'Banana – 2 unidade média (140g)'
       ],
       refeicao05: [
-        'Arroz branco ou integral cozido – 130g',
+        'Arroz branco ou integral cozido – 125g',
         'Peito de frango cozido, assado ou grelhado – 150g',
-        'Legumes crus ou cozidos (cenoura, beterraba, couve flor, brócolis, etc) – 100g',
+        'Legumes crus ou cozidos (cenoura, beterraba, couve flor, brócolis, etc) – 150g',
         'Salada de folhas, tomate e cebola (sem azeite) – À vontade'
       ]
     },

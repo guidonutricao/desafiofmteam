@@ -307,23 +307,45 @@ export function ProgressDashboard() {
 
   if (loading) {
     return (
-      <Card className="bg-white dark:bg-white border-gray-200">
-        <CardContent className="p-8 text-center">
-          <Loader2 className="w-8 h-8 animate-spin text-yellow-500 mx-auto mb-4" />
-          <p className="text-gray-600">Carregando dados de progresso...</p>
-        </CardContent>
-      </Card>
+      <div className="px-2">
+        <Card className="bg-white border-gray-200 rounded-2xl shadow-lg">
+          <CardContent className="p-8 sm:p-12 text-center">
+            <div className="space-y-4">
+              <div className="p-4 rounded-full bg-yellow-100 w-fit mx-auto">
+                <Loader2 className="w-8 h-8 animate-spin text-yellow-500" />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-lg font-semibold text-gray-900">Carregando Dashboard</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  Buscando seus dados de progresso...
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     );
   }
 
   if (error) {
     return (
-      <Card className="bg-white dark:bg-white border-gray-200">
-        <CardContent className="p-8 text-center">
-          <AlertCircle className="w-8 h-8 text-red-500 mx-auto mb-4" />
-          <p className="text-gray-600">Erro ao carregar dados: {error}</p>
-        </CardContent>
-      </Card>
+      <div className="px-2">
+        <Card className="bg-white border-gray-200 rounded-2xl shadow-lg">
+          <CardContent className="p-8 sm:p-12 text-center">
+            <div className="space-y-4">
+              <div className="p-4 rounded-full bg-red-100 w-fit mx-auto">
+                <AlertCircle className="w-8 h-8 text-red-500" />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-lg font-semibold text-gray-900">Erro no Dashboard</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  {error}
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     );
   }
 
@@ -332,221 +354,312 @@ export function ProgressDashboard() {
   
   if (!hasRealData) {
     return (
-      <Card className="bg-white dark:bg-white border-gray-200">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-yellow-600">
-            <div className="p-2 rounded-lg bg-yellow-100">
-              <Trophy className="w-5 h-5 text-yellow-600" />
+      <div className="px-2">
+        <Card className="bg-white border-gray-200 rounded-2xl shadow-lg">
+          <CardHeader className="text-center pb-4">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="p-3 rounded-xl bg-yellow-100">
+                <Trophy className="w-6 h-6 text-yellow-600" />
+              </div>
+              <div>
+                <CardTitle className="text-xl font-bold text-gray-900">
+                  Dashboard de Progresso
+                </CardTitle>
+              </div>
             </div>
-            <div>
-              <span className="text-lg">📊</span>
-              <span className="font-semibold ml-2">Dashboard de Progresso</span>
+            <CardDescription className="text-sm text-gray-600 leading-relaxed">
+              Acompanhe sua evolução no desafio de 7 dias
+            </CardDescription>
+          </CardHeader>
+          
+          <CardContent className="p-6 sm:p-8 text-center">
+            <div className="space-y-6">
+              <div className="p-4 rounded-full bg-gray-100 w-fit mx-auto">
+                <Target className="w-12 h-12 text-gray-400" />
+              </div>
+              
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Nenhum progresso registrado ainda
+                </h3>
+                
+                <div className="space-y-4">
+                  <p className="text-sm text-gray-600">
+                    Para ver seu dashboard de progresso:
+                  </p>
+                  
+                  <div className="bg-gray-50 p-4 rounded-xl text-left max-w-sm mx-auto">
+                    <ol className="space-y-2 text-sm text-gray-700">
+                      <li className="flex items-start gap-3">
+                        <span className="flex-shrink-0 w-5 h-5 bg-yellow-500 text-white text-xs rounded-full flex items-center justify-center font-medium">1</span>
+                        <span>Vá para a página "Desafio Diário"</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="flex-shrink-0 w-5 h-5 bg-yellow-500 text-white text-xs rounded-full flex items-center justify-center font-medium">2</span>
+                        <span>Complete suas tarefas diárias</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="flex-shrink-0 w-5 h-5 bg-yellow-500 text-white text-xs rounded-full flex items-center justify-center font-medium">3</span>
+                        <span>Volte aqui para ver sua evolução!</span>
+                      </li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
             </div>
-          </CardTitle>
-          <CardDescription className="text-gray-600">
-            Acompanhe sua evolução no desafio de 7 dias
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="p-8 text-center">
-          <Target className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-          <p className="text-gray-600 mb-2 font-medium">Nenhum progresso registrado ainda</p>
-          <div className="text-sm text-gray-500 space-y-2">
-            <p>Para ver seu dashboard de progresso:</p>
-            <div className="bg-gray-50 p-4 rounded-lg text-left max-w-md mx-auto">
-              <ol className="space-y-1">
-                <li>1. Vá para a página "Desafio Diário"</li>
-                <li>2. Complete suas tarefas diárias</li>
-                <li>3. Volte aqui para ver sua evolução!</li>
-              </ol>
-            </div>
-            <p className="text-xs text-gray-400 mt-4">
-              Usuário ID: {user?.id?.slice(0, 8)}... (para debug)
-            </p>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </div>
     );
   }
 
   return (
-    <Card className="bg-white dark:bg-white border-gray-200 hover:shadow-lg transition-all duration-300">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-yellow-600">
-          <div className="p-2 rounded-lg bg-yellow-100">
-            <Trophy className="w-5 h-5 text-yellow-600" />
+    <div className="space-y-4 sm:space-y-6">
+      {/* Header Mobile-First */}
+      <div className="text-center space-y-3 px-2">
+        <div className="flex items-center justify-center gap-3">
+          <div className="p-3 rounded-xl bg-gradient-to-br from-yellow-100 to-yellow-200 shadow-sm">
+            <Trophy className="w-6 h-6 text-yellow-600" />
           </div>
           <div>
-            <span className="text-lg">📊</span>
-            <span className="font-semibold ml-2">Dashboard de Progresso</span>
-          </div>
-        </CardTitle>
-        <CardDescription className="text-gray-600">
-          Sua evolução no desafio de 7 dias - {currentChallengeDay > 7 ? 'Desafio concluído!' : `Você está no dia ${currentChallengeDay}`}
-        </CardDescription>
-      </CardHeader>
-      
-      <CardContent>
-        {/* Estatísticas rápidas */}
-        <div className="grid grid-cols-3 gap-4 mb-6">
-          <div className="text-center p-4 bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-lg border border-yellow-200">
-            <div className="text-2xl font-bold text-yellow-600">{totalPoints.toLocaleString()}</div>
-            <div className="text-sm text-gray-600 font-medium">Total de Pontos</div>
-          </div>
-          <div className={`text-center p-4 rounded-lg border ${
-            currentChallengeDay > 7 
-              ? 'bg-gradient-to-br from-green-50 to-green-100 border-green-200' 
-              : 'bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200'
-          }`}>
-            <div className={`text-2xl font-bold ${
-              currentChallengeDay > 7 ? 'text-green-600' : 'text-blue-600'
-            }`}>
-              {currentChallengeDay > 7 ? (
-                <div className="flex items-center justify-center gap-1">
-                  <Trophy className="w-6 h-6" />
-                  <span>7/7</span>
-                </div>
-              ) : (
-                <div className="flex items-center justify-center gap-1">
-                  <CalendarDays className="w-6 h-6" />
-                  <span>{currentChallengeDay}</span>
-                </div>
-              )}
-            </div>
-            <div className="text-sm text-gray-600 font-medium">
-              {currentChallengeDay > 7 ? 'Desafio Completo' : 'Dia Atual do Desafio'}
-            </div>
-          </div>
-          <div className="text-center p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-lg border border-green-200">
-            <div className="text-2xl font-bold text-green-600">{averagePoints}</div>
-            <div className="text-sm text-gray-600 font-medium">Pontuação Média por Dia</div>
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 leading-tight">
+              Dashboard de Progresso
+            </h2>
+            <p className="text-sm sm:text-base text-gray-600 mt-1 leading-relaxed">
+              {currentChallengeDay > 7 ? 'Desafio concluído! 🎉' : `Você está no dia ${currentChallengeDay} do desafio`}
+            </p>
           </div>
         </div>
+      </div>
 
-        {/* Gráfico */}
-        <ChartContainer config={chartConfig}>
-          <AreaChart
-            accessibilityLayer
-            data={progressData}
-            margin={{
-              left: 12,
-              right: 12,
-              top: 12,
-              bottom: 12,
-            }}
-          >
-            <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="#e5e7eb" />
-            <XAxis
-              dataKey="day"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              tickFormatter={(value) => `Dia ${value}`}
-              className="text-gray-600"
-              domain={[1, 7]}
-              type="number"
-              ticks={[1, 2, 3, 4, 5, 6, 7]}
-            />
-            <YAxis
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              className="text-gray-600"
-            />
-            <ChartTooltip
-              cursor={false}
-              content={({ active, payload, label }) => {
-                if (active && payload && payload.length) {
-                  const data = payload[0].payload;
-                  const tasks = data.tasks_completed;
-                  const completedTasks = Object.entries(tasks).filter(([_, completed]) => completed);
-                  
-                  return (
-                    <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
-                      <p className="font-semibold text-gray-900 mb-2">Dia {label}</p>
-                      {data.points > 0 ? (
-                        <>
-                          <p className="text-yellow-600 font-medium mb-2">{data.points} pontos</p>
-                          <div className="text-sm text-gray-600">
-                            <p className="font-medium mb-1">Tarefas completadas:</p>
-                            {completedTasks.length > 0 ? (
-                              <ul className="space-y-1">
-                                {tasks.hidratacao && <li>• Hidratação</li>}
-                                {tasks.sono_qualidade && <li>• Sono de qualidade</li>}
-                                {tasks.atividade_fisica && <li>• Atividade física</li>}
-                                {tasks.seguiu_dieta && <li>• Seguiu dieta</li>}
-                                {tasks.registro_visual && <li>• Registro visual</li>}
-                              </ul>
+      {/* Cards Mobile-Optimized */}
+      <div className="space-y-4 px-2">
+        {/* Layout: Empilhado verticalmente no mobile, grid no desktop */}
+        <div className="flex flex-col space-y-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0">
+          
+          {/* Card 1: Total de Pontos */}
+          <div className="bg-gradient-to-br from-yellow-50 via-yellow-100 to-yellow-200 rounded-2xl border border-yellow-300 shadow-lg hover:shadow-xl transition-all duration-300 p-6 sm:p-4">
+            <div className="flex flex-col items-center text-center space-y-3">
+              <div className="p-2 rounded-full bg-yellow-200">
+                <Trophy className="w-5 h-5 text-yellow-700" />
+              </div>
+              <div className="space-y-1">
+                <div className="text-3xl sm:text-2xl font-bold text-yellow-700 leading-none">
+                  {totalPoints.toLocaleString()}
+                </div>
+                <div className="text-sm font-medium text-yellow-800 leading-tight">
+                  Total de Pontos
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Card 2: Dia Atual do Desafio */}
+          <div className={`rounded-2xl border shadow-lg hover:shadow-xl transition-all duration-300 p-6 sm:p-4 ${
+            currentChallengeDay > 7 
+              ? 'bg-gradient-to-br from-green-50 via-green-100 to-green-200 border-green-300' 
+              : 'bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 border-blue-300'
+          }`}>
+            <div className="flex flex-col items-center text-center space-y-3">
+              <div className={`p-2 rounded-full ${
+                currentChallengeDay > 7 ? 'bg-green-200' : 'bg-blue-200'
+              }`}>
+                {currentChallengeDay > 7 ? (
+                  <Trophy className="w-5 h-5 text-green-700" />
+                ) : (
+                  <CalendarDays className="w-5 h-5 text-blue-700" />
+                )}
+              </div>
+              <div className="space-y-1">
+                <div className={`text-3xl sm:text-2xl font-bold leading-none ${
+                  currentChallengeDay > 7 ? 'text-green-700' : 'text-blue-700'
+                }`}>
+                  {currentChallengeDay > 7 ? '7/7' : currentChallengeDay}
+                </div>
+                <div className={`text-sm font-medium leading-tight ${
+                  currentChallengeDay > 7 ? 'text-green-800' : 'text-blue-800'
+                }`}>
+                  {currentChallengeDay > 7 ? 'Desafio Completo' : 'Dia Atual do Desafio'}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Card 3: Pontuação Média */}
+          <div className="bg-gradient-to-br from-green-50 via-green-100 to-green-200 rounded-2xl border border-green-300 shadow-lg hover:shadow-xl transition-all duration-300 p-6 sm:p-4">
+            <div className="flex flex-col items-center text-center space-y-3">
+              <div className="p-2 rounded-full bg-green-200">
+                <Target className="w-5 h-5 text-green-700" />
+              </div>
+              <div className="space-y-1">
+                <div className="text-3xl sm:text-2xl font-bold text-green-700 leading-none">
+                  {averagePoints}
+                </div>
+                <div className="text-sm font-medium text-green-800 leading-tight">
+                  Pontuação Média por Dia
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Gráfico Mobile-Optimized */}
+      <div className="px-2">
+        <Card className="bg-white border-gray-200 shadow-lg rounded-2xl overflow-hidden">
+          <CardContent className="p-4 sm:p-6">
+            <div className="mb-4">
+              <h3 className="text-lg font-semibold text-gray-900 mb-1">Evolução Diária</h3>
+              <p className="text-sm text-gray-600">Acompanhe sua pontuação ao longo dos 7 dias</p>
+            </div>
+            
+            <div className="h-64 sm:h-80">
+              <ChartContainer config={chartConfig} className="h-full w-full">
+                <AreaChart
+                  accessibilityLayer
+                  data={progressData}
+                  margin={{
+                    left: 8,
+                    right: 8,
+                    top: 16,
+                    bottom: 16,
+                  }}
+                >
+                  <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="#e5e7eb" />
+                  <XAxis
+                    dataKey="day"
+                    tickLine={false}
+                    axisLine={false}
+                    tickMargin={12}
+                    tickFormatter={(value) => `D${value}`}
+                    className="text-gray-600 text-xs"
+                    domain={[1, 7]}
+                    type="number"
+                    ticks={[1, 2, 3, 4, 5, 6, 7]}
+                  />
+                  <YAxis
+                    tickLine={false}
+                    axisLine={false}
+                    tickMargin={8}
+                    className="text-gray-600 text-xs"
+                    width={40}
+                  />
+                  <ChartTooltip
+                    cursor={false}
+                    content={({ active, payload, label }) => {
+                      if (active && payload && payload.length) {
+                        const data = payload[0].payload;
+                        const tasks = data.tasks_completed;
+                        const completedTasks = Object.entries(tasks).filter(([_, completed]) => completed);
+                        
+                        return (
+                          <div className="bg-white p-4 border border-gray-200 rounded-xl shadow-xl max-w-xs">
+                            <p className="font-bold text-gray-900 mb-2 text-base">Dia {label}</p>
+                            {data.points > 0 ? (
+                              <>
+                                <p className="text-yellow-600 font-semibold mb-3 text-lg">{data.points} pontos</p>
+                                <div className="text-sm text-gray-600">
+                                  <p className="font-medium mb-2">Tarefas completadas:</p>
+                                  {completedTasks.length > 0 ? (
+                                    <ul className="space-y-1.5">
+                                      {tasks.hidratacao && <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>Hidratação</li>}
+                                      {tasks.sono_qualidade && <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>Sono de qualidade</li>}
+                                      {tasks.atividade_fisica && <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-green-500 rounded-full"></span>Atividade física</li>}
+                                      {tasks.seguiu_dieta && <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-orange-500 rounded-full"></span>Seguiu dieta</li>}
+                                      {tasks.registro_visual && <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-pink-500 rounded-full"></span>Registro visual</li>}
+                                    </ul>
+                                  ) : (
+                                    <p className="text-gray-400 italic">Nenhuma tarefa completada</p>
+                                  )}
+                                </div>
+                              </>
                             ) : (
-                              <p className="text-gray-400">Nenhuma tarefa completada</p>
+                              <div className="text-sm text-gray-500">
+                                <p className="font-medium mb-1 text-base">0 pontos</p>
+                                <p className="text-gray-400 italic">Dia ainda não completado</p>
+                              </div>
                             )}
                           </div>
-                        </>
-                      ) : (
-                        <div className="text-sm text-gray-500">
-                          <p className="font-medium mb-1">0 pontos</p>
-                          <p className="text-gray-400">Dia ainda não completado</p>
-                        </div>
-                      )}
+                        );
+                      }
+                      return null;
+                    }}
+                  />
+                  <Area
+                    dataKey="points"
+                    type="monotone"
+                    fill="url(#yellowGradient)"
+                    fillOpacity={0.7}
+                    stroke="#fbbf24"
+                    strokeWidth={3}
+                  />
+                  <defs>
+                    <linearGradient id="yellowGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#fbbf24" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#fbbf24" stopOpacity={0.1}/>
+                    </linearGradient>
+                  </defs>
+                </AreaChart>
+              </ChartContainer>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Footer Stats Mobile-Optimized */}
+      <div className="px-2">
+        <Card className="bg-gray-50 border-gray-200 rounded-2xl shadow-sm">
+          <CardContent className="p-4 sm:p-6">
+            <div className="space-y-4">
+              {/* Trend */}
+              <div className="flex items-center justify-center gap-3 p-3 bg-white rounded-xl">
+                {trend > 0 ? (
+                  <>
+                    <div className="p-2 rounded-full bg-green-100">
+                      <TrendingUp className="h-4 w-4 text-green-600" />
                     </div>
-                  );
-                }
-                return null;
-              }}
-            />
-            <Area
-              dataKey="points"
-              type="monotone"
-              fill="url(#yellowGradient)"
-              fillOpacity={0.6}
-              stroke="#fbbf24"
-              strokeWidth={3}
-            />
-            <defs>
-              <linearGradient id="yellowGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#fbbf24" stopOpacity={0.8}/>
-                <stop offset="95%" stopColor="#fbbf24" stopOpacity={0.1}/>
-              </linearGradient>
-            </defs>
-          </AreaChart>
-        </ChartContainer>
-      </CardContent>
-      
-      <CardFooter>
-        <div className="flex w-full items-start gap-2 text-sm">
-          <div className="grid gap-2 flex-1">
-            <div className="flex items-center gap-2 leading-none font-medium text-gray-700">
-              {trend > 0 ? (
-                <>
-                  <TrendingUp className="h-4 w-4 text-green-600" />
-                  <span className="text-green-600">Crescimento de {trend}% na segunda metade</span>
-                </>
-              ) : trend < 0 ? (
-                <>
-                  <TrendingUp className="h-4 w-4 text-red-600 rotate-180" />
-                  <span className="text-red-600">Queda de {Math.abs(trend)}% na segunda metade</span>
-                </>
-              ) : (
-                <>
-                  <Calendar className="h-4 w-4 text-gray-600" />
-                  <span className="text-gray-600">Performance estável</span>
-                </>
-              )}
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="text-muted-foreground flex items-center gap-2 leading-none text-gray-500">
-                <Calendar className="h-3 w-3" />
-                Dados atualizados em tempo real
+                    <span className="text-sm font-medium text-green-700">
+                      Crescimento de {trend}% na segunda metade
+                    </span>
+                  </>
+                ) : trend < 0 ? (
+                  <>
+                    <div className="p-2 rounded-full bg-red-100">
+                      <TrendingUp className="h-4 w-4 text-red-600 rotate-180" />
+                    </div>
+                    <span className="text-sm font-medium text-red-700">
+                      Queda de {Math.abs(trend)}% na segunda metade
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <div className="p-2 rounded-full bg-gray-100">
+                      <Calendar className="h-4 w-4 text-gray-600" />
+                    </div>
+                    <span className="text-sm font-medium text-gray-700">
+                      Performance estável
+                    </span>
+                  </>
+                )}
               </div>
-              {bestDay && (
-                <div className="text-muted-foreground flex items-center gap-2 leading-none text-gray-500">
-                  <Trophy className="h-3 w-3 text-yellow-500" />
-                  Melhor dia: Dia {bestDay.day} ({bestDay.points} pts)
+
+              {/* Additional Stats */}
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500">
+                <div className="flex items-center gap-2">
+                  <Calendar className="h-3 w-3" />
+                  <span>Dados atualizados em tempo real</span>
                 </div>
-              )}
+                {bestDay && (
+                  <div className="flex items-center gap-2">
+                    <Trophy className="h-3 w-3 text-yellow-500" />
+                    <span>Melhor dia: Dia {bestDay.day} ({bestDay.points} pts)</span>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        </div>
-      </CardFooter>
-    </Card>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
   );
 }
