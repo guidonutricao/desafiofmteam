@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { ProgressDashboard } from '@/components/ProgressDashboard';
 
 interface Profile {
   nome: string;
@@ -346,6 +347,9 @@ export default function Perfil() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Progress Dashboard */}
+        <ProgressDashboard />
 
         {/* Two-column layout for larger screens */}
         <div className="grid gap-4 md:grid-cols-2">
