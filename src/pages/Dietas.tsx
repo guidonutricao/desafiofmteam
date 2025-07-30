@@ -30,33 +30,31 @@ const todosOsPlanos: Record<string, PlanoDetalhes> = {
     genero: 'masculino',
     refeicoes: {
       refeicao01: [
-        '2 fatias de pão integral',
-        '1 ovo mexido + 1 clara',
-        '1 xícara de café com leite desnatado',
-        '1 fruta + 1 colher de mel',
-        '1 fatia de queijo branco'
+        '1 Pão francês sem miolo (60g)',
+        'Ovo inteiro - 2 unidades (100g)',
+        'Mamão Papaia - 0.5 unidade média (155g)',
+        'Café sem açúcar ou com adoçante - À vontade'
       ],
       refeicao02: [
-        '1 iogurte grego',
-        '1 colher de granola',
-        '8 castanhas'
+        'Aveia - 20g',
+        'Banana - 1 unidade média (70g)'
       ],
       refeicao03: [
-        '150g de peito de frango grelhado',
-        '2 xícaras de arroz integral',
-        '2/3 xícara de feijão',
-        'Salada verde à vontade',
-        '1 colher de azeite'
+        'Arroz branco ou integral cozido - 100g',
+        'Feijão cozido - 50g',
+        'Peito de frango cozido, assado ou grelhado - 100g',
+        'Legumes crus ou cozidos (cenoura, beterraba, couve flor, brócolis, etc) - 100g',
+        'Salada de folhas, tomate e cebola (sem azeite) - À vontade'
       ],
       refeicao04: [
-        '1 fruta média',
-        '1 iogurte natural'
+        'Iogurte desnatado, zero ou light - 1 unidade (170ml)',
+        'Aveia - 20g',
+        'Banana - 1 unidade média (70g)'
       ],
       refeicao05: [
-        '120g de peixe ou carne vermelha magra',
-        'Legumes refogados',
-        '1 batata doce pequena',
-        'Salada de folhas verdes'
+        'Peito de frango cozido, assado ou grelhado - 150g',
+        'Legumes crus ou cozidos (cenoura, beterraba, couve flor, brócolis, etc) - 150g',
+        'Salada de folhas, tomate e cebola (sem azeite) - À vontade'
       ]
     },
     horarios: [
@@ -587,8 +585,9 @@ const todosOsPlanos: Record<string, PlanoDetalhes> = {
         'Café sem açúcar ou com adoçante – À vontade'
       ],
       refeicao02: [
-        'Aveia – 30g',
-        'Banana – 1 unidade média (70g)'
+        'Aveia - 30g',
+        'Mel de abelha - 10g',
+        'Banana - 1 unidade média (70g)'
       ],
       refeicao03: [
         'Arroz branco ou integral cozido – 125g',
@@ -656,22 +655,20 @@ export default function Dietas() {
               <Toggle
                 pressed={generoSelecionado === 'masculino'}
                 onPressedChange={() => setGeneroSelecionado('masculino')}
-                className={`px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 whitespace-nowrap ${
-                  generoSelecionado === 'masculino'
-                    ? 'bg-gradient-to-r from-blue-400 to-blue-500 text-white shadow-sm'
-                    : 'text-gray-300 hover:text-white hover:bg-white/10'
-                }`}
+                className={`px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 whitespace-nowrap ${generoSelecionado === 'masculino'
+                  ? 'bg-gradient-to-r from-blue-400 to-blue-500 text-white shadow-sm'
+                  : 'text-gray-300 hover:text-white hover:bg-white/10'
+                  }`}
               >
                 👨 Masculino
               </Toggle>
               <Toggle
                 pressed={generoSelecionado === 'feminino'}
                 onPressedChange={() => setGeneroSelecionado('feminino')}
-                className={`px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 whitespace-nowrap ${
-                  generoSelecionado === 'feminino'
-                    ? 'bg-gradient-to-r from-pink-400 to-pink-500 text-white shadow-sm'
-                    : 'text-gray-300 hover:text-white hover:bg-white/10'
-                }`}
+                className={`px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 whitespace-nowrap ${generoSelecionado === 'feminino'
+                  ? 'bg-gradient-to-r from-pink-400 to-pink-500 text-white shadow-sm'
+                  : 'text-gray-300 hover:text-white hover:bg-white/10'
+                  }`}
               >
                 👩 Feminino
               </Toggle>
