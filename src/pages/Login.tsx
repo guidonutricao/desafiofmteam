@@ -84,7 +84,7 @@ export default function Login() {
           <p className="text-gray-200 drop-shadow-md">Transforme seus hábitos em 7 dias</p>
         </div>
 
-        <Card className="bg-gradient-card border-border/20 shadow-2xl">
+        <Card className="bg-white border-border/20 shadow-2xl">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-bold">Bem-vindo</CardTitle>
             <CardDescription>

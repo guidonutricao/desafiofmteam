@@ -267,7 +267,7 @@ export default function Ranking() {
       case 3:
         return <Award className="w-6 h-6 text-amber-600" />;
       default:
-        return <span className="w-6 h-6 flex items-center justify-center text-sm font-bold text-muted-foreground">#{posicao}</span>;
+        return <span className="w-6 h-6 flex items-center justify-center text-sm font-bold text-gray-700">#{posicao}</span>;
     }
   };
 
@@ -284,7 +284,7 @@ export default function Ranking() {
       case 3:
         return 'bg-gradient-to-r from-amber-600/20 to-amber-700/20 border-amber-600/30';
       default:
-        return 'bg-gradient-card';
+        return 'bg-white dark:bg-white border-gray-200 dark:border-gray-200 text-gray-900';
     }
   };
 
@@ -488,7 +488,9 @@ export default function Ranking() {
                     <AvatarFallback className={`${
                       isUsuarioAtual 
                         ? 'bg-gold-foreground/20 text-gold-foreground' 
-                        : 'bg-accent text-accent-foreground'
+                        : posicao > 3 
+                          ? 'bg-gray-100 text-gray-800'
+                          : 'bg-accent text-accent-foreground'
                     }`}>
                       {getInitiais(usuario.name)}
                     </AvatarFallback>
@@ -498,7 +500,11 @@ export default function Ranking() {
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
                       <h3 className={`font-semibold ${
-                        isUsuarioAtual ? 'text-gold-foreground' : 'text-foreground'
+                        isUsuarioAtual 
+                          ? 'text-gold-foreground' 
+                          : posicao > 3 
+                            ? 'text-gray-900' 
+                            : 'text-foreground'
                       }`}>
                         {usuario.name}
                       </h3>
@@ -511,20 +517,36 @@ export default function Ranking() {
                     <div className="flex items-center gap-4 mt-1">
                       <div className="flex items-center gap-1">
                         <Trophy className={`w-4 h-4 ${
-                          isUsuarioAtual ? 'text-gold-foreground' : 'text-gold'
+                          isUsuarioAtual 
+                            ? 'text-gold-foreground' 
+                            : posicao > 3 
+                              ? 'text-yellow-600' 
+                              : 'text-gold'
                         }`} />
                         <span className={`text-sm font-medium ${
-                          isUsuarioAtual ? 'text-gold-foreground' : 'text-foreground'
+                          isUsuarioAtual 
+                            ? 'text-gold-foreground' 
+                            : posicao > 3 
+                              ? 'text-gray-900' 
+                              : 'text-foreground'
                         }`}>
                           {usuario.totalPoints} pts
                         </span>
                       </div>
                       <div className="flex items-center gap-1">
                         <Calendar className={`w-4 h-4 ${
-                          isUsuarioAtual ? 'text-gold-foreground' : 'text-blue-500'
+                          isUsuarioAtual 
+                            ? 'text-gold-foreground' 
+                            : posicao > 3 
+                              ? 'text-blue-600' 
+                              : 'text-blue-500'
                         }`} />
                         <span className={`text-sm ${
-                          isUsuarioAtual ? 'text-gold-foreground/80' : 'text-muted-foreground'
+                          isUsuarioAtual 
+                            ? 'text-gold-foreground/80' 
+                            : posicao > 3 
+                              ? 'text-gray-600' 
+                              : 'text-muted-foreground'
                         }`}>
                           {getStatusText(usuario)}
                         </span>

@@ -8,6 +8,7 @@ import { useChallengeProgress } from '@/hooks/useChallengeProgress';
 import { useChallengeStatus } from '@/hooks/useChallengeStatus';
 import { ChallengeStartDialog } from '@/components/ChallengeStartDialog';
 import { ChallengeErrorDisplay, TimezoneErrorDisplay, ChallengeLoadingDisplay } from '@/components/ChallengeErrorDisplay';
+import { useNavigate } from 'react-router-dom';
 import {
   Droplets,
   Moon,
@@ -52,6 +53,7 @@ interface CardResultado {
 export default function DesafioDiario() {
   const { user } = useAuth();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const [desafio, setDesafio] = useState<DesafioDiario>({
     hidratacao: false,
@@ -562,69 +564,9 @@ export default function DesafioDiario() {
   const showTasksWithMessage = challengeStatus.hasStarted && !challengeStatus.canCompleteTasks;
 
   if (challengeProgress.isCompleted) {
-    return (
-      <div className="text-center space-y-6 pb-6 lg:pb-0">
-        <div className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full font-bold">
-          <Trophy className="w-5 h-5" />
-          {challengeProgress.displayText}
-        </div>
-        <Card className="max-w-md mx-auto bg-gradient-to-r from-yellow-400 to-orange-500 text-white">
-          <CardHeader>
-            <CardTitle className="text-center flex items-center justify-center gap-2">
-              <Trophy className="w-6 h-6" />
-              Parabéns! 🎉
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="text-center space-y-4">
-            <p className="text-gold-foreground/90">
-              Você completou com sucesso o Desafio Shape Express de 7 dias!
-              Continue mantendo esses hábitos saudáveis em sua rotina.
-            </p>
-            <div className="text-2xl font-bold">
-              {pontuacaoTotal} pontos totais
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Show motivational message and result card even when completed */}
-        {mensagem && (
-          <Card className="bg-white dark:bg-white border-gray-200 dark:border-gray-200 text-gray-900">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-lg">
-                <Flame className="w-5 h-5 text-yellow-600" />
-                Motivação Diária
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <blockquote className="text-gray-900 italic">
-                "{mensagem.mensagem}"
-              </blockquote>
-              {mensagem.autor && (
-                <cite className="text-sm text-gray-600 mt-2 block">
-                  - {mensagem.autor}
-                </cite>
-              )}
-            </CardContent>
-          </Card>
-        )}
-
-        {cardResultado && (
-          <Card className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Trophy className="w-5 h-5" />
-                {cardResultado.titulo}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gold-foreground/90">
-                {cardResultado.descricao}
-              </p>
-            </CardContent>
-          </Card>
-        )}
-      </div>
-    );
+    // Redirect to celebration page when challenge is completed
+    navigate('/celebration');
+    return null;
   }
 
   const tarefasConcluidas = tarefas.filter(t => desafio[t.key] as boolean).length;

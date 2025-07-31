@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste - Página de Celebração Atualizada</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #fef3c7, #fed7aa, #fef3c7);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: bold;
+            color: #92400e;
+            margin-bottom: 20px;
+        }
+        .title {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #111827;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .subtitle {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(to right, #f59e0b, #ea580c, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .message {
+            font-size: 1.5rem;
+            color: #374151;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        .score-box {
+            background: linear-gradient(to right, #f59e0b, #ea580c);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            margin: 30px 0;
+        }
+        .score {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+        .score-label {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        .motivational-blocks {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 40px;
+        }
+        .motivational-block {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        .motivational-block.daily {
+            border: 2px solid rgba(59, 130, 246, 0.2);
+        }
+        .motivational-block.energy {
+            border: 2px solid rgba(34, 197, 94, 0.2);
+        }
+        .motivational-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+        .motivational-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #111827;
+            margin-bottom: 15px;
+        }
+        .motivational-text {
+            font-size: 1.1rem;
+            color: #374151;
+            font-weight: 500;
+            line-height: 1.6;
+        }
+        @media (max-width: 768px) {
+            .title { font-size: 2rem; }
+            .subtitle { font-size: 1.5rem; }
+            .message { font-size: 1.2rem; }
+            .score { font-size: 3rem; }
+            .motivational-blocks { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Badge -->
+        <div style="text-align: center;">
+            <div class="badge">
+                🏆 DESAFIO CONCLUÍDO
+            </div>
+        </div>
+
+        <!-- Title -->
+        <h1 class="title">Desafio Shape Express - Concluído</h1>
+        
+        <!-- Subtitle -->
+        <div class="subtitle">Parabéns! 🎉</div>
+
+        <!-- Main Message -->
+        <p class="message">
+            Você completou com sucesso o Desafio Shape Express de 
+            <strong>7 dias</strong>! Continue mantendo esses hábitos saudáveis em sua rotina.
+        </p>
+
+        <!-- Score Box -->
+        <div class="score-box">
+            <div class="score">2800</div>
+            <div class="score-label">pontos totais</div>
+        </div>
+
+        <!-- Motivational Blocks -->
+        <div class="motivational-blocks">
+            <!-- Motivação Diária -->
+            <div class="motivational-block daily">
+                <div class="motivational-icon">💪</div>
+                <h3 class="motivational-title">Motivação Diária</h3>
+                <p class="motivational-text">
+                    "Você não precisa ser extremo, apenas consistente."
+                </p>
+            </div>
+
+            <!-- Mais Energia -->
+            <div class="motivational-block energy">
+                <div class="motivational-icon">⚡</div>
+                <h3 class="motivational-title">Mais Energia</h3>
+                <p class="motivational-text">
+                    "Aumente seus níveis de energia e disposição com hábitos saudáveis consistentes."
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

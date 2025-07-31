@@ -11,6 +11,7 @@ import Dietas from "./pages/Dietas";
 import Treinos from "./pages/Treinos";
 import Perfil from "./pages/Perfil";
 import Login from "./pages/Login";
+import CelebrationPage from "./pages/CelebrationPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,6 +26,8 @@ const App = () => (
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/" element={<Layout><DesafioDiario /></Layout>} />
+            <Route path="/desafio-diario" element={<Layout><DesafioDiario /></Layout>} />
+            <Route path="/celebration" element={<CelebrationPage />} />
             <Route path="/ranking" element={<Layout><Ranking /></Layout>} />
             <Route path="/dietas" element={<Layout><Dietas /></Layout>} />
             <Route path="/treinos" element={<Layout><Treinos /></Layout>} />

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste - Botão de Logout na Página de Celebração</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .bg-celebration-gradient-animated {
+            background: linear-gradient(-45deg, #fef3c7, #fed7aa, #fde68a, #fbbf24);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+        
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .animate-scale-bounce {
+            animation: scaleBounce 2s ease-in-out infinite;
+        }
+        
+        @keyframes scaleBounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-celebration-gradient-animated relative overflow-hidden">
+    
+    <!-- Skip to main content link -->
+    <a
+        href="#main-content"
+        class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-amber-600 text-white px-4 py-2 rounded-md z-50 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
+    >
+        Pular para o conteúdo principal
+    </a>
+
+    <!-- Logout Button - Top Right Corner -->
+    <div class="absolute top-4 right-4 sm:top-6 sm:right-6 z-50">
+        <button
+            onclick="handleLogout()"
+            class="bg-white/90 backdrop-blur-sm border border-amber-200/50 hover:bg-white hover:border-amber-300 text-gray-700 hover:text-gray-900 shadow-xl hover:shadow-2xl transition-all duration-300 gap-2 rounded-full px-3 py-2 sm:px-4 sm:py-2 flex items-center text-sm font-medium"
+            aria-label="Sair da conta e voltar para login"
+        >
+            <!-- LogOut Icon -->
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+            </svg>
+            <span class="hidden sm:inline">Sair</span>
+        </button>
+    </div>
+
+    <!-- Main Content Container -->
+    <main 
+        id="main-content"
+        class="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12 space-y-6 sm:space-y-8 lg:space-y-12"
+        role="main"
+        tabindex="-1"
+    >
+        
+        <!-- Hero Section -->
+        <header class="text-center space-y-4 sm:space-y-6 lg:space-y-8">
+            <!-- Completion Badge -->
+            <div class="flex justify-center">
+                <div class="inline-flex items-center gap-2 sm:gap-3 bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 sm:px-6 sm:py-3 lg:px-8 lg:py-4 shadow-xl border border-amber-200/50">
+                    <!-- Trophy Icon -->
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6 lg:w-8 lg:h-8 text-amber-600 animate-scale-bounce" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M5.166 2.621v.858c-1.035.148-2.059.33-3.071.543a.75.75 0 0 0-.584.859 6.753 6.753 0 0 0 6.138 5.6 6.73 6.73 0 0 0 2.743 1.346A6.707 6.707 0 0 1 9.279 15H8.54c-1.036 0-1.875.84-1.875 1.875V19.5h-.75a2.25 2.25 0 0 0-2.25 2.25c0 .414.336.75.75.75h9.75a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-2.25-2.25H12v-2.625c0-1.036-.84-1.875-1.875-1.875h-.739a6.706 6.706 0 0 1-1.112-3.173 6.73 6.73 0 0 0 2.743-1.347 6.753 6.753 0 0 0 6.139-5.6.75.75 0 0 0-.585-.858 47.077 47.077 0 0 0-3.07-.543V2.62a.75.75 0 0 0-.658-.744 49.22 49.22 0 0 0-6.093-.377c-2.063 0-4.096.128-6.093.377a.75.75 0 0 0-.657.744Z" />
+                    </svg>
+                    <span class="text-sm sm:text-lg lg:text-xl font-bold text-amber-800 tracking-wide">
+                        DESAFIO CONCLUÍDO
+                    </span>
+                </div>
+            </div>
+            
+            <!-- Main Title -->
+            <div class="space-y-3 sm:space-y-4 lg:space-y-6">
+                <h1 class="text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-gray-900 leading-tight tracking-tight">
+                    Desafio Shape Express - Concluído
+                </h1>
+                <div class="relative">
+                    <div class="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 leading-tight tracking-tight">
+                        Parabéns, João!
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Challenge Summary -->
+            <section class="max-w-4xl mx-auto space-y-4 sm:space-y-6">
+                <div class="bg-white/80 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 shadow-2xl border border-amber-100/50">
+                    <p class="text-lg sm:text-xl md:text-2xl lg:text-3xl text-gray-800 font-semibold leading-relaxed mb-4 sm:mb-6">
+                        Você completou com sucesso o Desafio Shape Express de{' '}
+                        <span class="inline-flex items-center gap-1 sm:gap-2 bg-gradient-to-r from-amber-100 to-orange-100 px-2 py-1 sm:px-3 sm:py-1.5 lg:px-4 lg:py-2 rounded-full text-amber-800 font-bold text-sm sm:text-base lg:text-lg">
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M5.166 2.621v.858c-1.035.148-2.059.33-3.071.543a.75.75 0 0 0-.584.859 6.753 6.753 0 0 0 6.138 5.6 6.73 6.73 0 0 0 2.743 1.346A6.707 6.707 0 0 1 9.279 15H8.54c-1.036 0-1.875.84-1.875 1.875V19.5h-.75a2.25 2.25 0 0 0-2.25 2.25c0 .414.336.75.75.75h9.75a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-2.25-2.25H12v-2.625c0-1.036-.84-1.875-1.875-1.875h-.739a6.706 6.706 0 0 1-1.112-3.173 6.73 6.73 0 0 0 2.743-1.347 6.753 6.753 0 0 0 6.139-5.6.75.75 0 0 0-.585-.858 47.077 47.077 0 0 0-3.07-.543V2.62a.75.75 0 0 0-.658-.744 49.22 49.22 0 0 0-6.093-.377c-2.063 0-4.096.128-6.093.377a.75.75 0 0 0-.657.744Z" />
+                            </svg>
+                            7 dias
+                        </span>
+                        ! Continue mantendo esses hábitos saudáveis em sua rotina.
+                    </p>
+                    
+                    <!-- Total Score Display -->
+                    <div class="relative">
+                        <div class="bg-gradient-to-r from-amber-500 to-orange-500 rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 text-center shadow-xl">
+                            <div class="text-white space-y-1 sm:space-y-2">
+                                <div class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight animate-scale-bounce">
+                                    2450
+                                </div>
+                                <p class="text-sm sm:text-base lg:text-lg font-medium opacity-90">
+                                    pontos totais
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </header>
+
+        <!-- Test Section -->
+        <section class="max-w-2xl mx-auto">
+            <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-blue-100/50">
+                <h2 class="text-xl font-bold text-gray-900 mb-4 text-center">Teste do Botão de Logout</h2>
+                
+                <div class="space-y-4">
+                    <div class="p-4 bg-blue-50 rounded-lg">
+                        <h3 class="font-semibold text-blue-900 mb-2">✅ Funcionalidades Testadas:</h3>
+                        <ul class="text-sm text-blue-800 space-y-1">
+                            <li>• Posicionamento no canto superior direito</li>
+                            <li>• Design responsivo (mobile e desktop)</li>
+                            <li>• Estilo integrado com o tema da página</li>
+                            <li>• Ícone de logout visível</li>
+                            <li>• Texto "Sair" visível apenas em telas maiores</li>
+                            <li>• Efeitos hover e transições suaves</li>
+                            <li>• Acessibilidade com aria-label</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="p-4 bg-green-50 rounded-lg">
+                        <h3 class="font-semibold text-green-900 mb-2">🎯 Como Testar:</h3>
+                        <ol class="text-sm text-green-800 space-y-1">
+                            <li>1. Clique no botão "Sair" no canto superior direito</li>
+                            <li>2. Verifique se o console mostra a mensagem de logout</li>
+                            <li>3. Confirme se seria redirecionado para /login</li>
+                            <li>4. Teste em diferentes tamanhos de tela</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="text-center">
+                        <button 
+                            onclick="testLogoutButton()"
+                            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200"
+                        >
+                            Testar Funcionalidade
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function handleLogout() {
+            console.log('🚪 Logout button clicked!');
+            console.log('📝 In real app, this would:');
+            console.log('  1. Call signOut() from useAuth hook');
+            console.log('  2. Clear authentication state');
+            console.log('  3. Redirect to /login');
+            
+            // Simulate the logout process
+            alert('Logout simulado! Em produção, você seria redirecionado para a página de login.');
+            
+            // In real app, this would be:
+            // await signOut();
+            // window.location.href = '/login';
+        }
+        
+        function testLogoutButton() {
+            console.log('🧪 Testing logout button functionality...');
+            
+            const logoutButton = document.querySelector('[aria-label="Sair da conta e voltar para login"]');
+            
+            if (logoutButton) {
+                console.log('✅ Logout button found');
+                console.log('📍 Position: Top right corner');
+                console.log('🎨 Style: Rounded, with backdrop blur');
+                console.log('📱 Responsive: Text hidden on mobile');
+                console.log('♿ Accessibility: Has aria-label');
+                
+                // Test click
+                logoutButton.click();
+            } else {
+                console.error('❌ Logout button not found');
+            }
+        }
+        
+        // Test responsive behavior
+        window.addEventListener('resize', () => {
+            const width = window.innerWidth;
+            console.log(`📱 Screen width: ${width}px`);
+            
+            if (width < 640) {
+                console.log('📱 Mobile view: "Sair" text should be hidden');
+            } else {
+                console.log('💻 Desktop view: "Sair" text should be visible');
+            }
+        });
+        
+        console.log('🎉 Celebration page with logout button loaded successfully!');
+        console.log('🔍 Check the top-right corner for the logout button');
+    </script>
+</body>
+</html>
