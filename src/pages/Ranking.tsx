@@ -273,7 +273,7 @@ export default function Ranking() {
 
   const getCorFundo = (posicao: number, isUsuarioAtual: boolean) => {
     if (isUsuarioAtual) {
-      return 'bg-gradient-gold text-gold-foreground border-gold';
+      return 'bg-gradient-to-r from-yellow-50 to-yellow-100 border-2 border-yellow-400 shadow-md';
     }
     
     switch (posicao) {
@@ -373,7 +373,7 @@ export default function Ranking() {
           <Trophy className="w-5 h-5" />
           Ranking do Desafio
         </div>
-        <p className="text-muted-foreground">
+        <p className="text-white">
           Veja como você está se saindo comparado aos outros participantes
         </p>
         
@@ -487,7 +487,7 @@ export default function Ranking() {
                     <AvatarImage src={usuario.avatar} />
                     <AvatarFallback className={`${
                       isUsuarioAtual 
-                        ? 'bg-gold-foreground/20 text-gold-foreground' 
+                        ? 'bg-yellow-200 text-yellow-900 font-semibold' 
                         : posicao > 3 
                           ? 'bg-gray-100 text-gray-800'
                           : 'bg-accent text-accent-foreground'
@@ -501,7 +501,7 @@ export default function Ranking() {
                     <div className="flex items-center gap-2">
                       <h3 className={`font-semibold ${
                         isUsuarioAtual 
-                          ? 'text-gold-foreground' 
+                          ? 'text-yellow-900' 
                           : posicao > 3 
                             ? 'text-gray-900' 
                             : 'text-foreground'
@@ -509,7 +509,7 @@ export default function Ranking() {
                         {usuario.name}
                       </h3>
                       {isUsuarioAtual && (
-                        <span className="bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded text-xs font-medium">
+                        <span className="bg-yellow-600 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-sm">
                           Você
                         </span>
                       )}
@@ -518,14 +518,14 @@ export default function Ranking() {
                       <div className="flex items-center gap-1">
                         <Trophy className={`w-4 h-4 ${
                           isUsuarioAtual 
-                            ? 'text-gold-foreground' 
+                            ? 'text-yellow-700' 
                             : posicao > 3 
                               ? 'text-yellow-600' 
                               : 'text-gold'
                         }`} />
                         <span className={`text-sm font-medium ${
                           isUsuarioAtual 
-                            ? 'text-gold-foreground' 
+                            ? 'text-yellow-900' 
                             : posicao > 3 
                               ? 'text-gray-900' 
                               : 'text-foreground'
@@ -536,14 +536,14 @@ export default function Ranking() {
                       <div className="flex items-center gap-1">
                         <Calendar className={`w-4 h-4 ${
                           isUsuarioAtual 
-                            ? 'text-gold-foreground' 
+                            ? 'text-yellow-700' 
                             : posicao > 3 
                               ? 'text-blue-600' 
                               : 'text-blue-500'
                         }`} />
                         <span className={`text-sm ${
                           isUsuarioAtual 
-                            ? 'text-gold-foreground/80' 
+                            ? 'text-yellow-800' 
                             : posicao > 3 
                               ? 'text-gray-600' 
                               : 'text-muted-foreground'

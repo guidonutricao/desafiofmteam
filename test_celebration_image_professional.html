@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste - Imagem de Celebração Profissional</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .test-button {
+            background: #f59e0b;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px 0;
+            display: block;
+            width: 100%;
+        }
+        .test-button:hover {
+            background: #d97706;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background: #f0f9ff;
+            border: 1px solid #0ea5e9;
+        }
+        .error {
+            background: #fef2f2;
+            border-color: #ef4444;
+            color: #dc2626;
+        }
+        .success {
+            background: #f0fdf4;
+            border-color: #22c55e;
+            color: #16a34a;
+        }
+        #imagePreview {
+            max-width: 100%;
+            height: auto;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Teste - Gerador de Imagem de Celebração Profissional</h1>
+        
+        <p><strong>Objetivo:</strong> Testar se a nova implementação profissional está gerando imagens com design sofisticado estilo Instagram Stories.</p>
+        
+        <button class="test-button" onclick="testProfessionalImage()">
+            🚀 Gerar Imagem Profissional de Teste
+        </button>
+        
+        <button class="test-button" onclick="downloadTestImage()">
+            📥 Baixar Imagem de Teste
+        </button>
+        
+        <div id="result"></div>
+        
+        <div id="imageContainer" style="display: none;">
+            <h3>📸 Preview da Imagem Gerada:</h3>
+            <img id="imagePreview" alt="Imagem de celebração gerada">
+        </div>
+    </div>
+
+    <script>
+        // Dados de teste simulando um usuário que completou o desafio
+        const testChallengeData = {
+            patientName: 'Maria Silva',
+            totalScore: 350,
+            challengeDuration: 7,
+            dailyScores: [45, 52, 48, 55, 49, 51, 50],
+            stats: {
+                completedDays: 7,
+                averageScore: 50,
+                bestDay: { day: 4, score: 55 },
+                improvementTrend: 'improving',
+                perfectDays: 2,
+                improvementPercent: 15,
+                streakRecord: 7
+            }
+        };
+
+        let generatedImageUrl = null;
+
+        // Simulação da classe CelebrationImageGenerator
+        class CelebrationImageGenerator {
+            constructor(options = {}) {
+                this.width = options.width || 1080;
+                this.height = options.height || 1920;
+                this.scaleFactor = options.scaleFactor || 1;
+                this.deviceType = options.deviceType || 'desktop';
+                
+                this.canvas = document.createElement('canvas');
+                this.canvas.width = this.width;
+                this.canvas.height = this.height;
+                
+                this.ctx = this.canvas.getContext('2d');
+                if (!this.ctx) {
+                    throw new Error('Could not get canvas context');
+                }
+            }
+
+            async generateCelebrationImage(data) {
+                const validatedData = this.validateAndSanitizeData(data);
+                
+                // Clear canvas
+                this.ctx.clearRect(0, 0, this.width, this.height);
+                
+                // Configuração inicial
+                this.ctx.imageSmoothingEnabled = true;
+                this.ctx.textAlign = 'center';
+                this.ctx.textBaseline = 'middle';
+                
+                // Desenhar elementos profissionais
+                await this.drawProfessionalBackground();
+                await this.drawProfessionalHeader();
+                await this.drawPersonalizedGreeting(validatedData.patientName);
+                await this.drawProgressCircle(validatedData.totalScore, validatedData.stats);
+                await this.drawStatisticsBlocks(validatedData.stats, validatedData.totalScore);
+                await this.drawAchievementsSection();
+                await this.drawMotivationalSection();
+                await this.drawFinalProgressBar(validatedData.stats);
+                await this.drawProfessionalBranding();
+                
+                return this.canvas.toDataURL('image/png', 0.95);
+            }
+
+            // Background gradiente sofisticado
+            async drawProfessionalBackground() {
+                const bgGradient = this.ctx.createLinearGradient(0, 0, 0, this.height);
+                bgGradient.addColorStop(0, '#0c0a09');    // zinc-950
+                bgGradient.addColorStop(0.3, '#18181b');  // zinc-900
+                bgGradient.addColorStop(0.7, '#27272a');  // zinc-800
+                bgGradient.addColorStop(1, '#3f3f46');    // zinc-700
+                
+                this.ctx.fillStyle = bgGradient;
+                this.ctx.fillRect(0, 0, this.width, this.height);
+                
+                // Elementos decorativos
+                const decorGradient1 = this.ctx.createRadialGradient(900, 300, 0, 900, 300, 200);
+                decorGradient1.addColorStop(0, 'rgba(245, 158, 11, 0.4)');
+                decorGradient1.addColorStop(1, 'rgba(245, 158, 11, 0.0)');
+                
+                this.ctx.fillStyle = decorGradient1;
+                this.ctx.beginPath();
+                this.ctx.arc(900, 300, 200, 0, 2 * Math.PI);
+                this.ctx.fill();
+                
+                const decorGradient2 = this.ctx.createRadialGradient(180, 1500, 0, 180, 1500, 150);
+                decorGradient2.addColorStop(0, 'rgba(245, 158, 11, 0.3)');
+                decorGradient2.addColorStop(1, 'rgba(245, 158, 11, 0.0)');
+                
+                this.ctx.fillStyle = decorGradient2;
+                this.ctx.beginPath();
+                this.ctx.arc(180, 1500, 150, 0, 2 * Math.PI);
+                this.ctx.fill();
+            }
+
+            // Header profissional
+            async drawProfessionalHeader() {
+                // Badge "DESAFIO CONCLUÍDO"
+                const badgeWidth = 400;
+                const badgeHeight = 60;
+                const badgeX = (this.width - badgeWidth) / 2;
+                const badgeY = 100;
+
+                const badgeGradient = this.ctx.createLinearGradient(badgeX, badgeY, badgeX + badgeWidth, badgeY + badgeHeight);
+                badgeGradient.addColorStop(0, '#f59e0b');
+                badgeGradient.addColorStop(1, '#d97706');
+
+                this.ctx.fillStyle = badgeGradient;
+                this.roundRect(badgeX, badgeY, badgeWidth, badgeHeight, 30);
+                this.ctx.fill();
+
+                this.ctx.fillStyle = '#ffffff';
+                this.ctx.font = 'bold 32px Arial, sans-serif';
+                this.ctx.fillText('🏆 DESAFIO CONCLUÍDO 🏆', this.width / 2, badgeY + badgeHeight / 2);
+
+                // Título principal
+                this.ctx.fillStyle = '#ffffff';
+                this.ctx.font = 'bold 56px Arial, sans-serif';
+                this.ctx.fillText('Shape Express', this.width / 2, 240);
+
+                // Subtítulo
+                this.ctx.fillStyle = '#d4d4d8';
+                this.ctx.font = '36px Arial, sans-serif';
+                this.ctx.fillText('Desafio Nutricional', this.width / 2, 300);
+            }
+
+            // Saudação personalizada
+            async drawPersonalizedGreeting(name) {
+                this.ctx.fillStyle = '#f59e0b';
+                this.ctx.font = 'bold 48px Arial, sans-serif';
+                this.ctx.fillText(`Parabéns, ${name}!`, this.width / 2, 380);
+
+                this.ctx.fillStyle = '#a1a1aa';
+                this.ctx.font = '28px Arial, sans-serif';
+                this.ctx.fillText('Você completou com sucesso o desafio de 7 dias!', this.width / 2, 430);
+            }
+
+            // Círculo de progresso
+            async drawProgressCircle(totalScore, stats) {
+                const centerX = this.width / 2;
+                const centerY = 600;
+                const outerRadius = 140;
+                const completionPercentage = 100;
+
+                // Círculo de fundo
+                this.ctx.beginPath();
+                this.ctx.arc(centerX, centerY, outerRadius, 0, 2 * Math.PI);
+                this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+                this.ctx.lineWidth = 30;
+                this.ctx.stroke();
+
+                // Círculo de progresso
+                const progressAngle = (completionPercentage / 100) * 2 * Math.PI;
+                const progressGradient = this.ctx.createLinearGradient(centerX - outerRadius, centerY - outerRadius, centerX + outerRadius, centerY + outerRadius);
+                progressGradient.addColorStop(0, '#f59e0b');
+                progressGradient.addColorStop(0.5, '#fbbf24');
+                progressGradient.addColorStop(1, '#f59e0b');
+
+                this.ctx.beginPath();
+                this.ctx.arc(centerX, centerY, outerRadius, -Math.PI / 2, -Math.PI / 2 + progressAngle);
+                this.ctx.strokeStyle = progressGradient;
+                this.ctx.lineWidth = 30;
+                this.ctx.lineCap = 'round';
+                this.ctx.stroke();
+
+                // Texto da porcentagem
+                this.ctx.fillStyle = '#f59e0b';
+                this.ctx.font = 'bold 72px Arial, sans-serif';
+                this.ctx.fillText(`${completionPercentage}%`, centerX, centerY - 10);
+
+                this.ctx.fillStyle = '#ffffff';
+                this.ctx.font = 'bold 28px Arial, sans-serif';
+                this.ctx.fillText('CONCLUÍDO', centerX, centerY + 30);
+            }
+
+            // Blocos de estatísticas
+            async drawStatisticsBlocks(stats, totalScore) {
+                const statsY = 800;
+                const blockWidth = 300;
+                const blockHeight = 120;
+                const spacing = 50;
+                const startX = (this.width - (blockWidth * 3 + spacing * 2)) / 2;
+
+                const statsData = [
+                    { value: stats?.completedDays || 7, label: 'Dias', color: '#f59e0b' },
+                    { value: Math.floor(totalScore / 10) || 1, label: 'Nível', color: '#10b981' },
+                    { value: totalScore || 0, label: 'Pontos', color: '#8b5cf6' }
+                ];
+
+                statsData.forEach((stat, index) => {
+                    const x = startX + (blockWidth + spacing) * index;
+
+                    // Background do bloco
+                    const blockGradient = this.ctx.createLinearGradient(x, statsY, x + blockWidth, statsY + blockHeight);
+                    blockGradient.addColorStop(0, `${stat.color}20`);
+                    blockGradient.addColorStop(1, `${stat.color}10`);
+
+                    this.ctx.fillStyle = blockGradient;
+                    this.roundRect(x, statsY, blockWidth, blockHeight, 20);
+                    this.ctx.fill();
+
+                    // Borda do bloco
+                    this.ctx.strokeStyle = `${stat.color}50`;
+                    this.ctx.lineWidth = 2;
+                    this.ctx.stroke();
+
+                    // Valor
+                    this.ctx.fillStyle = stat.color;
+                    this.ctx.font = 'bold 48px Arial, sans-serif';
+                    this.ctx.fillText(stat.value.toString(), x + blockWidth / 2, statsY + 45);
+
+                    // Label
+                    this.ctx.fillStyle = '#ffffff';
+                    this.ctx.font = '24px Arial, sans-serif';
+                    this.ctx.fillText(stat.label, x + blockWidth / 2, statsY + 85);
+                });
+            }
+
+            // Seção de conquistas
+            async drawAchievementsSection() {
+                this.ctx.fillStyle = '#ffffff';
+                this.ctx.font = 'bold 36px Arial, sans-serif';
+                this.ctx.fillText('✨ CONQUISTAS DESBLOQUEADAS ✨', this.width / 2, 1050);
+
+                const achievementY = 1150;
+                const achievementIcons = ['🏆', '⭐', '💪', '🔥', '🎯', '👑'];
+                const iconSpacing = 150;
+                const iconsStartX = (this.width - (achievementIcons.length - 1) * iconSpacing) / 2;
+
+                achievementIcons.forEach((icon, index) => {
+                    const iconX = iconsStartX + index * iconSpacing;
+
+                    this.ctx.beginPath();
+                    this.ctx.arc(iconX, achievementY, 40, 0, 2 * Math.PI);
+                    this.ctx.fillStyle = 'rgba(245, 158, 11, 0.2)';
+                    this.ctx.fill();
+
+                    this.ctx.strokeStyle = '#f59e0b';
+                    this.ctx.lineWidth = 3;
+                    this.ctx.stroke();
+
+                    this.ctx.fillStyle = '#f59e0b';
+                    this.ctx.font = '48px Arial, sans-serif';
+                    this.ctx.fillText(icon, iconX, achievementY);
+                });
+            }
+
+            // Seção motivacional
+            async drawMotivationalSection() {
+                const motivationY = 1300;
+
+                // Bloco de Motivação
+                this.ctx.fillStyle = 'rgba(245, 158, 11, 0.15)';
+                this.roundRect(80, motivationY - 40, 400, 100, 20);
+                this.ctx.fill();
+
+                this.ctx.fillStyle = '#f59e0b';
+                this.ctx.font = 'bold 28px Arial, sans-serif';
+                this.ctx.fillText('💪 MOTIVAÇÃO', 280, motivationY - 10);
+                this.ctx.fillStyle = '#ffffff';
+                this.ctx.font = '20px Arial, sans-serif';
+                this.ctx.fillText('Nível máximo!', 280, motivationY + 20);
+
+                // Bloco de Energia
+                this.ctx.fillStyle = 'rgba(16, 185, 129, 0.15)';
+                this.roundRect(600, motivationY - 40, 400, 100, 20);
+                this.ctx.fill();
+
+                this.ctx.fillStyle = '#10b981';
+                this.ctx.font = 'bold 28px Arial, sans-serif';
+                this.ctx.fillText('⚡ ENERGIA', 800, motivationY - 10);
+                this.ctx.fillStyle = '#ffffff';
+                this.ctx.font = '20px Arial, sans-serif';
+                this.ctx.fillText('Renovada!', 800, motivationY + 20);
+            }
+
+            // Barra de progresso final
+            async drawFinalProgressBar(stats) {
+                const progressBarY = 1450;
+                const barWidth = 800;
+                const barHeight = 20;
+                const barX = (this.width - barWidth) / 2;
+
+                // Background da barra
+                this.ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+                this.roundRect(barX, progressBarY, barWidth, barHeight, 10);
+                this.ctx.fill();
+
+                // Progresso da barra
+                const progressWidth = barWidth; // 100%
+                const barGradient = this.ctx.createLinearGradient(barX, progressBarY, barX + progressWidth, progressBarY + barHeight);
+                barGradient.addColorStop(0, '#f59e0b');
+                barGradient.addColorStop(1, '#fbbf24');
+
+                this.ctx.fillStyle = barGradient;
+                this.roundRect(barX, progressBarY, progressWidth, barHeight, 10);
+                this.ctx.fill();
+
+                // Mensagem final
+                this.ctx.fillStyle = '#ffffff';
+                this.ctx.font = 'bold 42px Arial, sans-serif';
+                this.ctx.fillText('Parabéns por esta conquista incrível!', this.width / 2, 1550);
+
+                this.ctx.fillStyle = '#d4d4d8';
+                this.ctx.font = '28px Arial, sans-serif';
+                this.ctx.fillText('Continue assim e alcance seus objetivos! 🚀', this.width / 2, 1600);
+            }
+
+            // Branding profissional
+            async drawProfessionalBranding() {
+                this.ctx.fillStyle = '#f59e0b';
+                this.ctx.font = 'bold 36px Arial, sans-serif';
+                this.ctx.fillText('Shape Express', this.width / 2, 1720);
+
+                this.ctx.fillStyle = '#a1a1aa';
+                this.ctx.font = '24px Arial, sans-serif';
+                this.ctx.fillText('Transformando vidas através da nutrição', this.width / 2, 1760);
+
+                this.ctx.fillStyle = '#f59e0b';
+                this.ctx.font = 'bold 22px Arial, sans-serif';
+                this.ctx.fillText('shapeexpress.com', this.width / 2, 1800);
+            }
+
+            // Métodos utilitários
+            validateAndSanitizeData(data) {
+                return {
+                    patientName: data.patientName || 'Usuário',
+                    totalScore: data.totalScore || 0,
+                    challengeDuration: data.challengeDuration || 7,
+                    dailyScores: data.dailyScores || [],
+                    stats: data.stats || {}
+                };
+            }
+
+            roundRect(x, y, width, height, radius) {
+                if (this.ctx.roundRect) {
+                    this.ctx.roundRect(x, y, width, height, radius);
+                } else {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(x + radius, y);
+                    this.ctx.lineTo(x + width - radius, y);
+                    this.ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+                    this.ctx.lineTo(x + width, y + height - radius);
+                    this.ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+                    this.ctx.lineTo(x + radius, y + height);
+                    this.ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+                    this.ctx.lineTo(x, y + radius);
+                    this.ctx.quadraticCurveTo(x, y, x + radius, y);
+                    this.ctx.closePath();
+                }
+            }
+        }
+
+        async function testProfessionalImage() {
+            const resultDiv = document.getElementById('result');
+            const imageContainer = document.getElementById('imageContainer');
+            const imagePreview = document.getElementById('imagePreview');
+            
+            try {
+                resultDiv.innerHTML = '<div class="result">🔄 Gerando imagem profissional...</div>';
+                
+                const generator = new CelebrationImageGenerator({
+                    width: 1080,
+                    height: 1920,
+                    deviceType: 'desktop'
+                });
+                
+                const imageUrl = await generator.generateCelebrationImage(testChallengeData);
+                generatedImageUrl = imageUrl;
+                
+                // Mostrar preview
+                imagePreview.src = imageUrl;
+                imageContainer.style.display = 'block';
+                
+                resultDiv.innerHTML = `
+                    <div class="result success">
+                        ✅ <strong>Sucesso!</strong> Imagem profissional gerada com design sofisticado!<br>
+                        📐 Dimensões: 1080x1920px (Instagram Stories)<br>
+                        🎨 Design: Gradiente zinc-950 para zinc-700<br>
+                        🏆 Elementos: Badge, círculo de progresso, blocos de stats, conquistas<br>
+                        📱 Formato: PNG de alta qualidade (95%)
+                    </div>
+                `;
+                
+            } catch (error) {
+                console.error('Erro ao gerar imagem:', error);
+                resultDiv.innerHTML = `
+                    <div class="result error">
+                        ❌ <strong>Erro:</strong> ${error.message}<br>
+                        Verifique o console para mais detalhes.
+                    </div>
+                `;
+            }
+        }
+
+        function downloadTestImage() {
+            if (!generatedImageUrl) {
+                alert('⚠️ Primeiro gere uma imagem clicando no botão "Gerar Imagem Profissional de Teste"');
+                return;
+            }
+            
+            const link = document.createElement('a');
+            link.download = `shape-express-conquista-${testChallengeData.patientName.replace(/\s+/g, '-').toLowerCase()}.png`;
+            link.href = generatedImageUrl;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            document.getElementById('result').innerHTML += `
+                <div class="result success" style="margin-top: 10px;">
+                    📥 <strong>Download iniciado!</strong> Arquivo: ${link.download}
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

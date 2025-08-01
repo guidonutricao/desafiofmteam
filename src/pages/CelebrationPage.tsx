@@ -5,7 +5,7 @@ import { Navigate } from 'react-router-dom';
 import { Confetti } from '@/components/Confetti';
 import { EvolutionCard } from '@/components/EvolutionCard';
 
-import { SocialSharing } from '@/components/SocialSharing';
+
 import { CelebrationErrorBoundary } from '@/components/CelebrationErrorBoundary';
 import { Trophy, Heart, Loader2, AlertCircle, RefreshCw, Wifi, WifiOff, LogOut } from 'lucide-react';
 import { useCelebrationData, type ChallengeData } from '@/hooks/useCelebrationData';
@@ -16,13 +16,11 @@ import { announceToScreenReader, manageFocus } from '@/lib/accessibilityUtils';
 
 interface CelebrationPageProps {
   challengeData?: ChallengeData;
-  onShare?: () => void;
   onCTAClick?: () => void;
 }
 
 function CelebrationPageContent({ 
   challengeData, 
-  onShare, 
   onCTAClick 
 }: CelebrationPageProps) {
   const { user, loading: authLoading, signOut } = useAuth();
@@ -695,19 +693,7 @@ function CelebrationPageContent({
           </div>
         </section>
 
-        {/* Social Sharing Section - Mobile-optimized button stacking */}
-        <section 
-          className={`flex justify-center transition-all duration-1000 delay-1200 gpu-accelerated ${
-            animationStage >= 4 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-          aria-labelledby="social-sharing"
-        >
-          <SocialSharing
-            challengeData={data}
-            onShare={onShare}
-            className="w-full sm:w-auto max-w-sm sm:max-w-none animate-slide-up-staggered animate-delay-400"
-          />
-        </section>
+
       </main>
     </div>
   );

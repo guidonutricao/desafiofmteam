@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { Share2, Loader2, AlertCircle, RefreshCw } from 'lucide-react';
+import { Share2, Loader2, AlertCircle, RefreshCw, Camera } from 'lucide-react';
 import { retryAsync, RETRY_CONFIGS } from '@/lib/retryUtils';
+import { useCelebrationImageGenerator } from '@/hooks/useCelebrationImageGenerator';
+import { type ChallengeData } from '@/hooks/useCelebrationData';
 
 interface ShareData {
   title: string;
@@ -11,11 +13,7 @@ interface ShareData {
 }
 
 interface SocialSharingProps {
-  challengeData: {
-    challengeDuration: number;
-    totalScore: number;
-    patientName: string;
-  };
+  challengeData: ChallengeData;
   onShare?: () => void;
   className?: string;
 }
@@ -25,6 +23,7 @@ export function SocialSharing({ challengeData, onShare, className }: SocialShari
   const [isSharing, setIsSharing] = useState(false);
   const [shareError, setShareError] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
+  const { isGenerating, error: imageError, generateAndShare } = useCelebrationImageGenerator();
 
   // Generate share content with challenge completion message
   const generateShareData = (): ShareData => {
@@ -82,7 +81,7 @@ export function SocialSharing({ challengeData, onShare, className }: SocialShari
     if (onShare) onShare();
   };
 
-  // Enhanced share handler with comprehensive error handling and retry
+  // Enhanced share handler with image generation
   const handleShare = async (): Promise<void> => {
     if (!challengeData) {
       const errorMsg = "Dados do desafio não encontrados. Tente recarregar a página.";
@@ -100,66 +99,86 @@ export function SocialSharing({ challengeData, onShare, className }: SocialShari
     setRetryCount(0);
     
     try {
-      await retryAsync(async () => {
-        const shareData = generateShareData();
-
-        // Check if Web Share API is available and supported
-        if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
-          try {
-            await navigator.share(shareData);
-            
-            // Show success toast for successful native sharing
-            toast({
-              title: "Compartilhado com sucesso! 🎉",
-              description: "Sua conquista foi compartilhada!",
-            });
-            
-            if (onShare) onShare();
-            return;
-          } catch (shareError: any) {
-            // Handle user cancellation gracefully (don't show error)
-            if (shareError.name === 'AbortError') {
-              // User cancelled sharing, don't show error message
-              return;
-            }
-            
-            // For other share errors, fallback to clipboard
-            console.warn('Web Share API failed, falling back to clipboard:', shareError);
-            throw new Error(`Web Share API failed: ${shareError.message}`);
-          }
-        } else {
-          // Web Share API not available, use clipboard fallback
-          await fallbackToClipboard(shareData);
-        }
-      }, {
-        ...RETRY_CONFIGS.sharing,
-        onRetry: (attempt, error) => {
-          console.warn(`Tentativa ${attempt} de compartilhamento falhou:`, error);
-          setRetryCount(attempt);
-          
-          toast({
-            title: `Tentativa ${attempt} falhou`,
-            description: "Tentando novamente...",
-            variant: "default",
-          });
-        }
+      // Generate and share the celebration image
+      await generateAndShare(challengeData);
+      
+      // Show success toast
+      toast({
+        title: "Imagem gerada com sucesso! 🎉",
+        description: "Sua conquista foi compartilhada com uma imagem personalizada!",
       });
+      
+      if (onShare) onShare();
       
       // Clear any previous errors on success
       setShareError(null);
       
     } catch (error: any) {
-      console.error('Erro geral ao compartilhar:', error);
+      console.error('Erro ao gerar e compartilhar imagem:', error);
       
-      const errorMessage = getShareErrorMessage(error);
-      setShareError(errorMessage);
-      
-      // Show error toast with appropriate user feedback
-      toast({
-        title: "Erro ao compartilhar",
-        description: errorMessage,
-        variant: "destructive",
-      });
+      // Fallback to text sharing if image generation fails
+      try {
+        await retryAsync(async () => {
+          const shareData = generateShareData();
+
+          // Check if Web Share API is available and supported
+          if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+            try {
+              await navigator.share(shareData);
+              
+              // Show success toast for successful native sharing
+              toast({
+                title: "Compartilhado com sucesso! 📝",
+                description: "Sua conquista foi compartilhada como texto!",
+              });
+              
+              if (onShare) onShare();
+              return;
+            } catch (shareError: any) {
+              // Handle user cancellation gracefully (don't show error)
+              if (shareError.name === 'AbortError') {
+                // User cancelled sharing, don't show error message
+                return;
+              }
+              
+              // For other share errors, fallback to clipboard
+              console.warn('Web Share API failed, falling back to clipboard:', shareError);
+              throw new Error(`Web Share API failed: ${shareError.message}`);
+            }
+          } else {
+            // Web Share API not available, use clipboard fallback
+            await fallbackToClipboard(shareData);
+          }
+        }, {
+          ...RETRY_CONFIGS.sharing,
+          onRetry: (attempt, error) => {
+            console.warn(`Tentativa ${attempt} de compartilhamento falhou:`, error);
+            setRetryCount(attempt);
+            
+            toast({
+              title: `Tentativa ${attempt} falhou`,
+              description: "Tentando novamente...",
+              variant: "default",
+            });
+          }
+        });
+        
+        // Clear any previous errors on success
+        setShareError(null);
+        
+      } catch (fallbackError: any) {
+        console.error('Erro geral ao compartilhar:', fallbackError);
+        
+        const errorMessage = getShareErrorMessage(fallbackError);
+        setShareError(errorMessage);
+        
+        // Show error toast with appropriate user feedback
+        toast({
+          title: "Erro ao compartilhar",
+          description: errorMessage,
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsSharing(false);
     }
@@ -193,6 +212,9 @@ export function SocialSharing({ challengeData, onShare, className }: SocialShari
     await handleShare();
   };
 
+  const isLoading = isSharing || isGenerating;
+  const currentError = shareError || imageError;
+
   return (
     <div role="region" aria-labelledby="social-sharing" className="space-y-3">
       <div className="flex flex-col sm:flex-row gap-3 items-center justify-center">
@@ -200,30 +222,31 @@ export function SocialSharing({ challengeData, onShare, className }: SocialShari
           variant="share"
           size="lg"
           onClick={handleShare}
-          disabled={isSharing}
+          disabled={isLoading}
           className={className}
           aria-label={
-            isSharing 
-              ? "Compartilhando conquista, aguarde..." 
-              : "Compartilhar conquista do desafio nas redes sociais"
+            isLoading 
+              ? "Gerando imagem e compartilhando conquista, aguarde..." 
+              : "Gerar imagem personalizada e compartilhar conquista do desafio"
           }
           aria-describedby="share-description"
         >
-          {isSharing ? (
+          {isLoading ? (
             <>
               <Loader2 className="w-5 h-5 animate-spin" aria-hidden="true" />
-              {retryCount > 0 ? `Tentativa ${retryCount}...` : 'Compartilhando...'}
+              {isGenerating ? 'Gerando imagem...' : 
+               retryCount > 0 ? `Tentativa ${retryCount}...` : 'Compartilhando...'}
             </>
           ) : (
             <>
-              <Share2 className="w-5 h-5" aria-hidden="true" />
+              <Camera className="w-5 h-5" aria-hidden="true" />
               Compartilhar Conquista
             </>
           )}
         </Button>
 
         {/* Retry button for failed share attempts */}
-        {shareError && !isSharing && (
+        {currentError && !isLoading && (
           <Button
             variant="outline"
             size="sm"
@@ -238,7 +261,7 @@ export function SocialSharing({ challengeData, onShare, className }: SocialShari
       </div>
 
       {/* Error message display */}
-      {shareError && (
+      {currentError && (
         <div 
           className="flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-lg text-sm"
           role="alert"
@@ -246,8 +269,10 @@ export function SocialSharing({ challengeData, onShare, className }: SocialShari
         >
           <AlertCircle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" aria-hidden="true" />
           <div className="space-y-1">
-            <p className="text-red-700 font-medium">Erro ao compartilhar</p>
-            <p className="text-red-600">{shareError}</p>
+            <p className="text-red-700 font-medium">
+              {imageError ? 'Erro ao gerar imagem' : 'Erro ao compartilhar'}
+            </p>
+            <p className="text-red-600">{currentError}</p>
             {retryCount > 0 && (
               <p className="text-red-500 text-xs">
                 Tentativas realizadas: {retryCount}
@@ -258,7 +283,7 @@ export function SocialSharing({ challengeData, onShare, className }: SocialShari
       )}
 
       {/* Loading state with retry information */}
-      {isSharing && retryCount > 0 && (
+      {isLoading && retryCount > 0 && (
         <div 
           className="flex items-center gap-2 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm"
           role="status"
@@ -266,7 +291,16 @@ export function SocialSharing({ challengeData, onShare, className }: SocialShari
         >
           <Loader2 className="w-4 h-4 animate-spin text-amber-600" aria-hidden="true" />
           <p className="text-amber-700">
-            Tentativa {retryCount} de compartilhamento em andamento...
+            {isGenerating ? 'Gerando imagem...' : `Tentativa ${retryCount} de compartilhamento em andamento...`}
+          </p>
+        </div>
+      )}
+
+      {/* Image generation info */}
+      {!isLoading && !currentError && (
+        <div className="text-center">
+          <p className="text-xs text-gray-500">
+            Gera uma imagem personalizada em alta qualidade com todos os seus dados do desafio
           </p>
         </div>
       )}
@@ -275,7 +309,7 @@ export function SocialSharing({ challengeData, onShare, className }: SocialShari
         id="share-description" 
         className="sr-only"
       >
-        Compartilhe sua conquista do desafio de {challengeData.challengeDuration} dias com {challengeData.totalScore} pontos nas redes sociais
+        Gera uma imagem personalizada e compartilha sua conquista do desafio de {challengeData.challengeDuration} dias com {challengeData.totalScore} pontos nas redes sociais
       </div>
     </div>
   );

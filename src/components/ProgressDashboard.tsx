@@ -17,8 +17,7 @@ import {
 } from "@/components/ui/chart";
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/use-auth';
-import { useChallengeStatus } from '@/hooks/useChallengeStatus';
-import { useChallengeProgress } from '@/hooks/useChallengeProgress';
+import { calculateChallengeProgress, type ChallengeProgress } from '@/hooks/useChallengeProgress';
 import { Loader2, AlertCircle } from 'lucide-react';
 
 interface ProgressData {
@@ -44,7 +43,16 @@ export function ProgressDashboard() {
 
   const [averagePoints, setAveragePoints] = useState(0);
   const [bestDay, setBestDay] = useState<{ day: number; points: number } | null>(null);
-  const [currentChallengeDay, setCurrentChallengeDay] = useState(1);
+  const [challengeProgress, setChallengeProgress] = useState<ChallengeProgress>({
+    currentDay: 1,
+    totalDays: 7,
+    isCompleted: false,
+    isNotStarted: false,
+    daysRemaining: 6,
+    progressPercentage: 14.29,
+    displayText: 'Desafio Shape Express - Dia 1/7',
+    hasError: false
+  });
 
   useEffect(() => {
     if (user) {
@@ -140,50 +148,11 @@ export function ProgressDashboard() {
     }
   };
 
-  // Função para calcular o dia atual do desafio baseado nos dados reais
-  const calculateCurrentChallengeDay = (challengeStartDate: Date | null, progressData: any[]) => {
-    // Se temos uma data de início específica, usar ela
-    if (challengeStartDate) {
-      const startDate = new Date(challengeStartDate);
-      const today = new Date();
-
-      // Ajustar para timezone do Brasil (UTC-3)
-      const brasiliaOffset = -3 * 60; // -3 horas em minutos
-      const todayBrasilia = new Date(today.getTime() + (brasiliaOffset * 60 * 1000));
-      const startDateBrasilia = new Date(startDate.getTime() + (brasiliaOffset * 60 * 1000));
-
-      const diffTime = todayBrasilia.getTime() - startDateBrasilia.getTime();
-      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1; // +1 porque o primeiro dia é dia 1
-
-      // Limitar entre 1 e 7 (ou 8 se completou)
-      if (diffDays < 1) return 1;
-      if (diffDays > 7) return 8; // Desafio completado
-      return diffDays;
-    }
-
-    // Fallback: calcular baseado nos dados de progresso disponíveis
-    if (progressData && progressData.length > 0) {
-      // Encontrar o último dia com dados
-      const daysWithData = progressData.filter(item => item.points > 0 || item.pontuacao_total > 0);
-
-      if (daysWithData.length > 0) {
-        // Se tem dados, o dia atual é o próximo dia após o último com dados
-        const lastDayWithData = Math.max(...daysWithData.map(item => {
-          // Se tem campo 'day', usar ele; senão calcular baseado no índice
-          if ('day' in item) return item.day;
-          return progressData.indexOf(item) + 1;
-        }));
-
-        // Se completou todos os 7 dias, retornar 8 (completado)
-        if (lastDayWithData >= 7) return 8;
-
-        // Senão, retornar o próximo dia
-        return Math.min(lastDayWithData + 1, 7);
-      }
-    }
-
-    // Se não tem dados nem data de início, assumir dia 1
-    return 1;
+  // Função para calcular o progresso do desafio baseado na data de início
+  const updateChallengeProgress = (challengeStartDate: Date | null) => {
+    const progress = calculateChallengeProgress(challengeStartDate);
+    setChallengeProgress(progress);
+    return progress;
   };
 
   const loadProgressData = async () => {
@@ -298,10 +267,9 @@ export function ProgressDashboard() {
 
       setProgressData(chartData);
 
-      // Calcular dia atual do desafio após ter os dados
-      const currentDay = calculateCurrentChallengeDay(challengeStartDate, chartData);
-      setCurrentChallengeDay(currentDay);
-      console.log('📅 Dia atual do desafio:', currentDay);
+      // Calcular progresso do desafio após ter os dados
+      const progress = updateChallengeProgress(challengeStartDate);
+      console.log('📅 Progresso do desafio:', progress);
 
       // Calcular estatísticas
       const total = chartData.reduce((sum, item) => sum + item.points, 0);
@@ -467,7 +435,7 @@ export function ProgressDashboard() {
               Dashboard de Progresso
             </h2>
             <p className="text-sm sm:text-base text-gray-300 mt-1 leading-relaxed">
-              {currentChallengeDay > 7 ? 'Desafio concluído! 🎉' : `Você está no dia ${currentChallengeDay} do desafio`}
+              {challengeProgress.isCompleted ? 'Desafio concluído! 🎉' : challengeProgress.displayText}
             </p>
           </div>
         </div>
@@ -496,27 +464,27 @@ export function ProgressDashboard() {
           </div>
 
           {/* Card 2: Dia Atual do Desafio */}
-          <div className={`rounded-2xl border shadow-lg hover:shadow-xl transition-all duration-300 p-6 sm:p-4 ${currentChallengeDay > 7
+          <div className={`rounded-2xl border shadow-lg hover:shadow-xl transition-all duration-300 p-6 sm:p-4 ${challengeProgress.isCompleted
             ? 'bg-gradient-to-br from-green-50 via-green-100 to-green-200 border-green-300'
             : 'bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 border-blue-300'
             }`}>
             <div className="flex flex-col items-center text-center space-y-3">
-              <div className={`p-2 rounded-full ${currentChallengeDay > 7 ? 'bg-green-200' : 'bg-blue-200'
+              <div className={`p-2 rounded-full ${challengeProgress.isCompleted ? 'bg-green-200' : 'bg-blue-200'
                 }`}>
-                {currentChallengeDay > 7 ? (
+                {challengeProgress.isCompleted ? (
                   <Trophy className="w-5 h-5 text-green-700" />
                 ) : (
                   <CalendarDays className="w-5 h-5 text-blue-700" />
                 )}
               </div>
               <div className="space-y-1">
-                <div className={`text-3xl sm:text-2xl font-bold leading-none ${currentChallengeDay > 7 ? 'text-green-700' : 'text-blue-700'
+                <div className={`text-3xl sm:text-2xl font-bold leading-none ${challengeProgress.isCompleted ? 'text-green-700' : 'text-blue-700'
                   }`}>
-                  {currentChallengeDay > 7 ? '7/7' : currentChallengeDay}
+                  {challengeProgress.isCompleted ? `${challengeProgress.totalDays}/${challengeProgress.totalDays}` : challengeProgress.currentDay}
                 </div>
-                <div className={`text-sm font-medium leading-tight ${currentChallengeDay > 7 ? 'text-green-800' : 'text-blue-800'
+                <div className={`text-sm font-medium leading-tight ${challengeProgress.isCompleted ? 'text-green-800' : 'text-blue-800'
                   }`}>
-                  {currentChallengeDay > 7 ? 'Desafio Completo' : 'Dia Atual do Desafio'}
+                  {challengeProgress.isCompleted ? 'Desafio Completo' : 'Dia Atual do Desafio'}
                 </div>
               </div>
             </div>
