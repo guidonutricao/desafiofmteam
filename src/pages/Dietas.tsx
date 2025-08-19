@@ -851,7 +851,7 @@ export default function Dietas() {
         </div>
 
         {/* Informações Adicionais */}
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-6 md:grid-cols-3">
           {/* Horários */}
           <Card className="bg-white/5 backdrop-blur-sm border-white/10">
             <CardHeader>
@@ -889,6 +889,49 @@ export default function Dietas() {
                   <span className="text-gray-300">{dica}</span>
                 </div>
               ))}
+            </CardContent>
+          </Card>
+
+          {/* App de Substituição de Alimentos */}
+          <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all duration-300 hover:scale-[1.02]">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-white">
+                <div className="p-2 rounded-lg bg-gradient-to-r from-orange-400 to-red-500">
+                  <Apple className="w-5 h-5 text-white" />
+                </div>
+                App de Substituição
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="text-gray-300 text-sm leading-relaxed">
+                <p className="mb-3">
+                  Descubra alternativas nutricionalmente equivalentes para seus alimentos favoritos com nossa calculadora inteligente.
+                </p>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 text-xs text-gray-400">
+                    <div className="w-1.5 h-1.5 bg-gradient-to-r from-orange-400 to-red-500 rounded-full"></div>
+                    <span>Substituições precisas</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-gray-400">
+                    <div className="w-1.5 h-1.5 bg-gradient-to-r from-orange-400 to-red-500 rounded-full"></div>
+                    <span>Baseado em dados nutricionais</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-gray-400">
+                    <div className="w-1.5 h-1.5 bg-gradient-to-r from-orange-400 to-red-500 rounded-full"></div>
+                    <span>Ideal para planejamento alimentar</span>
+                  </div>
+                </div>
+              </div>
+              <a
+                href="https://quantocomer.com.br/fabriciomoura/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center w-full px-4 py-3 bg-gradient-to-r from-orange-400 to-red-500 hover:from-orange-500 hover:to-red-600 text-white font-medium rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-lg"
+              >
+                <Apple className="w-4 h-4 mr-2" />
+                Acessar App
+                <span className="ml-2 text-xs">↗</span>
+              </a>
             </CardContent>
           </Card>
         </div>

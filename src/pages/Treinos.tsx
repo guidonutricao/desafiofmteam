@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Toggle } from '@/components/ui/toggle';
-import { Dumbbell, Home, Building, Trophy, Award, Crown, Star, Flame, Play, Info } from 'lucide-react';
+import { Dumbbell, Home, Building, Trophy, Award, Crown, Star, Flame, Play, Info, X } from 'lucide-react';
 
 interface Exercicio {
   nome: string;
@@ -37,36 +37,36 @@ const treinosDataMasculino: Record<TipoTreino, DiasTreino> = {
     titulo: 'Treino 3x por Semana',
     frequencia: 'Frequência: 3x por semana',
     tipo: 'academia',
-    duracao: '45-60 minutos',
+    duracao: '60 minutos',
     dias: [
       {
         dia: 1,
         nome: 'Peito + Ombro',
-        grupo: 'Peito, Ombros',
+        grupo: 'Peito, Ombros e Tríceps',
         exercicios: [
-          { nome: 'Supino Inclinado com Barra', series: 4, repeticoes: '15/12/10/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/XSiWdufUFQ8' },
-          { nome: 'Crucifixo Inclinado com Halteres', series: 3, repeticoes: '10-12', peso: '60%', execucao: 'https://www.youtube.com/shorts/hV21YJFt6MI' },
-          { nome: 'Supino Reto com Halteres', series: 4, repeticoes: '12/12/10/10', peso: '70%', execucao: 'https://www.youtube.com/shorts/hlV6f0kHmeo' },
-          { nome: 'Crucifixo Máquina', series: 3, repeticoes: '12/10/8', peso: '60%', execucao: 'https://www.youtube.com/shorts/MENdoLpyj7c' },
-          { nome: 'Crossover Polia Alta', series: 4, repeticoes: '12/10/8/6 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/55nyV_aosNk' },
-          { nome: 'Desenvolvimento com Halteres Sentado', series: 3, repeticoes: '10-12', peso: '60%', execucao: 'https://www.youtube.com/shorts/5I7ogOjvdnc' },
-          { nome: 'Elevação Frontal Alternada', series: 3, repeticoes: '10-12', peso: '50%', execucao: 'https://www.youtube.com/shorts/GqZRmCow0rw' },
-          { nome: 'Elevação Lateral com Halteres', series: 4, repeticoes: '15/12/10/8 + drop set', peso: '50%', execucao: 'https://www.youtube.com/shorts/ot9nwSC1JnA' }
+          { nome: 'Supino Inclinado com Barra', series: 4, repeticoes: '15/12/10/8 repetições (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/XSiWdufUFQ8' },
+          { nome: 'Supino Reto com Halteres', series: 3, repeticoes: '10 a 12 repetições', peso: '70%', execucao: 'https://www.youtube.com/shorts/hlV6f0kHmeo' },
+          { nome: 'Crucifixo Máquina', series: 3, repeticoes: '12/10/8 (aumentando a carga a cada série)', peso: '60%', execucao: 'https://www.youtube.com/shorts/MENdoLpyj7c' },
+          { nome: 'Crossover Polia Alta', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/55nyV_aosNk' },
+          { nome: 'Desenvolvimento com Halteres Sentado', series: 3, repeticoes: '10 a 12 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/5I7ogOjvdnc' },
+          { nome: 'Elevação Lateral com Halteres', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série)', peso: '50%', execucao: 'https://www.youtube.com/shorts/ot9nwSC1JnA' },
+          { nome: 'Tríceps Testa na Polia com Corda', series: 3, repeticoes: '10 a 12 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/etTuALjH3bo' },
+          { nome: 'Tríceps na Polia com Barra Reta', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/M88Bt4MMpkI' }
         ]
       },
       {
         dia: 2,
         nome: 'Costas + Trapézio e Post. Ombro',
-        grupo: 'Costas, Trapézio, Posterior de Ombro',
+        grupo: 'Costas, Trapézio, Posterior de Ombros e Bíceps',
         exercicios: [
-          { nome: 'Puxada Aberta Barra Reta', series: 4, repeticoes: '15/12/10/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/_2MfZAj98tk' },
-          { nome: 'Puxada Neutra Triângulo', series: 3, repeticoes: '10-12', peso: '70%', execucao: 'https://www.youtube.com/shorts/ySLFHxmJ_Sc' },
-          { nome: 'Remada Unilateral com Halteres no Banco Inclinado (Serrote)', series: 3, repeticoes: '8-10', peso: '70%', execucao: 'https://www.youtube.com/watch?v=RSBM-o4vpyc&ab_channel=AcademiaSportCenterIgrejinha' },
-          { nome: 'Remada Máquina (Pegada Pronada)', series: 4, repeticoes: '12/10/8/6', peso: '70%', execucao: 'https://www.youtube.com/shorts/r4EmE8I74BQ' },
-          { nome: 'Remada Baixa Triângulo', series: 4, repeticoes: '12/10/8/6 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/7lc8Ow4vIwA' },
-          { nome: 'Crucifixo Invertido Máquina', series: 3, repeticoes: '12/10/8 + drop set', peso: '50%', execucao: 'https://www.youtube.com/shorts/wUT3hmnzq3c' },
-          { nome: 'Encolhimento com Halteres', series: 3, repeticoes: '10-12', peso: '60%', execucao: 'https://www.youtube.com/shorts/x9Im5d1H-Xw' },
-          { nome: 'Abdominal Supra no Solo Pés Altos', series: 4, repeticoes: 'até a falha', peso: '0%', execucao: 'https://www.youtube.com/shorts/PEFjJbjnmns' }
+          { nome: 'Puxada Aberta Barra Reta', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/_2MfZAj98tk' },
+          { nome: 'Puxada Neutra Triângulo', series: 3, repeticoes: '10 a 12 repetições', peso: '70%', execucao: 'https://www.youtube.com/shorts/ySLFHxmJ_Sc' },
+          { nome: 'Remada Máquina (Pegada Pronada)', series: 3, repeticoes: '10 a 12 repetições', peso: '70%', execucao: 'https://www.youtube.com/watch?v=T1dEZNNfEnI' },
+          { nome: 'Remada Baixa Triângulo', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série) + Drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/7lc8Ow4vIwA' },
+          { nome: 'Crucifixo Invertido Máquina', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '50%', execucao: 'https://www.youtube.com/shorts/wUT3hmnzq3c' },
+          { nome: 'Encolhimento com Halteres', series: 3, repeticoes: '10 a 12 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/x9Im5d1H-Xw' },
+          { nome: 'Rosca Scott com Barra W', series: 3, repeticoes: '10 a 12 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/qhRLio6bCRo' },
+          { nome: 'Rosca Direta na Polia (Barra Reta)', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/x6JCKfdzPJE' }
         ]
       },
       {
@@ -74,14 +74,14 @@ const treinosDataMasculino: Record<TipoTreino, DiasTreino> = {
         nome: 'Pernas e Panturrilha',
         grupo: 'Pernas Completo',
         exercicios: [
-          { nome: 'Agachamento Smith', series: 4, repeticoes: '15/12/10/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/1oipoiTpbJA' },
-          { nome: 'Leg Press 45°', series: 3, repeticoes: '12/10/8', peso: '80%', execucao: 'https://www.youtube.com/shorts/D9WR6PoMYxs' },
-          { nome: 'Cadeira Extensora', series: 4, repeticoes: '15/12/10/8 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/PzIfB9MiiX8' },
-          { nome: 'Cadeira Flexora', series: 3, repeticoes: '8-10', peso: '70%', execucao: 'https://www.youtube.com/shorts/T46yKiz8laY' },
-          { nome: 'Mesa Flexora', series: 4, repeticoes: '15/12/10/8 + drop set', peso: '70%', execucao: 'https://www.youtube.com/shorts/IXg1PQ_5gmw' },
-          { nome: 'Panturrilha no Leg Press Horizontal', series: 6, repeticoes: '20/15/12/10/8/30 + rest-pause', peso: '50%', execucao: 'https://www.youtube.com/shorts/PkXChiAQDh8' },
-          { nome: 'Abdominal Infra com as Pernas Flexionadas com Elevação de Quadril', series: 3, repeticoes: 'até a falha', peso: '0%', execucao: 'https://www.youtube.com/shorts/iZ5jYOH2ODM' },
-          { nome: 'Abdominal Supra no Solo Pés Altos', series: 3, repeticoes: '10-12', peso: '0%', execucao: 'https://www.youtube.com/shorts/PEFjJbjnmns' }
+          { nome: 'Agachamento Smith', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/1oipoiTpbJA' },
+          { nome: 'Leg Press 45°', series: 3, repeticoes: '12/10/8 (aumentando a carga a cada série)', peso: '80%', execucao: 'https://www.youtube.com/shorts/D9WR6PoMYxs' },
+          { nome: 'Cadeira Extensora', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/PzIfB9MiiX8' },
+          { nome: 'Cadeira Flexora', series: 3, repeticoes: '8 a 10 repetições', peso: '70%', execucao: 'https://www.youtube.com/shorts/T46yKiz8laY' },
+          { nome: 'Mesa Flexora', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '70%', execucao: 'https://www.youtube.com/shorts/IXg1PQ_5gmw' },
+          { nome: 'Panturrilha no Leg Press Horizontal', series: 5, repeticoes: '20/15/12/10/8 (aumentando a carga a cada série)', peso: '50%', execucao: 'https://www.youtube.com/shorts/PkXChiAQDh8' },
+          { nome: 'Abdominal Infra com as Pernas Flexionadas com Elevação de Quadril', series: 3, repeticoes: 'Até a falha', peso: '0%', execucao: 'https://www.youtube.com/shorts/iZ5jYOH2ODM' },
+          { nome: 'Abdominal Supra no Solo Pés Altos', series: 3, repeticoes: '10 a 12 repetições', peso: '0%', execucao: 'https://www.youtube.com/shorts/PEFjJbjnmns' }
         ]
       }
     ]
@@ -90,21 +90,21 @@ const treinosDataMasculino: Record<TipoTreino, DiasTreino> = {
     titulo: 'Treino 4x por Semana',
     frequencia: 'Frequência: 4x por semana',
     tipo: 'academia',
-    duracao: '45-60 minutos',
+    duracao: '60 minutos',
     dias: [
       {
         dia: 1,
         nome: 'Peito + Ombro',
         grupo: 'Peito, Ombros',
         exercicios: [
-          { nome: 'Supino Inclinado com Barra', series: 4, repeticoes: '15/12/10/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/XSiWdufUFQ8' },
-          { nome: 'Crucifixo Inclinado com Halteres', series: 3, repeticoes: '10-12', peso: '60%', execucao: 'https://www.youtube.com/shorts/hV21YJFt6MI' },
-          { nome: 'Supino Reto com Halteres', series: 4, repeticoes: '12/12/10/10', peso: '70%', execucao: 'https://www.youtube.com/shorts/hlV6f0kHmeo' },
-          { nome: 'Crucifixo Máquina', series: 3, repeticoes: '12/10/8', peso: '60%', execucao: 'https://www.youtube.com/shorts/MENdoLpyj7c' },
-          { nome: 'Crossover Polia Alta', series: 4, repeticoes: '12/10/8/6 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/55nyV_aosNk' },
-          { nome: 'Desenvolvimento com Halteres Sentado', series: 3, repeticoes: '10-12', peso: '60%', execucao: 'https://www.youtube.com/shorts/5I7ogOjvdnc' },
-          { nome: 'Elevação Frontal Alternada', series: 3, repeticoes: '10-12', peso: '50%', execucao: 'https://www.youtube.com/shorts/GqZRmCow0rw' },
-          { nome: 'Elevação Lateral com Halteres', series: 4, repeticoes: '15/12/10/8 + drop set', peso: '50%', execucao: 'https://www.youtube.com/shorts/ot9nwSC1JnA' }
+          { nome: 'Supino Inclinado com Barra', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/XSiWdufUFQ8' },
+          { nome: 'Crucifixo Inclinado com Halteres', series: 3, repeticoes: '10 a 12 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/hV21YJFt6MI' },
+          { nome: 'Supino Reto com Halteres', series: 4, repeticoes: '12/12/10/10 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/hlV6f0kHmeo' },
+          { nome: 'Crucifixo Máquina', series: 3, repeticoes: '12/10/8 (aumentando a carga a cada série)', peso: '60%', execucao: 'https://www.youtube.com/shorts/MENdoLpyj7c' },
+          { nome: 'Crossover Polia Alta', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/55nyV_aosNk' },
+          { nome: 'Desenvolvimento com Halteres Sentado', series: 3, repeticoes: '10 a 12 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/5I7ogOjvdnc' },
+          { nome: 'Elevação Frontal Alternada', series: 3, repeticoes: '10 a 12 repetições', peso: '50%', execucao: 'https://www.youtube.com/shorts/GqZRmCow0rw' },
+          { nome: 'Elevação Lateral com Halteres', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '50%', execucao: 'https://www.youtube.com/shorts/ot9nwSC1JnA' }
         ]
       },
       {
@@ -112,14 +112,14 @@ const treinosDataMasculino: Record<TipoTreino, DiasTreino> = {
         nome: 'Costas + Trapézio e Post. Ombro',
         grupo: 'Costas, Trapézio, Posterior de Ombro',
         exercicios: [
-          { nome: 'Puxada Aberta Barra Reta', series: 4, repeticoes: '15/12/10/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/_2MfZAj98tk' },
-          { nome: 'Puxada Neutra Triângulo', series: 3, repeticoes: '10-12', peso: '70%', execucao: 'https://www.youtube.com/shorts/ySLFHxmJ_Sc' },
-          { nome: 'Remada Unilateral com Halteres no Banco Inclinado (Serrote)', series: 3, repeticoes: '8-10', peso: '70%', execucao: 'https://www.youtube.com/watch?v=RSBM-o4vpyc&ab_channel=AcademiaSportCenterIgrejinha' },
-          { nome: 'Remada Máquina (Pegada Pronada)', series: 4, repeticoes: '12/10/8/6', peso: '70%', execucao: 'https://www.youtube.com/shorts/r4EmE8I74BQ' },
-          { nome: 'Remada Baixa Triângulo', series: 4, repeticoes: '12/10/8/6 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/7lc8Ow4vIwA' },
-          { nome: 'Crucifixo Invertido Máquina', series: 3, repeticoes: '12/10/8 + drop set', peso: '50%', execucao: 'https://www.youtube.com/shorts/wUT3hmnzq3c' },
-          { nome: 'Encolhimento com Halteres', series: 3, repeticoes: '10-12', peso: '60%', execucao: 'https://www.youtube.com/shorts/x9Im5d1H-Xw' },
-          { nome: 'Abdominal Supra no Solo Pés Altos', series: 4, repeticoes: 'até a falha', peso: '0%', execucao: 'https://www.youtube.com/shorts/PEFjJbjnmns' }
+          { nome: 'Puxada Aberta Barra Reta', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/_2MfZAj98tk' },
+          { nome: 'Puxada Neutra Triângulo', series: 3, repeticoes: '10 a 12 repetições', peso: '70%', execucao: 'https://www.youtube.com/shorts/ySLFHxmJ_Sc' },
+          { nome: 'Remada Unilateral com Halteres no Banco Inclinado (Serrote)', series: 3, repeticoes: '8 a 10 repetições', peso: '70%', execucao: 'https://www.youtube.com/watch?v=RSBM-o4vpyc&ab_channel=AcademiaSportCenterIgrejinha' },
+          { nome: 'Remada Máquina (Pegada Pronada)', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/r4EmE8I74BQ' },
+          { nome: 'Remada Baixa Triângulo', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/7lc8Ow4vIwA' },
+          { nome: 'Crucifixo Invertido Máquina', series: 3, repeticoes: '12/10/8 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '50%', execucao: 'https://www.youtube.com/shorts/wUT3hmnzq3c' },
+          { nome: 'Encolhimento com Halteres', series: 3, repeticoes: '10 a 12 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/x9Im5d1H-Xw' },
+          { nome: 'Abdominal Supra no Solo Pés Altos', series: 4, repeticoes: 'Até a falha', peso: '0%', execucao: 'https://www.youtube.com/shorts/PEFjJbjnmns' }
         ]
       },
       {
@@ -127,13 +127,13 @@ const treinosDataMasculino: Record<TipoTreino, DiasTreino> = {
         nome: 'Braços + Abdômen',
         grupo: 'Bíceps, Tríceps, Abdômen',
         exercicios: [
-          { nome: 'Tríceps Testa na Polia com Corda', series: 4, repeticoes: '15/12/10/8', peso: '60%', execucao: 'https://www.youtube.com/shorts/etTuALjH3bo' },
-          { nome: 'Tríceps Francês Unilateral na Polia', series: 3, repeticoes: '10-12', peso: '60%', execucao: 'https://www.youtube.com/shorts/_dtPoiFWZT4' },
-          { nome: 'Tríceps na Polia com Barra Reta', series: 4, repeticoes: '12/10/8/6 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/M88Bt4MMpkI' },
-          { nome: 'Rosca Scott com Barra W', series: 3, repeticoes: '10-12', peso: '60%', execucao: 'https://www.youtube.com/shorts/qhRLio6bCRo' },
-          { nome: 'Rosca Alternada com Halteres', series: 3, repeticoes: '8-10', peso: '60%', execucao: 'https://www.youtube.com/shorts/WUrn8iFf1js' },
-          { nome: 'Rosca Direta na Polia (Barra Reta)', series: 4, repeticoes: '12/10/8/6 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/x6JCKfdzPJE' },
-          { nome: 'Rosca Inversa Barra W', series: 3, repeticoes: '10-12', peso: '50%', execucao: 'https://www.youtube.com/shorts/2izIqLamdiA' },
+          { nome: 'Tríceps Testa na Polia com Corda', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série)', peso: '60%', execucao: 'https://www.youtube.com/shorts/etTuALjH3bo' },
+          { nome: 'Tríceps Francês Unilateral na Polia', series: 3, repeticoes: '10 a 12 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/_dtPoiFWZT4' },
+          { nome: 'Tríceps na Polia com Barra Reta', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série) + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/M88Bt4MMpkI' },
+          { nome: 'Rosca Scott com Barra W', series: 3, repeticoes: '10 a 12 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/qhRLio6bCRo' },
+          { nome: 'Rosca Alternada com Halteres', series: 3, repeticoes: '8 a 10 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/WUrn8iFf1js' },
+          { nome: 'Rosca Direta na Polia (Barra Reta)', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série) + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/x6JCKfdzPJE' },
+          { nome: 'Rosca Inversa Barra W', series: 3, repeticoes: '10 a 12 repetições', peso: '50%', execucao: 'https://www.youtube.com/shorts/2izIqLamdiA' },
           { nome: 'Abdominal Prancha Isométrica', series: 4, repeticoes: '60 segundos', peso: '0%', execucao: 'https://www.youtube.com/shorts/uxPlAbWFUDs' }
         ]
       },
@@ -142,14 +142,14 @@ const treinosDataMasculino: Record<TipoTreino, DiasTreino> = {
         nome: 'Pernas e Panturrilha',
         grupo: 'Pernas Completo',
         exercicios: [
-          { nome: 'Agachamento Smith', series: 4, repeticoes: '15/12/10/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/1oipoiTpbJA' },
-          { nome: 'Leg Press 45°', series: 3, repeticoes: '12/10/8', peso: '80%', execucao: 'https://www.youtube.com/shorts/D9WR6PoMYxs' },
-          { nome: 'Cadeira Extensora', series: 4, repeticoes: '15/12/10/8 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/PzIfB9MiiX8' },
-          { nome: 'Cadeira Flexora', series: 3, repeticoes: '8-10', peso: '70%', execucao: 'https://www.youtube.com/shorts/T46yKiz8laY' },
-          { nome: 'Mesa Flexora', series: 4, repeticoes: '15/12/10/8 + drop set', peso: '70%', execucao: 'https://www.youtube.com/shorts/IXg1PQ_5gmw' },
-          { nome: 'Panturrilha no Leg Press Horizontal', series: 6, repeticoes: '20/15/12/10/8/30 + rest-pause', peso: '50%', execucao: 'https://www.youtube.com/shorts/PkXChiAQDh8' },
-          { nome: 'Abdominal Infra com as Pernas Flexionadas com Elevação de Quadril', series: 3, repeticoes: 'até a falha', peso: '0%', execucao: 'https://www.youtube.com/shorts/iZ5jYOH2ODM' },
-          { nome: 'Abdominal Supra no Solo Pés Altos', series: 3, repeticoes: '10-12', peso: '0%', execucao: 'https://www.youtube.com/shorts/PEFjJbjnmns' }
+          { nome: 'Agachamento Smith', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/1oipoiTpbJA' },
+          { nome: 'Leg Press 45°', series: 3, repeticoes: '12/10/8 (aumentando a carga a cada série)', peso: '80%', execucao: 'https://www.youtube.com/shorts/D9WR6PoMYxs' },
+          { nome: 'Cadeira Extensora', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/PzIfB9MiiX8' },
+          { nome: 'Cadeira Flexora', series: 3, repeticoes: '8 a 10 repetições', peso: '70%', execucao: 'https://www.youtube.com/shorts/T46yKiz8laY' },
+          { nome: 'Mesa Flexora', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '70%', execucao: 'https://www.youtube.com/shorts/IXg1PQ_5gmw' },
+          { nome: 'Panturrilha no Leg Press Horizontal', series: 6, repeticoes: '20/15/12/10/8/30 (aumentando a carga a cada série)', peso: '50%', execucao: 'https://www.youtube.com/shorts/PkXChiAQDh8' },
+          { nome: 'Abdominal Infra com as Pernas Flexionadas com Elevação de Quadril', series: 3, repeticoes: 'Até a falha', peso: '0%', execucao: 'https://www.youtube.com/shorts/iZ5jYOH2ODM' },
+          { nome: 'Abdominal Supra no Solo Pés Altos', series: 3, repeticoes: '10 a 12 repetições', peso: '0%', execucao: 'https://www.youtube.com/shorts/PEFjJbjnmns' }
         ]
       }
     ]
@@ -165,14 +165,14 @@ const treinosDataMasculino: Record<TipoTreino, DiasTreino> = {
         nome: 'Peito + Ombro',
         grupo: 'Peito, Ombros',
         exercicios: [
-          { nome: 'Supino Inclinado com Barra', series: 4, repeticoes: '15/12/10/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/XSiWdufUFQ8' },
-          { nome: 'Crucifixo Inclinado com Halteres', series: 3, repeticoes: '10-12', peso: '60%', execucao: 'https://www.youtube.com/shorts/hV21YJFt6MI' },
-          { nome: 'Supino Reto com Halteres', series: 4, repeticoes: '12/12/10/10', peso: '70%', execucao: 'https://www.youtube.com/shorts/hlV6f0kHmeo' },
-          { nome: 'Crucifixo Máquina', series: 3, repeticoes: '12/10/8', peso: '60%', execucao: 'https://www.youtube.com/shorts/MENdoLpyj7c' },
-          { nome: 'Crossover Polia Alta', series: 4, repeticoes: '12/10/8/6 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/55nyV_aosNk' },
-          { nome: 'Desenvolvimento com Halteres Sentado', series: 3, repeticoes: '10-12', peso: '60%', execucao: 'https://www.youtube.com/shorts/5I7ogOjvdnc' },
-          { nome: 'Elevação Frontal Alternada', series: 3, repeticoes: '10-12', peso: '50%', execucao: 'https://www.youtube.com/shorts/GqZRmCow0rw' },
-          { nome: 'Elevação Lateral com Halteres', series: 4, repeticoes: '15/12/10/8 + drop set', peso: '50%', execucao: 'https://www.youtube.com/shorts/ot9nwSC1JnA' }
+          { nome: 'Supino Inclinado com Barra', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/XSiWdufUFQ8' },
+          { nome: 'Crucifixo Inclinado com Halteres', series: 3, repeticoes: '10 a 12 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/hV21YJFt6MI' },
+          { nome: 'Supino Reto com Halteres', series: 4, repeticoes: '12/12/10/10 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/hlV6f0kHmeo' },
+          { nome: 'Crucifixo Máquina', series: 3, repeticoes: '12/10/8 (aumentando a carga a cada série)', peso: '60%', execucao: 'https://www.youtube.com/shorts/MENdoLpyj7c' },
+          { nome: 'Crossover Polia Alta', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/55nyV_aosNk' },
+          { nome: 'Desenvolvimento com Halteres Sentado', series: 3, repeticoes: '10 a 12 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/5I7ogOjvdnc' },
+          { nome: 'Elevação Frontal Alternada', series: 3, repeticoes: '10 a 12 repetições', peso: '50%', execucao: 'https://www.youtube.com/shorts/GqZRmCow0rw' },
+          { nome: 'Elevação Lateral com Halteres', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '50%', execucao: 'https://www.youtube.com/shorts/ot9nwSC1JnA' }
         ]
       },
       {
@@ -180,14 +180,14 @@ const treinosDataMasculino: Record<TipoTreino, DiasTreino> = {
         nome: 'Costas + Trapézio e Post. Ombro',
         grupo: 'Costas, Trapézio, Posterior de Ombro',
         exercicios: [
-          { nome: 'Puxada Aberta Barra Reta', series: 4, repeticoes: '15/12/10/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/_2MfZAj98tk' },
-          { nome: 'Puxada Neutra Triângulo', series: 3, repeticoes: '10-12', peso: '70%', execucao: 'https://www.youtube.com/shorts/ySLFHxmJ_Sc' },
-          { nome: 'Remada Unilateral com Halteres no Banco Inclinado (Serrote)', series: 3, repeticoes: '8-10', peso: '70%', execucao: 'https://www.youtube.com/watch?v=RSBM-o4vpyc&ab_channel=AcademiaSportCenterIgrejinha' },
-          { nome: 'Remada Máquina (Pegada Pronada)', series: 4, repeticoes: '12/10/8/6', peso: '70%', execucao: 'https://www.youtube.com/shorts/r4EmE8I74BQ' },
-          { nome: 'Remada Baixa Triângulo', series: 4, repeticoes: '12/10/8/6 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/7lc8Ow4vIwA' },
-          { nome: 'Crucifixo Invertido Máquina', series: 3, repeticoes: '12/10/8 + drop set', peso: '50%', execucao: 'https://www.youtube.com/shorts/wUT3hmnzq3c' },
-          { nome: 'Encolhimento com Halteres', series: 3, repeticoes: '10-12', peso: '60%', execucao: 'https://www.youtube.com/shorts/x9Im5d1H-Xw' },
-          { nome: 'Abdominal Supra no Solo Pés Altos', series: 4, repeticoes: 'até a falha', peso: '0%', execucao: 'https://www.youtube.com/shorts/PEFjJbjnmns' }
+          { nome: 'Puxada Aberta Barra Reta', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/_2MfZAj98tk' },
+          { nome: 'Puxada Neutra Triângulo', series: 3, repeticoes: '10 a 12 repetições', peso: '70%', execucao: 'https://www.youtube.com/shorts/ySLFHxmJ_Sc' },
+          { nome: 'Remada Unilateral com Halteres no Banco Inclinado (Serrote)', series: 3, repeticoes: '8 a 10 repetições', peso: '70%', execucao: 'https://www.youtube.com/watch?v=RSBM-o4vpyc&ab_channel=AcademiaSportCenterIgrejinha' },
+          { nome: 'Remada Máquina (Pegada Pronada)', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/r4EmE8I74BQ' },
+          { nome: 'Remada Baixa Triângulo', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/7lc8Ow4vIwA' },
+          { nome: 'Crucifixo Invertido Máquina', series: 3, repeticoes: '12/10/8 + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '50%', execucao: 'https://www.youtube.com/shorts/wUT3hmnzq3c' },
+          { nome: 'Encolhimento com Halteres', series: 3, repeticoes: '10 a 12 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/x9Im5d1H-Xw' },
+          { nome: 'Abdominal Supra no Solo Pés Altos', series: 4, repeticoes: 'Até a falha', peso: '0%', execucao: 'https://www.youtube.com/shorts/PEFjJbjnmns' }
         ]
       },
       {
@@ -195,13 +195,13 @@ const treinosDataMasculino: Record<TipoTreino, DiasTreino> = {
         nome: 'Braços + Abdômen',
         grupo: 'Bíceps, Tríceps, Abdômen',
         exercicios: [
-          { nome: 'Tríceps Testa na Polia com Corda', series: 4, repeticoes: '15/12/10/8', peso: '60%', execucao: 'https://www.youtube.com/shorts/etTuALjH3bo' },
-          { nome: 'Tríceps Francês Unilateral na Polia', series: 3, repeticoes: '10-12', peso: '60%', execucao: 'https://www.youtube.com/shorts/_dtPoiFWZT4' },
-          { nome: 'Tríceps na Polia com Barra Reta', series: 4, repeticoes: '12/10/8/6 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/M88Bt4MMpkI' },
-          { nome: 'Rosca Scott com Barra W', series: 3, repeticoes: '10-12', peso: '60%', execucao: 'https://www.youtube.com/shorts/qhRLio6bCRo' },
-          { nome: 'Rosca Alternada com Halteres', series: 3, repeticoes: '8-10', peso: '60%', execucao: 'https://www.youtube.com/shorts/WUrn8iFf1js' },
-          { nome: 'Rosca Direta na Polia (Barra Reta)', series: 4, repeticoes: '12/10/8/6 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/x6JCKfdzPJE' },
-          { nome: 'Rosca Inversa Barra W', series: 3, repeticoes: '10-12', peso: '50%', execucao: 'https://www.youtube.com/shorts/2izIqLamdiA' },
+          { nome: 'Tríceps Testa na Polia com Corda', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série)', peso: '60%', execucao: 'https://www.youtube.com/shorts/etTuALjH3bo' },
+          { nome: 'Tríceps Francês Unilateral na Polia', series: 3, repeticoes: '10 a 12 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/_dtPoiFWZT4' },
+          { nome: 'Tríceps na Polia com Barra Reta', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/M88Bt4MMpkI' },
+          { nome: 'Rosca Scott com Barra W', series: 3, repeticoes: '10 a 12 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/qhRLio6bCRo' },
+          { nome: 'Rosca Alternada com Halteres', series: 3, repeticoes: '8 a 10 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/WUrn8iFf1js' },
+          { nome: 'Rosca Direta na Polia (Barra Reta)', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/x6JCKfdzPJE' },
+          { nome: 'Rosca Inversa Barra W', series: 3, repeticoes: '10 a 12 repetições', peso: '50%', execucao: 'https://www.youtube.com/shorts/2izIqLamdiA' },
           { nome: 'Abdominal Prancha Isométrica', series: 4, repeticoes: '60 segundos', peso: '0%', execucao: 'https://www.youtube.com/shorts/uxPlAbWFUDs' }
         ]
       },
@@ -210,14 +210,14 @@ const treinosDataMasculino: Record<TipoTreino, DiasTreino> = {
         nome: 'Pernas e Panturrilha',
         grupo: 'Pernas Completo',
         exercicios: [
-          { nome: 'Agachamento Smith', series: 4, repeticoes: '15/12/10/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/1oipoiTpbJA' },
-          { nome: 'Leg Press 45°', series: 3, repeticoes: '12/10/8', peso: '80%', execucao: 'https://www.youtube.com/shorts/D9WR6PoMYxs' },
-          { nome: 'Cadeira Extensora', series: 4, repeticoes: '15/12/10/8 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/PzIfB9MiiX8' },
-          { nome: 'Cadeira Flexora', series: 3, repeticoes: '8-10', peso: '70%', execucao: 'https://www.youtube.com/shorts/T46yKiz8laY' },
-          { nome: 'Mesa Flexora', series: 4, repeticoes: '15/12/10/8 + drop set', peso: '70%', execucao: 'https://www.youtube.com/shorts/IXg1PQ_5gmw' },
-          { nome: 'Panturrilha no Leg Press Horizontal', series: 6, repeticoes: '20/15/12/10/8/30 + rest-pause', peso: '50%', execucao: 'https://www.youtube.com/shorts/PkXChiAQDh8' },
-          { nome: 'Abdominal Infra com as Pernas Flexionadas com Elevação de Quadril', series: 3, repeticoes: 'até a falha', peso: '0%', execucao: 'https://www.youtube.com/shorts/iZ5jYOH2ODM' },
-          { nome: 'Abdominal Supra no Solo Pés Altos', series: 3, repeticoes: '10-12', peso: '0%', execucao: 'https://www.youtube.com/shorts/PEFjJbjnmns' }
+          { nome: 'Agachamento Smith', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/1oipoiTpbJA' },
+          { nome: 'Leg Press 45°', series: 3, repeticoes: '12/10/8 (aumentando a carga a cada série)', peso: '80%', execucao: 'https://www.youtube.com/shorts/D9WR6PoMYxs' },
+          { nome: 'Cadeira Extensora', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/PzIfB9MiiX8' },
+          { nome: 'Cadeira Flexora', series: 3, repeticoes: '8 a 10 repetições', peso: '70%', execucao: 'https://www.youtube.com/shorts/T46yKiz8laY' },
+          { nome: 'Mesa Flexora', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '70%', execucao: 'https://www.youtube.com/shorts/IXg1PQ_5gmw' },
+          { nome: 'Panturrilha no Leg Press Horizontal', series: 6, repeticoes: '20/15/12/10/8/30 (aumentando a carga a cada série)', peso: '50%', execucao: 'https://www.youtube.com/shorts/PkXChiAQDh8' },
+          { nome: 'Abdominal Infra com as Pernas Flexionadas com Elevação de Quadril', series: 3, repeticoes: 'Até a falha', peso: '0%', execucao: 'https://www.youtube.com/shorts/iZ5jYOH2ODM' },
+          { nome: 'Abdominal Supra no Solo Pés Altos', series: 3, repeticoes: '10 a 12 repetições', peso: '0%', execucao: 'https://www.youtube.com/shorts/PEFjJbjnmns' }
         ]
       },
       {
@@ -225,14 +225,14 @@ const treinosDataMasculino: Record<TipoTreino, DiasTreino> = {
         nome: 'Peito + Ombro',
         grupo: 'Peito, Ombros',
         exercicios: [
-          { nome: 'Supino Inclinado com Barra', series: 4, repeticoes: '15/12/10/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/XSiWdufUFQ8' },
-          { nome: 'Crucifixo Inclinado com Halteres', series: 3, repeticoes: '10-12', peso: '60%', execucao: 'https://www.youtube.com/shorts/hV21YJFt6MI' },
-          { nome: 'Supino Reto com Halteres', series: 4, repeticoes: '12/12/10/10', peso: '70%', execucao: 'https://www.youtube.com/shorts/hlV6f0kHmeo' },
-          { nome: 'Crucifixo Máquina', series: 3, repeticoes: '12/10/8', peso: '60%', execucao: 'https://www.youtube.com/shorts/MENdoLpyj7c' },
-          { nome: 'Crossover Polia Alta', series: 4, repeticoes: '12/10/8/6 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/55nyV_aosNk' },
-          { nome: 'Desenvolvimento com Halteres Sentado', series: 3, repeticoes: '10-12', peso: '60%', execucao: 'https://www.youtube.com/shorts/5I7ogOjvdnc' },
-          { nome: 'Elevação Frontal Alternada', series: 3, repeticoes: '10-12', peso: '50%', execucao: 'https://www.youtube.com/shorts/xvT2oA9Bwsc' },
-          { nome: 'Elevação Lateral com Halteres', series: 4, repeticoes: '15/12/10/8 + drop set', peso: '50%', execucao: 'https://www.youtube.com/shorts/ot9nwSC1JnA' }
+          { nome: 'Supino Inclinado com Barra', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/XSiWdufUFQ8' },
+          { nome: 'Crucifixo Inclinado com Halteres', series: 3, repeticoes: '10 a 12 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/hV21YJFt6MI' },
+          { nome: 'Supino Reto com Halteres', series: 4, repeticoes: '12/12/10/10 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/hlV6f0kHmeo' },
+          { nome: 'Crucifixo Máquina', series: 3, repeticoes: '12/10/8 (aumentando a carga a cada série)', peso: '60%', execucao: 'https://www.youtube.com/shorts/MENdoLpyj7c' },
+          { nome: 'Crossover Polia Alta', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/55nyV_aosNk' },
+          { nome: 'Desenvolvimento com Halteres Sentado', series: 3, repeticoes: '10 a 12 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/5I7ogOjvdnc' },
+          { nome: 'Elevação Frontal Alternada', series: 3, repeticoes: '10 a 12 repetições', peso: '50%', execucao: 'https://www.youtube.com/shorts/xvT2oA9Bwsc' },
+          { nome: 'Elevação Lateral com Halteres', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '50%', execucao: 'https://www.youtube.com/shorts/ot9nwSC1JnA' }
         ]
       }
     ]
@@ -241,21 +241,21 @@ const treinosDataMasculino: Record<TipoTreino, DiasTreino> = {
     titulo: 'Treino 6x por Semana',
     frequencia: 'Frequência: 6x por semana',
     tipo: 'academia',
-    duracao: '45-60 minutos',
+    duracao: '60-75 minutos',
     dias: [
       {
         dia: 1,
         nome: 'Peito + Ombro',
         grupo: 'Peito, Ombros',
         exercicios: [
-          { nome: 'Supino Inclinado com Barra', series: 4, repeticoes: '15/12/10/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/XSiWdufUFQ8' },
-          { nome: 'Crucifixo Inclinado com Halteres', series: 3, repeticoes: '10-12', peso: '60%', execucao: 'https://www.youtube.com/shorts/hV21YJFt6MI' },
-          { nome: 'Supino Reto com Halteres', series: 4, repeticoes: '12/12/10/10', peso: '70%', execucao: 'https://www.youtube.com/shorts/hlV6f0kHmeo' },
-          { nome: 'Crucifixo Máquina', series: 3, repeticoes: '12/10/8', peso: '60%', execucao: 'https://www.youtube.com/shorts/MENdoLpyj7c' },
-          { nome: 'Crossover Polia Alta', series: 4, repeticoes: '12/10/8/6 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/55nyV_aosNk' },
-          { nome: 'Desenvolvimento com Halteres Sentado', series: 3, repeticoes: '10-12', peso: '60%', execucao: 'https://www.youtube.com/shorts/5I7ogOjvdnc' },
-          { nome: 'Elevação Frontal Alternada', series: 3, repeticoes: '10-12', peso: '50%', execucao: 'https://www.youtube.com/shorts/GqZRmCow0rw' },
-          { nome: 'Elevação Lateral com Halteres', series: 4, repeticoes: '15/12/10/8 + drop set', peso: '50%', execucao: 'https://www.youtube.com/shorts/ot9nwSC1JnA' }
+          { nome: 'Supino Inclinado com Barra', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/XSiWdufUFQ8' },
+          { nome: 'Crucifixo Inclinado com Halteres', series: 3, repeticoes: '10 a 12 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/hV21YJFt6MI' },
+          { nome: 'Supino Reto com Halteres', series: 4, repeticoes: '12/12/10/10 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/hlV6f0kHmeo' },
+          { nome: 'Crucifixo Máquina', series: 3, repeticoes: '12/10/8 (aumentando a carga a cada série)', peso: '60%', execucao: 'https://www.youtube.com/shorts/MENdoLpyj7c' },
+          { nome: 'Crossover Polia Alta', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/55nyV_aosNk' },
+          { nome: 'Desenvolvimento com Halteres Sentado', series: 3, repeticoes: '10 a 12 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/5I7ogOjvdnc' },
+          { nome: 'Elevação Frontal Alternada', series: 3, repeticoes: '10 a 12 repetições', peso: '50%', execucao: 'https://www.youtube.com/shorts/GqZRmCow0rw' },
+          { nome: 'Elevação Lateral com Halteres', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '50%', execucao: 'https://www.youtube.com/shorts/ot9nwSC1JnA' }
         ]
       },
       {
@@ -263,14 +263,14 @@ const treinosDataMasculino: Record<TipoTreino, DiasTreino> = {
         nome: 'Costas + Trapézio e Post. Ombro',
         grupo: 'Costas, Trapézio, Posterior de Ombro',
         exercicios: [
-          { nome: 'Puxada Aberta Barra Reta', series: 4, repeticoes: '15/12/10/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/_2MfZAj98tk' },
-          { nome: 'Puxada Neutra Triângulo', series: 3, repeticoes: '10-12', peso: '70%', execucao: 'https://www.youtube.com/shorts/ySLFHxmJ_Sc' },
-          { nome: 'Remada Unilateral com Halteres no Banco Inclinado (Serrote)', series: 3, repeticoes: '8-10', peso: '70%', execucao: 'https://www.youtube.com/watch?v=RSBM-o4vpyc&ab_channel=AcademiaSportCenterIgrejinha' },
-          { nome: 'Remada Máquina (Pegada Pronada)', series: 4, repeticoes: '12/10/8/6', peso: '70%', execucao: 'https://www.youtube.com/shorts/r4EmE8I74BQ' },
-          { nome: 'Remada Baixa Triângulo', series: 4, repeticoes: '12/10/8/6 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/7lc8Ow4vIwA' },
-          { nome: 'Crucifixo Invertido Máquina', series: 3, repeticoes: '12/10/8 + drop set', peso: '50%', execucao: 'https://www.youtube.com/shorts/wUT3hmnzq3c' },
-          { nome: 'Encolhimento com Halteres', series: 3, repeticoes: '10-12', peso: '60%', execucao: 'https://www.youtube.com/shorts/x9Im5d1H-Xw' },
-          { nome: 'Abdominal Supra no Solo Pés Altos', series: 4, repeticoes: 'até a falha', peso: '0%', execucao: 'https://www.youtube.com/shorts/PEFjJbjnmns' }
+          { nome: 'Puxada Aberta Barra Reta', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/_2MfZAj98tk' },
+          { nome: 'Puxada Neutra Triângulo', series: 3, repeticoes: '10 a 12 repetições', peso: '70%', execucao: 'https://www.youtube.com/shorts/ySLFHxmJ_Sc' },
+          { nome: 'Remada Unilateral com Halteres no Banco Inclinado (Serrote)', series: 3, repeticoes: '8 a 10 repetições', peso: '70%', execucao: 'https://www.youtube.com/watch?v=RSBM-o4vpyc&ab_channel=AcademiaSportCenterIgrejinha' },
+          { nome: 'Remada Máquina (Pegada Pronada)', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/r4EmE8I74BQ' },
+          { nome: 'Remada Baixa Triângulo', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/7lc8Ow4vIwA' },
+          { nome: 'Crucifixo Invertido Máquina', series: 3, repeticoes: '12/10/8 + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '50%', execucao: 'https://www.youtube.com/shorts/wUT3hmnzq3c' },
+          { nome: 'Encolhimento com Halteres', series: 3, repeticoes: '10 a 12 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/x9Im5d1H-Xw' },
+          { nome: 'Abdominal Supra no Solo Pés Altos', series: 4, repeticoes: 'Até a falha', peso: '0%', execucao: 'https://www.youtube.com/shorts/PEFjJbjnmns' }
         ]
       },
       {
@@ -278,13 +278,13 @@ const treinosDataMasculino: Record<TipoTreino, DiasTreino> = {
         nome: 'Braços + Abdômen',
         grupo: 'Bíceps, Tríceps, Abdômen',
         exercicios: [
-          { nome: 'Tríceps Testa na Polia com Corda', series: 4, repeticoes: '15/12/10/8', peso: '60%', execucao: 'https://www.youtube.com/shorts/etTuALjH3bo' },
-          { nome: 'Tríceps Francês Unilateral na Polia', series: 3, repeticoes: '10-12', peso: '60%', execucao: 'https://www.youtube.com/shorts/_dtPoiFWZT4' },
-          { nome: 'Tríceps na Polia com Barra Reta', series: 4, repeticoes: '12/10/8/6 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/M88Bt4MMpkI' },
-          { nome: 'Rosca Scott com Barra W', series: 3, repeticoes: '10-12', peso: '60%', execucao: 'https://www.youtube.com/shorts/qhRLio6bCRo' },
-          { nome: 'Rosca Alternada com Halteres', series: 3, repeticoes: '8-10', peso: '60%', execucao: 'https://www.youtube.com/shorts/WUrn8iFf1js' },
-          { nome: 'Rosca Direta na Polia (Barra Reta)', series: 4, repeticoes: '12/10/8/6 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/x6JCKfdzPJE' },
-          { nome: 'Rosca Inversa Barra W', series: 3, repeticoes: '10-12', peso: '50%', execucao: 'https://www.youtube.com/shorts/2izIqLamdiA' },
+          { nome: 'Tríceps Testa na Polia com Corda', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série)', peso: '60%', execucao: 'https://www.youtube.com/shorts/etTuALjH3bo' },
+          { nome: 'Tríceps Francês Unilateral na Polia', series: 3, repeticoes: '10 a 12 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/_dtPoiFWZT4' },
+          { nome: 'Tríceps na Polia com Barra Reta', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/M88Bt4MMpkI' },
+          { nome: 'Rosca Scott com Barra W', series: 3, repeticoes: '10 a 12 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/qhRLio6bCRo' },
+          { nome: 'Rosca Alternada com Halteres', series: 3, repeticoes: '8 a 10 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/WUrn8iFf1js' },
+          { nome: 'Rosca Direta na Polia (Barra Reta)', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/x6JCKfdzPJE' },
+          { nome: 'Rosca Inversa Barra W', series: 3, repeticoes: '10 a 12 repetições', peso: '50%', execucao: 'https://www.youtube.com/shorts/2izIqLamdiA' },
           { nome: 'Abdominal Prancha Isométrica', series: 4, repeticoes: '60 segundos', peso: '0%', execucao: 'https://www.youtube.com/shorts/uxPlAbWFUDs' }
         ]
       },
@@ -293,14 +293,14 @@ const treinosDataMasculino: Record<TipoTreino, DiasTreino> = {
         nome: 'Pernas e Panturrilha',
         grupo: 'Pernas Completo',
         exercicios: [
-          { nome: 'Agachamento Smith', series: 4, repeticoes: '15/12/10/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/1oipoiTpbJA' },
-          { nome: 'Leg Press 45°', series: 3, repeticoes: '12/10/8', peso: '80%', execucao: 'https://www.youtube.com/shorts/D9WR6PoMYxs' },
-          { nome: 'Cadeira Extensora', series: 4, repeticoes: '15/12/10/8 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/PzIfB9MiiX8' },
-          { nome: 'Cadeira Flexora', series: 3, repeticoes: '8-10', peso: '70%', execucao: 'https://www.youtube.com/shorts/T46yKiz8laY' },
-          { nome: 'Mesa Flexora', series: 4, repeticoes: '15/12/10/8 + drop set', peso: '70%', execucao: 'https://www.youtube.com/shorts/IXg1PQ_5gmw' },
-          { nome: 'Panturrilha no Leg Press Horizontal', series: 6, repeticoes: '20/15/12/10/8/30 + rest-pause', peso: '50%', execucao: 'https://www.youtube.com/shorts/PkXChiAQDh8' },
-          { nome: 'Abdominal Infra com as Pernas Flexionadas com Elevação de Quadril', series: 3, repeticoes: 'até a falha', peso: '0%', execucao: 'https://www.youtube.com/shorts/iZ5jYOH2ODM' },
-          { nome: 'Abdominal Supra no Solo Pés Altos', series: 3, repeticoes: '10-12', peso: '0%', execucao: 'https://www.youtube.com/shorts/PEFjJbjnmns' }
+          { nome: 'Agachamento Smith', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/1oipoiTpbJA' },
+          { nome: 'Leg Press 45°', series: 3, repeticoes: '12/10/8 (aumentando a carga a cada série)', peso: '80%', execucao: 'https://www.youtube.com/shorts/D9WR6PoMYxs' },
+          { nome: 'Cadeira Extensora', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/PzIfB9MiiX8' },
+          { nome: 'Cadeira Flexora', series: 3, repeticoes: '8 a 10 repetições', peso: '70%', execucao: 'https://www.youtube.com/shorts/T46yKiz8laY' },
+          { nome: 'Mesa Flexora', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '70%', execucao: 'https://www.youtube.com/shorts/IXg1PQ_5gmw' },
+          { nome: 'Panturrilha no Leg Press Horizontal', series: 6, repeticoes: '20/15/12/10/8/30 (aumentando a carga a cada série)', peso: '50%', execucao: 'https://www.youtube.com/shorts/PkXChiAQDh8' },
+          { nome: 'Abdominal Infra com as Pernas Flexionadas com Elevação de Quadril', series: 3, repeticoes: 'Até a falha', peso: '0%', execucao: 'https://www.youtube.com/shorts/iZ5jYOH2ODM' },
+          { nome: 'Abdominal Supra no Solo Pés Altos', series: 3, repeticoes: '10 a 12 repetições', peso: '0%', execucao: 'https://www.youtube.com/shorts/PEFjJbjnmns' }
         ]
       },
       {
@@ -308,14 +308,14 @@ const treinosDataMasculino: Record<TipoTreino, DiasTreino> = {
         nome: 'Peito + Ombro',
         grupo: 'Peito, Ombros',
         exercicios: [
-          { nome: 'Supino Inclinado com Barra', series: 4, repeticoes: '15/12/10/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/XSiWdufUFQ8' },
-          { nome: 'Crucifixo Inclinado com Halteres', series: 3, repeticoes: '10-12', peso: '60%', execucao: 'https://www.youtube.com/shorts/hV21YJFt6MI' },
-          { nome: 'Supino Reto com Halteres', series: 4, repeticoes: '12/12/10/10', peso: '70%', execucao: 'https://www.youtube.com/shorts/hlV6f0kHmeo' },
-          { nome: 'Crucifixo Máquina', series: 3, repeticoes: '12/10/8', peso: '60%', execucao: 'https://www.youtube.com/shorts/MENdoLpyj7c' },
-          { nome: 'Crossover Polia Alta', series: 4, repeticoes: '12/10/8/6 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/55nyV_aosNk' },
-          { nome: 'Desenvolvimento com Halteres Sentado', series: 3, repeticoes: '10-12', peso: '60%', execucao: 'https://www.youtube.com/shorts/5I7ogOjvdnc' },
-          { nome: 'Elevação Frontal Alternada', series: 3, repeticoes: '10-12', peso: '50%', execucao: 'https://www.youtube.com/shorts/xvT2oA9Bwsc' },
-          { nome: 'Elevação Lateral com Halteres', series: 4, repeticoes: '15/12/10/8 + drop set', peso: '50%', execucao: 'https://www.youtube.com/shorts/ot9nwSC1JnA' }
+          { nome: 'Supino Inclinado com Barra', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/XSiWdufUFQ8' },
+          { nome: 'Crucifixo Inclinado com Halteres', series: 3, repeticoes: '10 a 12 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/hV21YJFt6MI' },
+          { nome: 'Supino Reto com Halteres', series: 4, repeticoes: '12/12/10/10 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/hlV6f0kHmeo' },
+          { nome: 'Crucifixo Máquina', series: 3, repeticoes: '12/10/8 (aumentando a carga a cada série)', peso: '60%', execucao: 'https://www.youtube.com/shorts/MENdoLpyj7c' },
+          { nome: 'Crossover Polia Alta', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/55nyV_aosNk' },
+          { nome: 'Desenvolvimento com Halteres Sentado', series: 3, repeticoes: '10 a 12 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/5I7ogOjvdnc' },
+          { nome: 'Elevação Frontal Alternada', series: 3, repeticoes: '10 a 12 repetições', peso: '50%', execucao: 'https://www.youtube.com/shorts/xvT2oA9Bwsc' },
+          { nome: 'Elevação Lateral com Halteres', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '50%', execucao: 'https://www.youtube.com/shorts/ot9nwSC1JnA' }
         ]
       },
       {
@@ -323,14 +323,14 @@ const treinosDataMasculino: Record<TipoTreino, DiasTreino> = {
         nome: 'Costas + Trapézio e Ombro Posterior',
         grupo: 'Costas, Trapézio, Posterior de Ombro',
         exercicios: [
-          { nome: 'Puxada Aberta Barra Reta', series: 4, repeticoes: '15/12/10/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/_2MfZAj98tk' },
-          { nome: 'Puxada Neutra Triângulo', series: 3, repeticoes: '10-12', peso: '70%', execucao: 'https://www.youtube.com/shorts/ySLFHxmJ_Sc' },
-          { nome: 'Remada Unilateral com Halteres no Banco Inclinado (Serrote)', series: 3, repeticoes: '8-10', peso: '70%', execucao: 'https://www.youtube.com/watch?v=RSBM-o4vpyc&ab_channel=AcademiaSportCenterIgrejinha' },
-          { nome: 'Remada Máquina (Pegada Pronada)', series: 4, repeticoes: '12/10/8/6', peso: '70%', execucao: 'https://www.youtube.com/shorts/r4EmE8I74BQ' },
-          { nome: 'Remada Baixa Triângulo', series: 4, repeticoes: '12/10/8/6 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/7lc8Ow4vIwA' },
-          { nome: 'Crucifixo Invertido Máquina', series: 3, repeticoes: '12/10/8 + drop set', peso: '50%', execucao: 'https://www.youtube.com/shorts/wUT3hmnzq3c' },
-          { nome: 'Encolhimento com Halteres', series: 3, repeticoes: '10-12', peso: '60%', execucao: 'https://www.youtube.com/shorts/x9Im5d1H-Xw' },
-          { nome: 'Abdominal Supra no Solo Pés Altos', series: 4, repeticoes: 'até a falha', peso: '0%', execucao: 'https://www.youtube.com/shorts/PEFjJbjnmns' }
+          { nome: 'Puxada Aberta Barra Reta', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/_2MfZAj98tk' },
+          { nome: 'Puxada Neutra Triângulo', series: 3, repeticoes: '10 a 12 repetições', peso: '70%', execucao: 'https://www.youtube.com/shorts/ySLFHxmJ_Sc' },
+          { nome: 'Remada Unilateral com Halteres no Banco Inclinado (Serrote)', series: 3, repeticoes: '8 a 10 repetições', peso: '70%', execucao: 'https://www.youtube.com/watch?v=RSBM-o4vpyc&ab_channel=AcademiaSportCenterIgrejinha' },
+          { nome: 'Remada Máquina (Pegada Pronada)', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/r4EmE8I74BQ' },
+          { nome: 'Remada Baixa Triângulo', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/7lc8Ow4vIwA' },
+          { nome: 'Crucifixo Invertido Máquina', series: 3, repeticoes: '12/10/8 + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '50%', execucao: 'https://www.youtube.com/shorts/wUT3hmnzq3c' },
+          { nome: 'Encolhimento com Halteres', series: 3, repeticoes: '10 a 12 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/x9Im5d1H-Xw' },
+          { nome: 'Abdominal Supra no Solo Pés Altos', series: 4, repeticoes: 'Até a falha', peso: '0%', execucao: 'https://www.youtube.com/shorts/PEFjJbjnmns' }
         ]
       }
     ]
@@ -347,9 +347,9 @@ const treinosDataMasculino: Record<TipoTreino, DiasTreino> = {
         grupo: 'Corpo Inteiro + Cardio',
         exercicios: [
           { nome: 'Polichinelo', series: 4, repeticoes: '45 segundos', peso: '0%', execucao: 'https://www.youtube.com/shorts/guvPySViG7o' },
-          { nome: 'Flexão de Braços', series: 4, repeticoes: '12-15 reps', peso: '0%', execucao: 'https://www.youtube.com/shorts/qqECekG4jMo' },
+          { nome: 'Flexão de Braços', series: 4, repeticoes: '12 a 15 repetições reps', peso: '0%', execucao: 'https://www.youtube.com/shorts/qqECekG4jMo' },
           { nome: 'Burpee', series: 4, repeticoes: '45 segundos', peso: '0%', execucao: 'https://www.youtube.com/shorts/EiIWIEaIZe0' },
-          { nome: 'Abdominal Canivete', series: 4, repeticoes: '12-15 reps', peso: '0%', execucao: 'https://www.youtube.com/shorts/51Ryd2Ds2CI' },
+          { nome: 'Abdominal Canivete', series: 4, repeticoes: '12 a 15 repetições reps', peso: '0%', execucao: 'https://www.youtube.com/shorts/51Ryd2Ds2CI' },
           { nome: 'Abdominal Bicicleta', series: 4, repeticoes: '45 segundos', peso: '0%', execucao: 'https://www.youtube.com/shorts/OnQNhK0EkgK' },
           { nome: 'Prancha Isométrica', series: 4, repeticoes: '60 segundos', peso: '0%', execucao: 'https://www.youtube.com/shorts/uxPlAbWFUDs' }
         ]
@@ -360,10 +360,10 @@ const treinosDataMasculino: Record<TipoTreino, DiasTreino> = {
         grupo: 'Corpo Inteiro + Cardio',
         exercicios: [
           { nome: 'Burpee', series: 4, repeticoes: 'até a exaustão', peso: '0%', execucao: 'https://www.youtube.com/shorts/EiIWIEaIZe0' },
-          { nome: 'Tríceps Mergulho na Cadeira', series: 4, repeticoes: '12-15 reps', peso: '0%', execucao: 'https://www.youtube.com/shorts/z_T5hn0fqCE' },
+          { nome: 'Tríceps Mergulho na Cadeira', series: 4, repeticoes: '12 a 15 repetições reps', peso: '0%', execucao: 'https://www.youtube.com/shorts/z_T5hn0fqCE' },
           { nome: 'Escalador', series: 4, repeticoes: '45 segundos', peso: '0%', execucao: 'https://www.youtube.com/shorts/fDo4sulRb04' },
           { nome: 'Corrida Estacionária', series: 4, repeticoes: '45 segundos', peso: '0%', execucao: 'https://www.youtube.com/shorts/Wqg6rBCjVo0' },
-          { nome: 'Abdominal Supra no Solo Pés Altos', series: 4, repeticoes: '12-15 reps', peso: '0%', execucao: 'https://www.youtube.com/shorts/PEFjJbjnmns' },
+          { nome: 'Abdominal Supra no Solo Pés Altos', series: 4, repeticoes: '12 a 15 repetições reps', peso: '0%', execucao: 'https://www.youtube.com/shorts/PEFjJbjnmns' },
           { nome: 'Prancha Isométrica', series: 4, repeticoes: '60 segundos', peso: '0%', execucao: 'https://www.youtube.com/shorts/uxPlAbWFUDs' }
         ]
       },
@@ -373,8 +373,8 @@ const treinosDataMasculino: Record<TipoTreino, DiasTreino> = {
         grupo: 'Corpo Inteiro + Cardio',
         exercicios: [
           { nome: 'Polichinelo Frontal', series: 4, repeticoes: '45 segundos', peso: '0%', execucao: 'https://www.youtube.com/shorts/-Rks8TC7YD8' },
-          { nome: 'Flexão de Braços', series: 4, repeticoes: '12-15 reps', peso: '0%', execucao: 'https://www.youtube.com/shorts/qqECekG4jMo' },
-          { nome: 'Lombar Solo Dinâmico', series: 4, repeticoes: '12-15 reps', peso: '0%', execucao: 'https://www.youtube.com/shorts/RaHn_82tANI' },
+          { nome: 'Flexão de Braços', series: 4, repeticoes: '12 a 15 repetições reps', peso: '0%', execucao: 'https://www.youtube.com/shorts/qqECekG4jMo' },
+          { nome: 'Lombar Solo Dinâmico', series: 4, repeticoes: '12 a 15 repetições reps', peso: '0%', execucao: 'https://www.youtube.com/shorts/RaHn_82tANI' },
           { nome: 'Escalador', series: 4, repeticoes: '45 segundos', peso: '0%', execucao: 'https://www.youtube.com/shorts/fDo4sulRb04' },
           { nome: 'Corrida Estacionária', series: 4, repeticoes: '45 segundos', peso: '0%', execucao: 'https://www.youtube.com/shorts/Wqg6rBCjVo0' },
           { nome: 'Prancha Isométrica', series: 4, repeticoes: '60 segundos', peso: '0%', execucao: 'https://www.youtube.com/shorts/uxPlAbWFUDs' }
@@ -390,7 +390,7 @@ const treinosDataFeminino: Record<TipoTreino, DiasTreino> = {
     titulo: 'Treino 3x por Semana',
     frequencia: 'Frequência: 3x por semana',
     tipo: 'academia',
-    duracao: '45-60 minutos',
+    duracao: '60 minutos',
     genero: 'feminino',
     dias: [
       {
@@ -398,12 +398,12 @@ const treinosDataFeminino: Record<TipoTreino, DiasTreino> = {
         nome: 'Quadríceps + estímulo Isquiotibial',
         grupo: 'Quadríceps, Glúteos, Panturrilha, Abdômen',
         exercicios: [
-          { nome: 'Agachamento Smith', series: 4, repeticoes: '15/12/10/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/1oipoiTpbJA' },
-          { nome: 'Leg Press 45°', series: 4, repeticoes: '12/10/8/6', peso: '80%', execucao: 'https://www.youtube.com/shorts/D9WR6PoMYxs' },
-          { nome: 'Cadeira Extensora', series: 4, repeticoes: '12/10/8/6 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/PzIfB9MiiX8' },
-          { nome: 'Elevação de Quadril na Máquina', series: 4, repeticoes: '12/12/10/10', peso: '60%', execucao: 'https://www.youtube.com/shorts/Nuoo1XgRtGY' },
-          { nome: 'Glúteos Coice na Polia Pernas Estendidas', series: 3, repeticoes: '10-12', peso: '60%', execucao: 'https://youtube.com/shorts/ZzjTOb19hPw' },
-          { nome: 'Panturrilha no Leg Press Horizontal', series: 4, repeticoes: '20/15/12/10 + rest-pause', peso: '50%', execucao: 'https://www.youtube.com/shorts/PkXChiAQDh8' },
+          { nome: 'Agachamento Smith', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/1oipoiTpbJA' },
+          { nome: 'Leg Press 45°', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série)', peso: '80%', execucao: 'https://www.youtube.com/shorts/D9WR6PoMYxs' },
+          { nome: 'Cadeira Extensora', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/PzIfB9MiiX8' },
+          { nome: 'Elevação de Quadril na Máquina', series: 4, repeticoes: '12/12/10/10 (aumentando a carga a cada série)', peso: '60%', execucao: 'https://www.youtube.com/shorts/Nuoo1XgRtGY' },
+          { nome: 'Glúteos Coice na Polia Pernas Estendidas', series: 3, repeticoes: '10 a 12 repetições', peso: '60%', execucao: 'https://youtube.com/shorts/ZzjTOb19hPw' },
+          { nome: 'Panturrilha no Leg Press Horizontal', series: 4, repeticoes: '20/15/12/10 (aumentando a carga a cada série)', peso: '50%', execucao: 'https://www.youtube.com/shorts/PkXChiAQDh8' },
           { nome: 'Abdominal Prancha Isométrica', series: 3, repeticoes: '60 segundos', peso: '0%', execucao: 'https://www.youtube.com/shorts/uxPlAbWFUDs' }
         ]
       },
@@ -412,15 +412,15 @@ const treinosDataFeminino: Record<TipoTreino, DiasTreino> = {
         nome: 'Membros superiores e Abdômen',
         grupo: 'Costas, Peito, Ombros, Braços, Abdômen',
         exercicios: [
-          { nome: 'Puxada Aberta Barra Reta', series: 3, repeticoes: '12/10/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/_2MfZAj98tk' },
-          { nome: 'Supino Inclinado com Halteres', series: 3, repeticoes: '10-12', peso: '70%', execucao: 'https://www.youtube.com/shorts/ZaNyRjpoki8' },
-          { nome: 'Remada Máquina (Pegada Neutra)', series: 3, repeticoes: '12/10/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/r4EmE8I74BQ' },
-          { nome: 'Elevação Lateral com Halteres', series: 4, repeticoes: '8-10 + drop set', peso: '50%', execucao: 'https://www.youtube.com/shorts/ot9nwSC1JnA' },
-          { nome: 'Rosca Direta na Polia (Barra Reta)', series: 4, repeticoes: '8-10 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/x6JCKfdzPJE' },
-          { nome: 'Tríceps Francês Unilateral na Polia', series: 3, repeticoes: '8-10', peso: '60%', execucao: 'https://www.youtube.com/shorts/_dtPoiFWZT4' },
-          { nome: 'Tríceps na Polia com Barra Reta', series: 3, repeticoes: '10/8/6 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/M88Bt4MMpkI' },
-          { nome: 'Abdominal Máquina', series: 3, repeticoes: '10-12', peso: '30%', execucao: 'https://www.youtube.com/shorts/uAe1Uj3Y05k' },
-          { nome: 'Abdominal Infra com as Pernas Flexionadas com Elevação de Quadril', series: 3, repeticoes: 'até a falha', peso: '0%', execucao: 'https://www.youtube.com/shorts/iZ5jYOH2ODM' }
+          { nome: 'Puxada Aberta Barra Reta', series: 3, repeticoes: '12/10/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/_2MfZAj98tk' },
+          { nome: 'Supino Inclinado com Halteres', series: 3, repeticoes: '10 a 12 repetições', peso: '70%', execucao: 'https://www.youtube.com/shorts/ZaNyRjpoki8' },
+          { nome: 'Remada Máquina (Pegada Neutra)', series: 3, repeticoes: '12/10/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/r4EmE8I74BQ' },
+          { nome: 'Elevação Lateral com Halteres', series: 4, repeticoes: '8 a 10 repetições + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '50%', execucao: 'https://www.youtube.com/shorts/ot9nwSC1JnA' },
+          { nome: 'Rosca Direta na Polia (Barra Reta)', series: 4, repeticoes: '8 a 10 repetições + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/x6JCKfdzPJE' },
+          { nome: 'Tríceps Francês Unilateral na Polia', series: 3, repeticoes: '8 a 10 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/_dtPoiFWZT4' },
+          { nome: 'Tríceps na Polia com Barra Reta', series: 3, repeticoes: '10/8/6 + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/M88Bt4MMpkI' },
+          { nome: 'Abdominal Máquina', series: 3, repeticoes: '10 a 12 repetições', peso: '30%', execucao: 'https://www.youtube.com/shorts/uAe1Uj3Y05k' },
+          { nome: 'Abdominal Infra com as Pernas Flexionadas com Elevação de Quadril', series: 3, repeticoes: 'Até a falha', peso: '0%', execucao: 'https://www.youtube.com/shorts/iZ5jYOH2ODM' }
         ]
       },
       {
@@ -428,12 +428,12 @@ const treinosDataFeminino: Record<TipoTreino, DiasTreino> = {
         nome: 'Isquiotibial + Glúteo',
         grupo: 'Isquiotibiais, Glúteos, Panturrilha, Abdômen',
         exercicios: [
-          { nome: 'Agachamento Sumô no Step com Halteres', series: 4, repeticoes: '12/12/10/10', peso: '60%', execucao: 'https://www.youtube.com/shorts/oFx42iwZKgo' },
-          { nome: 'Stiff com Halteres', series: 4, repeticoes: '10/10/8/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/SRVkwwXk7I4' },
-          { nome: 'Elevação de Quadril na Máquina', series: 3, repeticoes: '12/10/8', peso: '60%', execucao: 'https://www.youtube.com/shorts/Nuoo1XgRtGY' },
-          { nome: 'Abdução de Quadril Máquina com Corpo a Frente', series: 3, repeticoes: '12/10/8 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/cZilgAG9Vx8' },
-          { nome: 'Mesa Flexora', series: 4, repeticoes: '12/10/8/6 + drop set', peso: '70%', execucao: 'https://www.youtube.com/shorts/IXg1PQ_5gmw' },
-          { nome: 'Panturrilha no Smith com Step', series: 4, repeticoes: '10-12', peso: '50%', execucao: 'https://www.youtube.com/shorts/cETqVlftyJs' },
+          { nome: 'Agachamento Sumô no Step com Halteres', series: 4, repeticoes: '12/12/10/10 (aumentando a carga a cada série)', peso: '60%', execucao: 'https://www.youtube.com/shorts/oFx42iwZKgo' },
+          { nome: 'Stiff com Halteres', series: 4, repeticoes: '10/10/8/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/SRVkwwXk7I4' },
+          { nome: 'Elevação de Quadril na Máquina', series: 3, repeticoes: '12/10/8 (aumentando a carga a cada série)', peso: '60%', execucao: 'https://www.youtube.com/shorts/Nuoo1XgRtGY' },
+          { nome: 'Abdução de Quadril Máquina com Corpo a Frente', series: 3, repeticoes: '12/10/8 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/cZilgAG9Vx8' },
+          { nome: 'Mesa Flexora', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '70%', execucao: 'https://www.youtube.com/shorts/IXg1PQ_5gmw' },
+          { nome: 'Panturrilha no Smith com Step', series: 4, repeticoes: '10 a 12 repetições', peso: '50%', execucao: 'https://www.youtube.com/shorts/cETqVlftyJs' },
           { nome: 'Abdominal Prancha Isométrica', series: 3, repeticoes: '60 segundos', peso: '0%', execucao: 'https://www.youtube.com/shorts/uxPlAbWFUDs' }
         ]
       }
@@ -443,7 +443,7 @@ const treinosDataFeminino: Record<TipoTreino, DiasTreino> = {
     titulo: 'Treino 4x por Semana',
     frequencia: 'Frequência: 4x por semana',
     tipo: 'academia',
-    duracao: '45-60 minutos',
+    duracao: '60 minutos',
     genero: 'feminino',
     dias: [
       {
@@ -451,12 +451,12 @@ const treinosDataFeminino: Record<TipoTreino, DiasTreino> = {
         nome: 'Quadríceps + estímulo Isquiotibial',
         grupo: 'Quadríceps, Glúteos, Panturrilha, Abdômen',
         exercicios: [
-          { nome: 'Agachamento Smith', series: 4, repeticoes: '15/12/10/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/1oipoiTpbJA' },
-          { nome: 'Leg Press 45°', series: 4, repeticoes: '12/10/8/6', peso: '80%', execucao: 'https://www.youtube.com/shorts/D9WR6PoMYxs' },
-          { nome: 'Cadeira Extensora', series: 4, repeticoes: '12/10/8/6 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/PzIfB9MiiX8' },
-          { nome: 'Elevação de Quadril na Máquina', series: 4, repeticoes: '12/12/10/10', peso: '60%', execucao: 'https://www.youtube.com/shorts/Nuoo1XgRtGY' },
-          { nome: 'Glúteos Coice na Polia Pernas Estendidas', series: 3, repeticoes: '10-12', peso: '60%', execucao: 'https://youtube.com/shorts/ZzjTOb19hPw' },
-          { nome: 'Panturrilha no Leg Press Horizontal', series: 4, repeticoes: '20/15/12/10 + rest-pause', peso: '50%', execucao: 'https://www.youtube.com/shorts/PkXChiAQDh8' },
+          { nome: 'Agachamento Smith', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/1oipoiTpbJA' },
+          { nome: 'Leg Press 45°', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série)', peso: '80%', execucao: 'https://www.youtube.com/shorts/D9WR6PoMYxs' },
+          { nome: 'Cadeira Extensora', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/PzIfB9MiiX8' },
+          { nome: 'Elevação de Quadril na Máquina', series: 4, repeticoes: '12/12/10/10 (aumentando a carga a cada série)', peso: '60%', execucao: 'https://www.youtube.com/shorts/Nuoo1XgRtGY' },
+          { nome: 'Glúteos Coice na Polia Pernas Estendidas', series: 3, repeticoes: '10 a 12 repetições', peso: '60%', execucao: 'https://youtube.com/shorts/ZzjTOb19hPw' },
+          { nome: 'Panturrilha no Leg Press Horizontal', series: 4, repeticoes: '20/15/12/10 (aumentando a carga a cada série)', peso: '50%', execucao: 'https://www.youtube.com/shorts/PkXChiAQDh8' },
           { nome: 'Abdominal Prancha Isométrica', series: 3, repeticoes: '60 segundos', peso: '0%', execucao: 'https://www.youtube.com/shorts/uxPlAbWFUDs' }
         ]
       },
@@ -465,15 +465,15 @@ const treinosDataFeminino: Record<TipoTreino, DiasTreino> = {
         nome: 'Membros superiores e Abdômen',
         grupo: 'Costas, Peito, Ombros, Braços, Abdômen',
         exercicios: [
-          { nome: 'Puxada Aberta Barra Reta', series: 3, repeticoes: '12/10/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/_2MfZAj98tk' },
-          { nome: 'Supino Inclinado com Halteres', series: 3, repeticoes: '10-12', peso: '70%', execucao: 'https://www.youtube.com/shorts/ZaNyRjpoki8' },
-          { nome: 'Remada Máquina (Pegada Neutra)', series: 3, repeticoes: '12/10/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/r4EmE8I74BQ' },
-          { nome: 'Elevação Lateral com Halteres', series: 4, repeticoes: '8-10 + drop set', peso: '50%', execucao: 'https://www.youtube.com/shorts/ot9nwSC1JnA' },
-          { nome: 'Rosca Direta na Polia (Barra Reta)', series: 4, repeticoes: '8-10 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/x6JCKfdzPJE' },
-          { nome: 'Tríceps Francês Unilateral na Polia', series: 3, repeticoes: '8-10', peso: '60%', execucao: 'https://www.youtube.com/shorts/_dtPoiFWZT4' },
-          { nome: 'Tríceps na Polia com Barra Reta', series: 3, repeticoes: '10/8/6 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/M88Bt4MMpkI' },
-          { nome: 'Abdominal Máquina', series: 3, repeticoes: '10-12', peso: '30%', execucao: 'https://www.youtube.com/shorts/uAe1Uj3Y05k' },
-          { nome: 'Abdominal Infra com as Pernas Flexionadas com Elevação de Quadril', series: 3, repeticoes: 'até a falha', peso: '0%', execucao: 'https://www.youtube.com/shorts/iZ5jYOH2ODM' }
+          { nome: 'Puxada Aberta Barra Reta', series: 3, repeticoes: '12/10/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/_2MfZAj98tk' },
+          { nome: 'Supino Inclinado com Halteres', series: 3, repeticoes: '10 a 12 repetições', peso: '70%', execucao: 'https://www.youtube.com/shorts/ZaNyRjpoki8' },
+          { nome: 'Remada Máquina (Pegada Neutra)', series: 3, repeticoes: '12/10/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/r4EmE8I74BQ' },
+          { nome: 'Elevação Lateral com Halteres', series: 4, repeticoes: '8 a 10 repetições + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '50%', execucao: 'https://www.youtube.com/shorts/ot9nwSC1JnA' },
+          { nome: 'Rosca Direta na Polia (Barra Reta)', series: 4, repeticoes: '8 a 10 repetições + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/x6JCKfdzPJE' },
+          { nome: 'Tríceps Francês Unilateral na Polia', series: 3, repeticoes: '8 a 10 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/_dtPoiFWZT4' },
+          { nome: 'Tríceps na Polia com Barra Reta', series: 3, repeticoes: '10/8/6 + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/M88Bt4MMpkI' },
+          { nome: 'Abdominal Máquina', series: 3, repeticoes: '10 a 12 repetições', peso: '30%', execucao: 'https://www.youtube.com/shorts/uAe1Uj3Y05k' },
+          { nome: 'Abdominal Infra com as Pernas Flexionadas com Elevação de Quadril', series: 3, repeticoes: 'Até a falha', peso: '0%', execucao: 'https://www.youtube.com/shorts/iZ5jYOH2ODM' }
         ]
       },
       {
@@ -481,12 +481,12 @@ const treinosDataFeminino: Record<TipoTreino, DiasTreino> = {
         nome: 'Isquiotibial + Glúteo',
         grupo: 'Isquiotibiais, Glúteos, Panturrilha, Abdômen',
         exercicios: [
-          { nome: 'Agachamento Sumô no Step com Halteres', series: 4, repeticoes: '12/12/10/10', peso: '60%', execucao: 'https://www.youtube.com/shorts/oFx42iwZKgo' },
-          { nome: 'Stiff com Halteres', series: 4, repeticoes: '10/10/8/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/SRVkwwXk7I4' },
-          { nome: 'Elevação de Quadril na Máquina', series: 3, repeticoes: '12/10/8', peso: '60%', execucao: 'https://www.youtube.com/shorts/Nuoo1XgRtGY' },
-          { nome: 'Abdução de Quadril Máquina com Corpo a Frente', series: 3, repeticoes: '12/10/8 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/cZilgAG9Vx8' },
-          { nome: 'Mesa Flexora', series: 4, repeticoes: '12/10/8/6 + drop set', peso: '70%', execucao: 'https://www.youtube.com/shorts/IXg1PQ_5gmw' },
-          { nome: 'Panturrilha no Smith com Step', series: 4, repeticoes: '10-12', peso: '50%', execucao: 'https://www.youtube.com/shorts/cETqVlftyJs' },
+          { nome: 'Agachamento Sumô no Step com Halteres', series: 4, repeticoes: '12/12/10/10 (aumentando a carga a cada série)', peso: '60%', execucao: 'https://www.youtube.com/shorts/oFx42iwZKgo' },
+          { nome: 'Stiff com Halteres', series: 4, repeticoes: '10/10/8/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/SRVkwwXk7I4' },
+          { nome: 'Elevação de Quadril na Máquina', series: 3, repeticoes: '12/10/8 (aumentando a carga a cada série)', peso: '60%', execucao: 'https://www.youtube.com/shorts/Nuoo1XgRtGY' },
+          { nome: 'Abdução de Quadril Máquina com Corpo a Frente', series: 3, repeticoes: '12/10/8 (aumentando a carga a cada série)+ Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/cZilgAG9Vx8' },
+          { nome: 'Mesa Flexora', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '70%', execucao: 'https://www.youtube.com/shorts/IXg1PQ_5gmw' },
+          { nome: 'Panturrilha no Smith com Step', series: 4, repeticoes: '10 a 12 repetições', peso: '50%', execucao: 'https://www.youtube.com/shorts/cETqVlftyJs' },
           { nome: 'Abdominal Prancha Isométrica', series: 3, repeticoes: '60 segundos', peso: '0%', execucao: 'https://www.youtube.com/shorts/uxPlAbWFUDs' }
         ]
       },
@@ -495,15 +495,15 @@ const treinosDataFeminino: Record<TipoTreino, DiasTreino> = {
         nome: 'Membros superiores e Abdômen',
         grupo: 'Peito, Costas, Ombros, Braços, Abdômen',
         exercicios: [
-          { nome: 'Peck Deck', series: 3, repeticoes: '10-12', peso: '60%', execucao: 'https://www.youtube.com/shorts/bA5KbR0xltE' },
-          { nome: 'Puxada Neutra Triângulo', series: 3, repeticoes: '12/10/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/ySLFHxmJ_Sc' },
-          { nome: 'Remada Máquina (Pegada Pronada)', series: 3, repeticoes: '10/8/6', peso: '70%', execucao: 'https://www.youtube.com/shorts/r4EmE8I74BQ' },
-          { nome: 'Crucifixo Inverso Unilateral na Polia', series: 3, repeticoes: '8-10', peso: '50%', execucao: 'https://www.youtube.com/shorts/rJyUiN6Gkdg' },
-          { nome: 'Rosca Direta Alternada Sentado com Halteres', series: 4, repeticoes: '8-10', peso: '60%', execucao: 'https://www.youtube.com/shorts/4onwQ6kLrC4' },
-          { nome: 'Tríceps Coice Unilateral na Polia Baixa', series: 3, repeticoes: '8-10', peso: '60%', execucao: 'https://www.youtube.com/shorts/Yll1IwBByRo' },
-          { nome: 'Tríceps na Polia com Corda', series: 3, repeticoes: '10/8/6 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/-QGC1cL6ETE' },
-          { nome: 'Abdominal Supra no Solo Pés Altos', series: 3, repeticoes: '12-15 com carga', peso: '30%', execucao: 'https://www.youtube.com/shorts/PEFjJbjnmns' },
-          { nome: 'Abdominal Infra com as Pernas Flexionadas', series: 3, repeticoes: 'até a falha', peso: '0%', execucao: 'https://www.youtube.com/watch?v=6LtsNXhhQDY&ab_channel=BioformaAcademia' }
+          { nome: 'Peck Deck', series: 3, repeticoes: '10 a 12 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/bA5KbR0xltE' },
+          { nome: 'Puxada Neutra Triângulo', series: 3, repeticoes: '12/10/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/ySLFHxmJ_Sc' },
+          { nome: 'Remada Máquina (Pegada Pronada)', series: 3, repeticoes: '10/8/6 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/r4EmE8I74BQ' },
+          { nome: 'Crucifixo Inverso Unilateral na Polia', series: 3, repeticoes: '8 a 10 repetições', peso: '50%', execucao: 'https://www.youtube.com/shorts/rJyUiN6Gkdg' },
+          { nome: 'Rosca Direta Alternada Sentado com Halteres', series: 4, repeticoes: '8 a 10 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/4onwQ6kLrC4' },
+          { nome: 'Tríceps Coice Unilateral na Polia Baixa', series: 3, repeticoes: '8 a 10 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/Yll1IwBByRo' },
+          { nome: 'Tríceps na Polia com Corda', series: 3, repeticoes: '10/8/6 + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/-QGC1cL6ETE' },
+          { nome: 'Abdominal Supra no Solo Pés Altos', series: 3, repeticoes: '12 a 15 repetições com carga', peso: '30%', execucao: 'https://www.youtube.com/shorts/PEFjJbjnmns' },
+          { nome: 'Abdominal Infra com as Pernas Flexionadas', series: 3, repeticoes: 'Até a falha', peso: '0%', execucao: 'https://www.youtube.com/watch?v=6LtsNXhhQDY&ab_channel=BioformaAcademia' }
         ]
       }
     ]
@@ -520,12 +520,12 @@ const treinosDataFeminino: Record<TipoTreino, DiasTreino> = {
         nome: 'Quadríceps + estímulo Isquiotibial',
         grupo: 'Quadríceps, Glúteos, Panturrilha, Abdômen',
         exercicios: [
-          { nome: 'Agachamento Smith', series: 4, repeticoes: '15/12/10/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/1oipoiTpbJA' },
-          { nome: 'Leg Press 45°', series: 4, repeticoes: '12/10/8/6', peso: '80%', execucao: 'https://www.youtube.com/shorts/D9WR6PoMYxs' },
-          { nome: 'Cadeira Extensora', series: 4, repeticoes: '12/10/8/6 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/PzIfB9MiiX8' },
-          { nome: 'Elevação de Quadril na Máquina', series: 4, repeticoes: '12/12/10/10', peso: '60%', execucao: 'https://www.youtube.com/shorts/Nuoo1XgRtGY' },
-          { nome: 'Glúteos Coice na Polia Pernas Estendidas', series: 3, repeticoes: '10-12', peso: '60%', execucao: 'https://youtube.com/shorts/ZzjTOb19hPw' },
-          { nome: 'Panturrilha no Leg Press Horizontal', series: 4, repeticoes: '20/15/12/10 + rest-pause', peso: '50%', execucao: 'https://www.youtube.com/shorts/PkXChiAQDh8' },
+          { nome: 'Agachamento Smith', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/1oipoiTpbJA' },
+          { nome: 'Leg Press 45°', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série)', peso: '80%', execucao: 'https://www.youtube.com/shorts/D9WR6PoMYxs' },
+          { nome: 'Cadeira Extensora', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/PzIfB9MiiX8' },
+          { nome: 'Elevação de Quadril na Máquina', series: 4, repeticoes: '12/12/10/10 (aumentando a carga a cada série)', peso: '60%', execucao: 'https://www.youtube.com/shorts/Nuoo1XgRtGY' },
+          { nome: 'Glúteos Coice na Polia Pernas Estendidas', series: 3, repeticoes: '10 a 12 repetições', peso: '60%', execucao: 'https://youtube.com/shorts/ZzjTOb19hPw' },
+          { nome: 'Panturrilha no Leg Press Horizontal', series: 4, repeticoes: '20/15/12/10 (aumentando a carga a cada série)', peso: '50%', execucao: 'https://www.youtube.com/shorts/PkXChiAQDh8' },
           { nome: 'Abdominal Prancha Isométrica', series: 3, repeticoes: '60 segundos', peso: '0%', execucao: 'https://www.youtube.com/shorts/uxPlAbWFUDs' }
         ]
       },
@@ -534,15 +534,15 @@ const treinosDataFeminino: Record<TipoTreino, DiasTreino> = {
         nome: 'Membros superiores e Abdômen',
         grupo: 'Costas, Peito, Ombros, Braços, Abdômen',
         exercicios: [
-          { nome: 'Puxada Aberta Barra Reta', series: 3, repeticoes: '12/10/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/_2MfZAj98tk' },
-          { nome: 'Supino Inclinado com Halteres', series: 3, repeticoes: '10-12', peso: '70%', execucao: 'https://www.youtube.com/shorts/ZaNyRjpoki8' },
-          { nome: 'Remada Máquina (Pegada Neutra)', series: 3, repeticoes: '12/10/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/r4EmE8I74BQ' },
-          { nome: 'Elevação Lateral com Halteres', series: 4, repeticoes: '8-10 + drop set', peso: '50%', execucao: 'https://www.youtube.com/shorts/ot9nwSC1JnA' },
-          { nome: 'Rosca Direta na Polia (Barra Reta)', series: 4, repeticoes: '8-10 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/x6JCKfdzPJE' },
-          { nome: 'Tríceps Francês Unilateral na Polia', series: 3, repeticoes: '8-10', peso: '60%', execucao: 'https://www.youtube.com/shorts/_dtPoiFWZT4' },
-          { nome: 'Tríceps na Polia com Barra Reta', series: 3, repeticoes: '10/8/6 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/M88Bt4MMpkI' },
-          { nome: 'Abdominal Máquina', series: 3, repeticoes: '10-12', peso: '30%', execucao: 'https://www.youtube.com/shorts/uAe1Uj3Y05k' },
-          { nome: 'Abdominal Infra com as Pernas Flexionadas com Elevação de Quadril', series: 3, repeticoes: 'até a falha', peso: '0%', execucao: 'https://www.youtube.com/shorts/iZ5jYOH2ODM' }
+          { nome: 'Puxada Aberta Barra Reta', series: 3, repeticoes: '12/10/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/_2MfZAj98tk' },
+          { nome: 'Supino Inclinado com Halteres', series: 3, repeticoes: '10 a 12 repetições', peso: '70%', execucao: 'https://www.youtube.com/shorts/ZaNyRjpoki8' },
+          { nome: 'Remada Máquina (Pegada Neutra)', series: 3, repeticoes: '12/10/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/r4EmE8I74BQ' },
+          { nome: 'Elevação Lateral com Halteres', series: 4, repeticoes: '8 a 10 repetições + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '50%', execucao: 'https://www.youtube.com/shorts/ot9nwSC1JnA' },
+          { nome: 'Rosca Direta na Polia (Barra Reta)', series: 4, repeticoes: '8 a 10 repetições + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/x6JCKfdzPJE' },
+          { nome: 'Tríceps Francês Unilateral na Polia', series: 3, repeticoes: '8 a 10 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/_dtPoiFWZT4' },
+          { nome: 'Tríceps na Polia com Barra Reta', series: 3, repeticoes: '10/8/6 + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/M88Bt4MMpkI' },
+          { nome: 'Abdominal Máquina', series: 3, repeticoes: '10 a 12 repetições', peso: '30%', execucao: 'https://www.youtube.com/shorts/uAe1Uj3Y05k' },
+          { nome: 'Abdominal Infra com as Pernas Flexionadas com Elevação de Quadril', series: 3, repeticoes: 'Até a falha', peso: '0%', execucao: 'https://www.youtube.com/shorts/iZ5jYOH2ODM' }
         ]
       },
       {
@@ -550,12 +550,12 @@ const treinosDataFeminino: Record<TipoTreino, DiasTreino> = {
         nome: 'Isquiotibial + Glúteo',
         grupo: 'Isquiotibiais, Glúteos, Panturrilha, Abdômen',
         exercicios: [
-          { nome: 'Agachamento Sumô no Step com Halteres', series: 4, repeticoes: '12/12/10/10', peso: '60%', execucao: 'https://www.youtube.com/shorts/oFx42iwZKgo' },
-          { nome: 'Stiff com Halteres', series: 4, repeticoes: '10/10/8/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/SRVkwwXk7I4' },
-          { nome: 'Elevação de Quadril na Máquina', series: 3, repeticoes: '12/10/8', peso: '60%', execucao: 'https://www.youtube.com/shorts/Nuoo1XgRtGY' },
-          { nome: 'Abdução de Quadril Máquina com Corpo a Frente', series: 3, repeticoes: '12/10/8 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/cZilgAG9Vx8' },
-          { nome: 'Mesa Flexora', series: 4, repeticoes: '12/10/8/6 + drop set', peso: '70%', execucao: 'https://www.youtube.com/shorts/IXg1PQ_5gmw' },
-          { nome: 'Panturrilha no Smith com Step', series: 4, repeticoes: '10-12', peso: '50%', execucao: 'https://www.youtube.com/shorts/cETqVlftyJs' },
+          { nome: 'Agachamento Sumô no Step com Halteres', series: 4, repeticoes: '12/12/10/10 (aumentando a carga a cada série)', peso: '60%', execucao: 'https://www.youtube.com/shorts/oFx42iwZKgo' },
+          { nome: 'Stiff com Halteres', series: 4, repeticoes: '10/10/8/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/SRVkwwXk7I4' },
+          { nome: 'Elevação de Quadril na Máquina', series: 3, repeticoes: '12/10/8 (aumentando a carga a cada série)', peso: '60%', execucao: 'https://www.youtube.com/shorts/Nuoo1XgRtGY' },
+          { nome: 'Abdução de Quadril Máquina com Corpo a Frente', series: 3, repeticoes: '12/10/8 + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/cZilgAG9Vx8' },
+          { nome: 'Mesa Flexora', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '70%', execucao: 'https://www.youtube.com/shorts/IXg1PQ_5gmw' },
+          { nome: 'Panturrilha no Smith com Step', series: 4, repeticoes: '10 a 12 repetições', peso: '50%', execucao: 'https://www.youtube.com/shorts/cETqVlftyJs' },
           { nome: 'Abdominal Prancha Isométrica', series: 3, repeticoes: '60 segundos', peso: '0%', execucao: 'https://www.youtube.com/shorts/uxPlAbWFUDs' }
         ]
       },
@@ -564,15 +564,15 @@ const treinosDataFeminino: Record<TipoTreino, DiasTreino> = {
         nome: 'Membros superiores e Abdômen',
         grupo: 'Peito, Costas, Ombros, Braços, Abdômen',
         exercicios: [
-          { nome: 'Peck Deck', series: 3, repeticoes: '10-12', peso: '60%', execucao: 'https://www.youtube.com/shorts/bA5KbR0xltE' },
-          { nome: 'Puxada Neutra Triângulo', series: 3, repeticoes: '12/10/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/ySLFHxmJ_Sc' },
-          { nome: 'Remada Máquina (Pegada Pronada)', series: 3, repeticoes: '10/8/6', peso: '70%', execucao: 'https://www.youtube.com/shorts/r4EmE8I74BQ' },
-          { nome: 'Crucifixo Inverso Unilateral na Polia', series: 3, repeticoes: '8-10', peso: '50%', execucao: 'https://www.youtube.com/shorts/rJyUiN6Gkdg' },
-          { nome: 'Rosca Direta Alternada Sentado com Halteres', series: 4, repeticoes: '8-10', peso: '60%', execucao: 'https://www.youtube.com/shorts/4onwQ6kLrC4' },
-          { nome: 'Tríceps Coice Unilateral na Polia Baixa', series: 3, repeticoes: '8-10', peso: '60%', execucao: 'https://www.youtube.com/shorts/Yll1IwBByRo' },
-          { nome: 'Tríceps na Polia com Corda', series: 3, repeticoes: '10/8/6 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/-QGC1cL6ETE' },
-          { nome: 'Abdominal Supra no Solo Pés Altos', series: 3, repeticoes: '12-15 com carga', peso: '30%', execucao: 'https://www.youtube.com/shorts/PEFjJbjnmns' },
-          { nome: 'Abdominal Infra com as Pernas Flexionadas', series: 3, repeticoes: 'até a falha', peso: '0%', execucao: 'https://www.youtube.com/watch?v=6LtsNXhhQDY&ab_channel=BioformaAcademia' }
+          { nome: 'Peck Deck', series: 3, repeticoes: '10 a 12 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/bA5KbR0xltE' },
+          { nome: 'Puxada Neutra Triângulo', series: 3, repeticoes: '12/10/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/ySLFHxmJ_Sc' },
+          { nome: 'Remada Máquina (Pegada Pronada)', series: 3, repeticoes: '10/8/6 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/r4EmE8I74BQ' },
+          { nome: 'Crucifixo Inverso Unilateral na Polia', series: 3, repeticoes: '8 a 10 repetições', peso: '50%', execucao: 'https://www.youtube.com/shorts/rJyUiN6Gkdg' },
+          { nome: 'Rosca Direta Alternada Sentado com Halteres', series: 4, repeticoes: '8 a 10 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/4onwQ6kLrC4' },
+          { nome: 'Tríceps Coice Unilateral na Polia Baixa', series: 3, repeticoes: '8 a 10 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/Yll1IwBByRo' },
+          { nome: 'Tríceps na Polia com Corda', series: 3, repeticoes: '10/8/6 + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/-QGC1cL6ETE' },
+          { nome: 'Abdominal Supra no Solo Pés Altos', series: 3, repeticoes: '12 a 15 repetições com carga', peso: '30%', execucao: 'https://www.youtube.com/shorts/PEFjJbjnmns' },
+          { nome: 'Abdominal Infra com as Pernas Flexionadas', series: 3, repeticoes: 'Até a falha', peso: '0%', execucao: 'https://www.youtube.com/watch?v=6LtsNXhhQDY&ab_channel=BioformaAcademia' }
         ]
       },
       {
@@ -580,12 +580,12 @@ const treinosDataFeminino: Record<TipoTreino, DiasTreino> = {
         nome: 'Quadríceps + estímulo Isquiotibial',
         grupo: 'Quadríceps, Glúteos, Panturrilha, Abdômen',
         exercicios: [
-          { nome: 'Agachamento Smith', series: 4, repeticoes: '15/12/10/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/1oipoiTpbJA' },
-          { nome: 'Leg Press 45°', series: 4, repeticoes: '12/10/8/6', peso: '80%', execucao: 'https://www.youtube.com/shorts/D9WR6PoMYxs' },
-          { nome: 'Cadeira Extensora', series: 4, repeticoes: '12/10/8/6 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/PzIfB9MiiX8' },
-          { nome: 'Elevação de Quadril na Máquina', series: 4, repeticoes: '12/12/10/10', peso: '60%', execucao: 'https://www.youtube.com/shorts/Nuoo1XgRtGY' },
-          { nome: 'Glúteos Coice na Polia Pernas Estendidas', series: 3, repeticoes: '10-12', peso: '60%', execucao: 'https://youtube.com/shorts/ZzjTOb19hPw' },
-          { nome: 'Panturrilha no Leg Press Horizontal', series: 4, repeticoes: '20/15/12/10 + rest-pause', peso: '50%', execucao: 'https://www.youtube.com/shorts/PkXChiAQDh8' },
+          { nome: 'Agachamento Smith', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/1oipoiTpbJA' },
+          { nome: 'Leg Press 45°', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série)', peso: '80%', execucao: 'https://www.youtube.com/shorts/D9WR6PoMYxs' },
+          { nome: 'Cadeira Extensora', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/PzIfB9MiiX8' },
+          { nome: 'Elevação de Quadril na Máquina', series: 4, repeticoes: '12/12/10/10 (aumentando a carga a cada série)', peso: '60%', execucao: 'https://www.youtube.com/shorts/Nuoo1XgRtGY' },
+          { nome: 'Glúteos Coice na Polia Pernas Estendidas', series: 3, repeticoes: '10 a 12 repetições', peso: '60%', execucao: 'https://youtube.com/shorts/ZzjTOb19hPw' },
+          { nome: 'Panturrilha no Leg Press Horizontal', series: 4, repeticoes: '20/15/12/10 (aumentando a carga a cada série)', peso: '50%', execucao: 'https://www.youtube.com/shorts/PkXChiAQDh8' },
           { nome: 'Abdominal Prancha Isométrica', series: 3, repeticoes: '60 segundos', peso: '0%', execucao: 'https://www.youtube.com/shorts/uxPlAbWFUDs' }
         ]
       }
@@ -595,7 +595,7 @@ const treinosDataFeminino: Record<TipoTreino, DiasTreino> = {
     titulo: 'Treino 6x por Semana',
     frequencia: 'Frequência: 6x por semana',
     tipo: 'academia',
-    duracao: '45-60 minutos',
+    duracao: '60-75 minutos',
     genero: 'feminino',
     dias: [
       {
@@ -603,12 +603,12 @@ const treinosDataFeminino: Record<TipoTreino, DiasTreino> = {
         nome: 'Quadríceps + estímulo Isquiotibial',
         grupo: 'Quadríceps, Glúteos, Panturrilha, Abdômen',
         exercicios: [
-          { nome: 'Agachamento Smith', series: 4, repeticoes: '15/12/10/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/1oipoiTpbJA' },
-          { nome: 'Leg Press 45°', series: 4, repeticoes: '12/10/8/6', peso: '80%', execucao: 'https://www.youtube.com/shorts/D9WR6PoMYxs' },
-          { nome: 'Cadeira Extensora', series: 4, repeticoes: '12/10/8/6 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/PzIfB9MiiX8' },
-          { nome: 'Elevação de Quadril na Máquina', series: 4, repeticoes: '12/12/10/10', peso: '60%', execucao: 'https://www.youtube.com/shorts/Nuoo1XgRtGY' },
-          { nome: 'Glúteos Coice na Polia Pernas Estendidas', series: 3, repeticoes: '10-12', peso: '60%', execucao: 'https://youtube.com/shorts/ZzjTOb19hPw' },
-          { nome: 'Panturrilha no Leg Press Horizontal', series: 4, repeticoes: '20/15/12/10 + rest-pause', peso: '50%', execucao: 'https://www.youtube.com/shorts/PkXChiAQDh8' },
+          { nome: 'Agachamento Smith', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/1oipoiTpbJA' },
+          { nome: 'Leg Press 45°', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série)', peso: '80%', execucao: 'https://www.youtube.com/shorts/D9WR6PoMYxs' },
+          { nome: 'Cadeira Extensora', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/PzIfB9MiiX8' },
+          { nome: 'Elevação de Quadril na Máquina', series: 4, repeticoes: '12/12/10/10 (aumentando a carga a cada série)', peso: '60%', execucao: 'https://www.youtube.com/shorts/Nuoo1XgRtGY' },
+          { nome: 'Glúteos Coice na Polia Pernas Estendidas', series: 3, repeticoes: '10 a 12 repetições', peso: '60%', execucao: 'https://youtube.com/shorts/ZzjTOb19hPw' },
+          { nome: 'Panturrilha no Leg Press Horizontal', series: 4, repeticoes: '20/15/12/10 (aumentando a carga a cada série)', peso: '50%', execucao: 'https://www.youtube.com/shorts/PkXChiAQDh8' },
           { nome: 'Abdominal Prancha Isométrica', series: 3, repeticoes: '60 segundos', peso: '0%', execucao: 'https://www.youtube.com/shorts/uxPlAbWFUDs' }
         ]
       },
@@ -617,15 +617,15 @@ const treinosDataFeminino: Record<TipoTreino, DiasTreino> = {
         nome: 'Membros superiores e Abdômen',
         grupo: 'Costas, Peito, Ombros, Braços, Abdômen',
         exercicios: [
-          { nome: 'Puxada Aberta Barra Reta', series: 3, repeticoes: '12/10/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/_2MfZAj98tk' },
-          { nome: 'Supino Inclinado com Halteres', series: 3, repeticoes: '10-12', peso: '70%', execucao: 'https://www.youtube.com/shorts/ZaNyRjpoki8' },
-          { nome: 'Remada Máquina (Pegada Neutra)', series: 3, repeticoes: '12/10/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/r4EmE8I74BQ' },
-          { nome: 'Elevação Lateral com Halteres', series: 4, repeticoes: '8-10 + drop set', peso: '50%', execucao: 'https://www.youtube.com/shorts/ot9nwSC1JnA' },
-          { nome: 'Rosca Direta na Polia (Barra Reta)', series: 4, repeticoes: '8-10 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/x6JCKfdzPJE' },
-          { nome: 'Tríceps Francês Unilateral na Polia', series: 3, repeticoes: '8-10', peso: '60%', execucao: 'https://www.youtube.com/shorts/_dtPoiFWZT4' },
-          { nome: 'Tríceps na Polia com Barra Reta', series: 3, repeticoes: '10/8/6 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/M88Bt4MMpkI' },
-          { nome: 'Abdominal Máquina', series: 3, repeticoes: '10-12', peso: '30%', execucao: 'https://www.youtube.com/shorts/uAe1Uj3Y05k' },
-          { nome: 'Abdominal Infra com as Pernas Flexionadas com Elevação de Quadril', series: 3, repeticoes: 'até a falha', peso: '0%', execucao: 'https://www.youtube.com/shorts/iZ5jYOH2ODM' }
+          { nome: 'Puxada Aberta Barra Reta', series: 3, repeticoes: '12/10/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/_2MfZAj98tk' },
+          { nome: 'Supino Inclinado com Halteres', series: 3, repeticoes: '10 a 12 repetições', peso: '70%', execucao: 'https://www.youtube.com/shorts/ZaNyRjpoki8' },
+          { nome: 'Remada Máquina (Pegada Neutra)', series: 3, repeticoes: '12/10/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/r4EmE8I74BQ' },
+          { nome: 'Elevação Lateral com Halteres', series: 4, repeticoes: '8 a 10 repetições + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '50%', execucao: 'https://www.youtube.com/shorts/ot9nwSC1JnA' },
+          { nome: 'Rosca Direta na Polia (Barra Reta)', series: 4, repeticoes: '8 a 10 repetições + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/x6JCKfdzPJE' },
+          { nome: 'Tríceps Francês Unilateral na Polia', series: 3, repeticoes: '8 a 10 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/_dtPoiFWZT4' },
+          { nome: 'Tríceps na Polia com Barra Reta', series: 3, repeticoes: '10/8/6 + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/M88Bt4MMpkI' },
+          { nome: 'Abdominal Máquina', series: 3, repeticoes: '10 a 12 repetições', peso: '30%', execucao: 'https://www.youtube.com/shorts/uAe1Uj3Y05k' },
+          { nome: 'Abdominal Infra com as Pernas Flexionadas com Elevação de Quadril', series: 3, repeticoes: 'Até a falha', peso: '0%', execucao: 'https://www.youtube.com/shorts/iZ5jYOH2ODM' }
         ]
       },
       {
@@ -633,12 +633,12 @@ const treinosDataFeminino: Record<TipoTreino, DiasTreino> = {
         nome: 'Isquiotibial + Glúteo',
         grupo: 'Isquiotibiais, Glúteos, Panturrilha, Abdômen',
         exercicios: [
-          { nome: 'Agachamento Sumô no Step com Halteres', series: 4, repeticoes: '12/12/10/10', peso: '60%', execucao: 'https://www.youtube.com/shorts/oFx42iwZKgo' },
-          { nome: 'Stiff com Halteres', series: 4, repeticoes: '10/10/8/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/SRVkwwXk7I4' },
-          { nome: 'Elevação de Quadril na Máquina', series: 3, repeticoes: '12/10/8', peso: '60%', execucao: 'https://www.youtube.com/shorts/Nuoo1XgRtGY' },
-          { nome: 'Abdução de Quadril Máquina com Corpo a Frente', series: 3, repeticoes: '12/10/8 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/cZilgAG9Vx8' },
-          { nome: 'Mesa Flexora', series: 4, repeticoes: '12/10/8/6 + drop set', peso: '70%', execucao: 'https://www.youtube.com/shorts/IXg1PQ_5gmw' },
-          { nome: 'Panturrilha no Smith com Step', series: 4, repeticoes: '10-12', peso: '50%', execucao: 'https://www.youtube.com/shorts/cETqVlftyJs' },
+          { nome: 'Agachamento Sumô no Step com Halteres', series: 4, repeticoes: '12/12/10/10 (aumentando a carga a cada série)', peso: '60%', execucao: 'https://www.youtube.com/shorts/oFx42iwZKgo' },
+          { nome: 'Stiff com Halteres', series: 4, repeticoes: '10/10/8/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/SRVkwwXk7I4' },
+          { nome: 'Elevação de Quadril na Máquina', series: 3, repeticoes: '12/10/8 (aumentando a carga a cada série)', peso: '60%', execucao: 'https://www.youtube.com/shorts/Nuoo1XgRtGY' },
+          { nome: 'Abdução de Quadril Máquina com Corpo a Frente', series: 3, repeticoes: '12/10/8 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/cZilgAG9Vx8' },
+          { nome: 'Mesa Flexora', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '70%', execucao: 'https://www.youtube.com/shorts/IXg1PQ_5gmw' },
+          { nome: 'Panturrilha no Smith com Step', series: 4, repeticoes: '10 a 12 repetições', peso: '50%', execucao: 'https://www.youtube.com/shorts/cETqVlftyJs' },
           { nome: 'Abdominal Prancha Isométrica', series: 3, repeticoes: '60 segundos', peso: '0%', execucao: 'https://www.youtube.com/shorts/uxPlAbWFUDs' }
         ]
       },
@@ -647,15 +647,15 @@ const treinosDataFeminino: Record<TipoTreino, DiasTreino> = {
         nome: 'Membros superiores e Abdômen',
         grupo: 'Peito, Costas, Ombros, Braços, Abdômen',
         exercicios: [
-          { nome: 'Peck Deck', series: 3, repeticoes: '10-12', peso: '60%', execucao: 'https://www.youtube.com/shorts/bA5KbR0xltE' },
-          { nome: 'Puxada Neutra Triângulo', series: 3, repeticoes: '12/10/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/ySLFHxmJ_Sc' },
-          { nome: 'Remada Máquina (Pegada Pronada)', series: 3, repeticoes: '10/8/6', peso: '70%', execucao: 'https://www.youtube.com/shorts/r4EmE8I74BQ' },
-          { nome: 'Crucifixo Inverso Unilateral na Polia', series: 3, repeticoes: '8-10', peso: '50%', execucao: 'https://www.youtube.com/shorts/rJyUiN6Gkdg' },
-          { nome: 'Rosca Direta Alternada Sentado com Halteres', series: 4, repeticoes: '8-10', peso: '60%', execucao: 'https://www.youtube.com/shorts/4onwQ6kLrC4' },
-          { nome: 'Tríceps Coice Unilateral na Polia Baixa', series: 3, repeticoes: '8-10', peso: '60%', execucao: 'https://www.youtube.com/shorts/Yll1IwBByRo' },
-          { nome: 'Tríceps na Polia com Corda', series: 3, repeticoes: '10/8/6 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/-QGC1cL6ETE' },
-          { nome: 'Abdominal Supra no Solo Pés Altos', series: 3, repeticoes: '12-15 com carga', peso: '30%', execucao: 'https://www.youtube.com/shorts/PEFjJbjnmns' },
-          { nome: 'Abdominal Infra com as Pernas Flexionadas', series: 3, repeticoes: 'até a falha', peso: '0%', execucao: 'https://www.youtube.com/watch?v=6LtsNXhhQDY&ab_channel=BioformaAcademia' }
+          { nome: 'Peck Deck', series: 3, repeticoes: '10 a 12 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/bA5KbR0xltE' },
+          { nome: 'Puxada Neutra Triângulo', series: 3, repeticoes: '12/10/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/ySLFHxmJ_Sc' },
+          { nome: 'Remada Máquina (Pegada Pronada)', series: 3, repeticoes: '10/8/6 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/r4EmE8I74BQ' },
+          { nome: 'Crucifixo Inverso Unilateral na Polia', series: 3, repeticoes: '8 a 10 repetições', peso: '50%', execucao: 'https://www.youtube.com/shorts/rJyUiN6Gkdg' },
+          { nome: 'Rosca Direta Alternada Sentado com Halteres', series: 4, repeticoes: '8 a 10 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/4onwQ6kLrC4' },
+          { nome: 'Tríceps Coice Unilateral na Polia Baixa', series: 3, repeticoes: '8 a 10 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/Yll1IwBByRo' },
+          { nome: 'Tríceps na Polia com Corda', series: 3, repeticoes: '10/8/6 + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/-QGC1cL6ETE' },
+          { nome: 'Abdominal Supra no Solo Pés Altos', series: 3, repeticoes: '12 a 15 repetições com carga', peso: '30%', execucao: 'https://www.youtube.com/shorts/PEFjJbjnmns' },
+          { nome: 'Abdominal Infra com as Pernas Flexionadas', series: 3, repeticoes: 'Até a falha', peso: '0%', execucao: 'https://www.youtube.com/watch?v=6LtsNXhhQDY&ab_channel=BioformaAcademia' }
         ]
       },
       {
@@ -663,12 +663,12 @@ const treinosDataFeminino: Record<TipoTreino, DiasTreino> = {
         nome: 'Quadríceps + estímulo Isquiotibial',
         grupo: 'Quadríceps, Glúteos, Panturrilha, Abdômen',
         exercicios: [
-          { nome: 'Agachamento Smith', series: 4, repeticoes: '15/12/10/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/1oipoiTpbJA' },
-          { nome: 'Leg Press 45°', series: 4, repeticoes: '12/10/8/6', peso: '80%', execucao: 'https://www.youtube.com/shorts/D9WR6PoMYxs' },
-          { nome: 'Cadeira Extensora', series: 4, repeticoes: '12/10/8/6 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/PzIfB9MiiX8' },
-          { nome: 'Elevação de Quadril na Máquina', series: 4, repeticoes: '12/12/10/10', peso: '60%', execucao: 'https://www.youtube.com/shorts/Nuoo1XgRtGY' },
-          { nome: 'Glúteos Coice na Polia Pernas Estendidas', series: 3, repeticoes: '10-12', peso: '60%', execucao: 'https://youtube.com/shorts/ZzjTOb19hPw' },
-          { nome: 'Panturrilha no Leg Press Horizontal', series: 4, repeticoes: '20/15/12/10 + rest-pause', peso: '50%', execucao: 'https://www.youtube.com/shorts/PkXChiAQDh8' },
+          { nome: 'Agachamento Smith', series: 4, repeticoes: '15/12/10/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/1oipoiTpbJA' },
+          { nome: 'Leg Press 45°', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série)', peso: '80%', execucao: 'https://www.youtube.com/shorts/D9WR6PoMYxs' },
+          { nome: 'Cadeira Extensora', series: 4, repeticoes: '12/10/8/6 (aumentando a carga a cada série) + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/PzIfB9MiiX8' },
+          { nome: 'Elevação de Quadril na Máquina', series: 4, repeticoes: '12/12/10/10 (aumentando a carga a cada série)', peso: '60%', execucao: 'https://www.youtube.com/shorts/Nuoo1XgRtGY' },
+          { nome: 'Glúteos Coice na Polia Pernas Estendidas', series: 3, repeticoes: '10 a 12 repetições', peso: '60%', execucao: 'https://youtube.com/shorts/ZzjTOb19hPw' },
+          { nome: 'Panturrilha no Leg Press Horizontal', series: 4, repeticoes: '20/15/12/10 (aumentando a carga a cada série)', peso: '50%', execucao: 'https://www.youtube.com/shorts/PkXChiAQDh8' },
           { nome: 'Abdominal Prancha Isométrica', series: 3, repeticoes: '60 segundos', peso: '0%', execucao: 'https://www.youtube.com/shorts/uxPlAbWFUDs' }
         ]
       },
@@ -677,15 +677,15 @@ const treinosDataFeminino: Record<TipoTreino, DiasTreino> = {
         nome: 'Membros superiores e Abdômen',
         grupo: 'Costas, Peito, Ombros, Braços, Abdômen',
         exercicios: [
-          { nome: 'Puxada Aberta Barra Reta', series: 3, repeticoes: '12/10/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/_2MfZAj98tk' },
-          { nome: 'Supino Inclinado com Halteres', series: 3, repeticoes: '10-12', peso: '70%', execucao: 'https://www.youtube.com/shorts/ZaNyRjpoki8' },
-          { nome: 'Remada Máquina (Pegada Neutra)', series: 3, repeticoes: '12/10/8', peso: '70%', execucao: 'https://www.youtube.com/shorts/r4EmE8I74BQ' },
-          { nome: 'Elevação Lateral com Halteres', series: 4, repeticoes: '8-10 + drop set', peso: '50%', execucao: 'https://www.youtube.com/shorts/ot9nwSC1JnA' },
-          { nome: 'Rosca Direta na Polia (Barra Reta)', series: 4, repeticoes: '8-10 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/x6JCKfdzPJE' },
-          { nome: 'Tríceps Francês Unilateral na Polia', series: 3, repeticoes: '8-10', peso: '60%', execucao: 'https://www.youtube.com/shorts/_dtPoiFWZT4' },
-          { nome: 'Tríceps na Polia com Barra Reta', series: 3, repeticoes: '10/8/6 + drop set', peso: '60%', execucao: 'https://www.youtube.com/shorts/M88Bt4MMpkI' },
-          { nome: 'Abdominal Máquina', series: 3, repeticoes: '10-12', peso: '30%', execucao: 'https://www.youtube.com/shorts/uAe1Uj3Y05k' },
-          { nome: 'Abdominal Infra com as Pernas Flexionadas com Elevação de Quadril', series: 3, repeticoes: 'até a falha', peso: '0%', execucao: 'https://www.youtube.com/shorts/iZ5jYOH2ODM' }
+          { nome: 'Puxada Aberta Barra Reta', series: 3, repeticoes: '12/10/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/_2MfZAj98tk' },
+          { nome: 'Supino Inclinado com Halteres', series: 3, repeticoes: '10 a 12 repetições', peso: '70%', execucao: 'https://www.youtube.com/shorts/ZaNyRjpoki8' },
+          { nome: 'Remada Máquina (Pegada Neutra)', series: 3, repeticoes: '12/10/8 (aumentando a carga a cada série)', peso: '70%', execucao: 'https://www.youtube.com/shorts/r4EmE8I74BQ' },
+          { nome: 'Elevação Lateral com Halteres', series: 4, repeticoes: '8 a 10 repetições + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '50%', execucao: 'https://www.youtube.com/shorts/ot9nwSC1JnA' },
+          { nome: 'Rosca Direta na Polia (Barra Reta)', series: 4, repeticoes: '8 a 10 repetições + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/x6JCKfdzPJE' },
+          { nome: 'Tríceps Francês Unilateral na Polia', series: 3, repeticoes: '8 a 10 repetições', peso: '60%', execucao: 'https://www.youtube.com/shorts/_dtPoiFWZT4' },
+          { nome: 'Tríceps na Polia com Barra Reta', series: 3, repeticoes: '10/8/6 + Drop set (ao final da última série diminua 20% da carga e faça até a falha total)', peso: '60%', execucao: 'https://www.youtube.com/shorts/M88Bt4MMpkI' },
+          { nome: 'Abdominal Máquina', series: 3, repeticoes: '10 a 12 repetições', peso: '30%', execucao: 'https://www.youtube.com/shorts/uAe1Uj3Y05k' },
+          { nome: 'Abdominal Infra com as Pernas Flexionadas com Elevação de Quadril', series: 3, repeticoes: 'Até a falha', peso: '0%', execucao: 'https://www.youtube.com/shorts/iZ5jYOH2ODM' }
         ]
       }
     ]
@@ -701,11 +701,11 @@ const treinosDataFeminino: Record<TipoTreino, DiasTreino> = {
         nome: 'Dia 1',
         grupo: 'Corpo Inteiro + Cardio',
         exercicios: [
-          { nome: 'Polichinelo', series: 4, repeticoes: '12-15 reps', peso: '0%', execucao: 'https://www.youtube.com/shorts/guvPySViG7o' },
-          { nome: 'Afundo com Carga', series: 4, repeticoes: '12-15 reps', peso: '0%', execucao: 'https://www.youtube.com/watch?v=2JfYV4Er_Jg&ab_channel=KarlaLaleska' },
+          { nome: 'Polichinelo', series: 4, repeticoes: '12 a 15 repetições reps', peso: '0%', execucao: 'https://www.youtube.com/shorts/guvPySViG7o' },
+          { nome: 'Afundo com Carga', series: 4, repeticoes: '12 a 15 repetições reps', peso: '0%', execucao: 'https://www.youtube.com/watch?v=2JfYV4Er_Jg&ab_channel=KarlaLaleska' },
           { nome: 'Skipping Alto', series: 4, repeticoes: '30-60 segundos', peso: '0%', execucao: 'https://www.youtube.com/shorts/gxnEVpAGZqE' },
-          { nome: 'Agachamento com Salto', series: 4, repeticoes: '10-12 reps', peso: '0%', execucao: 'https://www.youtube.com/shorts/XYKLBni1080' },
-          { nome: 'Prancha Isométrica', series: 4, repeticoes: '30-60 segundos', peso: '0%', execucao: 'https://www.youtube.com/shorts/uxPlAbWFUDs' }
+          { nome: 'Agachamento com Salto', series: 4, repeticoes: '10 a 12 repetições reps', peso: '0%', execucao: 'https://www.youtube.com/shorts/XYKLBni1080' },
+          { nome: 'Prancha Isométrica', series: 4, repeticoes: '60 segundos', peso: '0%', execucao: 'https://www.youtube.com/shorts/uxPlAbWFUDs' }
         ]
       },
       {
@@ -713,11 +713,11 @@ const treinosDataFeminino: Record<TipoTreino, DiasTreino> = {
         nome: 'Dia 2',
         grupo: 'Corpo Inteiro + Cardio',
         exercicios: [
-          { nome: 'Agachamento com Salto', series: 4, repeticoes: '10-12 reps', peso: '0%', execucao: 'https://www.youtube.com/shorts/XYKLBni1080' },
+          { nome: 'Agachamento com Salto', series: 4, repeticoes: '10 a 12 repetições reps', peso: '0%', execucao: 'https://www.youtube.com/shorts/XYKLBni1080' },
           { nome: 'Avanço Alternado', series: 3, repeticoes: '10 reps de cada lado', peso: '0%', execucao: 'https://www.youtube.com/shorts/fu_y_h3X7xE' },
           { nome: 'Escalador', series: 3, repeticoes: '10 reps de cada lado', peso: '0%', execucao: 'https://www.youtube.com/shorts/fDo4sulRb04' },
-          { nome: 'Flexão de Braços com Apoio', series: 3, repeticoes: '8-10 reps', peso: '0%', execucao: 'https://www.youtube.com/shorts/QJ7cqXaAp8w' },
-          { nome: 'Prancha Isométrica', series: 3, repeticoes: '30-60 segundos', peso: '0%', execucao: 'https://www.youtube.com/shorts/uxPlAbWFUDs' }
+          { nome: 'Flexão de Braços com Apoio', series: 3, repeticoes: '8 a 10 repetições reps', peso: '0%', execucao: 'https://www.youtube.com/shorts/QJ7cqXaAp8w' },
+          { nome: 'Prancha Isométrica', series: 3, repeticoes: '60 segundos', peso: '0%', execucao: 'https://www.youtube.com/shorts/uxPlAbWFUDs' }
         ]
       },
       {
@@ -725,11 +725,11 @@ const treinosDataFeminino: Record<TipoTreino, DiasTreino> = {
         nome: 'Dia 3',
         grupo: 'Corpo Inteiro + Cardio',
         exercicios: [
-          { nome: 'Polichinelo com Agachamento', series: 3, repeticoes: '10-12 reps', peso: '0%', execucao: 'https://www.youtube.com/shorts/nb24dGcNjGA' },
-          { nome: 'Recuo Alternado', series: 3, repeticoes: '10-12 reps de cada lado', peso: '0%', execucao: 'https://www.youtube.com/shorts/ujmyaF0vuDM' },
-          { nome: 'Skipping', series: 4, repeticoes: '10-12 reps de cada lado', peso: '0%', execucao: 'https://www.youtube.com/shorts/6qSYlrN4XO4' },
+          { nome: 'Polichinelo com Agachamento', series: 3, repeticoes: '10 a 12 repetições reps', peso: '0%', execucao: 'https://www.youtube.com/shorts/nb24dGcNjGA' },
+          { nome: 'Recuo Alternado', series: 3, repeticoes: '10 a 12 repetições reps de cada lado', peso: '0%', execucao: 'https://www.youtube.com/shorts/ujmyaF0vuDM' },
+          { nome: 'Skipping', series: 4, repeticoes: '10 a 12 repetições reps de cada lado', peso: '0%', execucao: 'https://www.youtube.com/shorts/6qSYlrN4XO4' },
           { nome: 'Avanço Unilateral', series: 4, repeticoes: '10 reps de cada lado', peso: '0%', execucao: 'https://www.youtube.com/shorts/QEiONKVu6rg' },
-          { nome: 'Prancha Isométrica', series: 4, repeticoes: '30-60 segundos', peso: '0%', execucao: 'https://www.youtube.com/shorts/uxPlAbWFUDs' }
+          { nome: 'Prancha Isométrica', series: 4, repeticoes: '60 segundos', peso: '0%', execucao: 'https://www.youtube.com/shorts/uxPlAbWFUDs' }
         ]
       }
     ]
@@ -739,9 +739,43 @@ const treinosDataFeminino: Record<TipoTreino, DiasTreino> = {
 export default function Treinos() {
   const [treinoSelecionado, setTreinoSelecionado] = useState<TipoTreino>('5x');
   const [generoSelecionado, setGeneroSelecionado] = useState<'masculino' | 'feminino'>('masculino');
+  const [videoModalOpen, setVideoModalOpen] = useState(false);
+  const [currentVideoId, setCurrentVideoId] = useState<string>('');
+
+
 
   const treinosData = generoSelecionado === 'masculino' ? treinosDataMasculino : treinosDataFeminino;
   const treinoAtual = treinosData[treinoSelecionado];
+
+  // Função para extrair o ID do vídeo do YouTube
+  const extractYouTubeId = (url: string): string => {
+    // Regex melhorada para capturar IDs do YouTube
+    const patterns = [
+      /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/v\/|youtube\.com\/watch\?.*&v=)([^&#?]{11})/,
+      /youtube\.com\/shorts\/([^&#?]{11})/
+    ];
+    
+    for (const pattern of patterns) {
+      const match = url.match(pattern);
+      if (match && match[1]) {
+        return match[1];
+      }
+    }
+    
+    return '';
+  };
+
+  // Função para abrir o modal de vídeo
+  const openVideoModal = (videoUrl: string) => {
+    const videoId = extractYouTubeId(videoUrl);
+    if (videoId) {
+      setCurrentVideoId(videoId);
+      setVideoModalOpen(true);
+    } else {
+      // Se não conseguir extrair o ID, abre em nova aba como fallback
+      window.open(videoUrl, '_blank');
+    }
+  };
 
   const getIconeTipo = (tipo: string) => {
     switch (tipo) {
@@ -840,14 +874,14 @@ export default function Treinos() {
                 className="bg-white/10 border-white/30 text-white hover:bg-white/20 hover:border-white/50 transition-all duration-200"
               >
                 <Info className="w-4 h-4 mr-2" />
-                Observações
+                ORIENTAÇÕES IMPORTANTES
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto bg-white text-gray-900">
               <DialogHeader>
                 <DialogTitle className="text-xl font-bold text-yellow-600 flex items-center gap-2">
                   <Info className="w-5 h-5" />
-                  Orientações, Observações e Instruções: LEIA TUDO
+                  Orientações Importantes: LEIA TUDO
                 </DialogTitle>
               </DialogHeader>
               <div className="space-y-6 text-gray-700">
@@ -866,17 +900,33 @@ export default function Treinos() {
                   </div>
                 </div>
 
-                {/* Ponto Chave */}
-                <div className="bg-gradient-to-r from-red-50 to-orange-50 border-l-4 border-red-400 p-6 rounded-r-lg">
-                  <h3 className="font-bold text-red-800 mb-3 flex items-center gap-2">
-                    ⚡ PONTO CHAVE: CARGAS ALTAS
+                {/* Como Identificar Falha */}
+                <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border-l-4 border-yellow-400 p-6 rounded-r-lg">
+                  <h3 className="font-bold text-yellow-800 mb-3 flex items-center gap-2">
+                    🎯 COMO IDENTIFICAR SE CHEGOU À FALHA
                   </h3>
-                  <p className="text-sm text-red-700 leading-relaxed mb-3">
-                    <strong>NÃO TENHA MEDO DE USAR CARGAS ALTAS</strong>, pois é através disso que conseguiremos sinalizar da melhor maneira a hipertrofia. Precisamos fazer com que cada treino seja desafiador a ponto do seu corpo <strong>TER QUE ENTENDER QUE ELE DEVE EVOLUIR</strong> para suportar a pancada do treino que você está dando nele.
+                  <p className="text-sm text-yellow-700 leading-relaxed mb-4">
+                    A ideia é você fazer as repetições previstas e <strong>não conseguir fazer mais nenhuma repetição com qualidade</strong>, pois faltará força para completar o movimento, falhando a musculatura.
                   </p>
-                  <p className="text-sm text-red-700 leading-relaxed">
-                    Nunca se esqueça de prezar por uma boa execução - esses fatores serão primordiais para que seja possível desenvolver massa muscular.
-                  </p>
+                  
+                  <div className="bg-yellow-100 border border-yellow-200 rounded-lg p-4">
+                    <h4 className="font-semibold text-yellow-800 mb-3">Exemplo prático:</h4>
+                    <p className="text-sm text-yellow-700 mb-3">Se está prescrito para fazer <strong>10 a 12 repetições</strong>:</p>
+                    <ul className="space-y-2 text-sm">
+                      <li className="flex items-center gap-2">
+                        <span className="text-green-600">✅</span>
+                        <span className="text-yellow-700"><strong>Caso faça 13 ou mais:</strong> significa que está leve, pode aumentar</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <span className="text-red-600">❌</span>
+                        <span className="text-yellow-700"><strong>Caso faça 11 ou menos:</strong> significa que está pesado, pode diminuir um pouco</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <span className="text-yellow-600">🎯</span>
+                        <span className="text-yellow-700"><strong>Ideal:</strong> conseguir fazer exatamente 12 repetições e não conseguir fazer a 13ª com qualidade</span>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
 
                 {/* Regras Fundamentais */}
@@ -885,14 +935,15 @@ export default function Treinos() {
                     📋 REGRAS FUNDAMENTAIS
                   </h3>
                   <p className="text-sm text-green-700 leading-relaxed mb-4">
-                    Peço que siga exatamente como está previsto, <strong>sem acrescentar ou retirar séries nem exercícios</strong>. Caso sinta qualquer dor ou dificuldade, filme a execução do exercício de uma visão lateral e me mande o vídeo que te orientarei melhor.
+                    Peço que siga exatamente como está previsto, <strong>sem acrescentar ou retirar séries nem exercícios</strong>.
                   </p>
                   <div className="bg-green-100 border border-green-200 rounded-lg p-4">
-                    <h4 className="font-semibold text-green-800 mb-2">Reforçando:</h4>
+                    <h4 className="font-semibold text-green-800 mb-2">Importante:</h4>
                     <ul className="space-y-1 text-sm text-green-700">
                       <li><strong>1.</strong> Sempre priorize técnica e amplitude de movimento</li>
                       <li><strong>2.</strong> Busque progressão de carga sempre que possível dentro da faixa de repetições prevista</li>
                       <li><strong>3.</strong> Mantenha 1 minuto ou mais de descanso entre as séries</li>
+                      <li><strong>4.</strong> <strong>NÃO TENHA MEDO DE USAR CARGAS ALTAS</strong>, pois é através disso que conseguiremos sinalizar da melhor maneira a hipertrofia. Precisamos fazer com que cada treino seja desafiador a ponto do seu corpo <strong>TER QUE ENTENDER QUE ELE DEVE EVOLUIR</strong> para suportar a pancada do treino que você está dando nele.</li>
                     </ul>
                   </div>
                 </div>
@@ -914,7 +965,7 @@ export default function Treinos() {
                     <div className="bg-purple-100 border border-purple-200 rounded-lg p-4">
                       <h4 className="font-semibold text-purple-800 mb-2">Descanso</h4>
                       <p className="text-sm text-purple-700">
-                        O tempo <strong>MÍNIMO DE DESCANSO</strong> entre as séries e os exercícios é de <strong>60 A 120 SEGUNDOS</strong>
+                        O tempo <strong>MÍNIMO DE DESCANSO</strong> entre as séries e os exercícios é de <strong>60 A 90 SEGUNDOS</strong>
                       </p>
                     </div>
 
@@ -940,44 +991,9 @@ export default function Treinos() {
                         <strong>Exemplo:</strong> 12/10/8 - Faz 12, descansa, faz 10 com uma carga maior, descansa, faz 8 com uma carga maior, sempre com <strong>carga MÁXIMA</strong> para cada margem de repetições
                       </p>
                     </div>
-
-                    <div className="bg-purple-100 border border-purple-200 rounded-lg p-4">
-                      <h4 className="font-semibold text-purple-800 mb-2">Falha Muscular</h4>
-                      <p className="text-sm text-purple-700">
-                        <strong>Sempre procure chegar até a falha muscular nas 2 últimas séries</strong> de todos os exercícios
-                      </p>
-                    </div>
                   </div>
                 </div>
 
-                {/* Como Identificar Falha */}
-                <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border-l-4 border-yellow-400 p-6 rounded-r-lg">
-                  <h3 className="font-bold text-yellow-800 mb-3 flex items-center gap-2">
-                    🎯 COMO IDENTIFICAR SE CHEGOU À FALHA
-                  </h3>
-                  <p className="text-sm text-yellow-700 leading-relaxed mb-4">
-                    A ideia é você fazer as repetições previstas e <strong>não conseguir fazer mais nenhuma repetição com qualidade</strong>, pois faltará força para completar o movimento, falhando a musculatura.
-                  </p>
-                  
-                  <div className="bg-yellow-100 border border-yellow-200 rounded-lg p-4">
-                    <h4 className="font-semibold text-yellow-800 mb-3">Exemplo prático:</h4>
-                    <p className="text-sm text-yellow-700 mb-3">Se está prescrito para fazer <strong>12 repetições</strong>:</p>
-                    <ul className="space-y-2 text-sm">
-                      <li className="flex items-center gap-2">
-                        <span className="text-green-600">✅</span>
-                        <span className="text-yellow-700"><strong>Caso faça 13 ou mais:</strong> significa que está leve, pode aumentar</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <span className="text-red-600">❌</span>
-                        <span className="text-yellow-700"><strong>Caso faça 11 ou menos:</strong> significa que está pesado, pode diminuir um pouco</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <span className="text-yellow-600">🎯</span>
-                        <span className="text-yellow-700"><strong>Ideal:</strong> conseguir fazer exatamente 12 repetições e não conseguir fazer a 13ª com qualidade</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
               </div>
             </DialogContent>
           </Dialog>
@@ -1030,7 +1046,7 @@ export default function Treinos() {
                         <Button
                           size="sm"
                           variant="outline"
-                          onClick={() => window.open(exercicio.execucao, '_blank')}
+                          onClick={() => openVideoModal(exercicio.execucao!)}
                           className="bg-red-50 border-red-200 text-red-700 hover:bg-red-100 hover:border-red-300 flex items-center gap-1 text-xs px-2 py-1 h-auto"
                         >
                           <Play className="w-3 h-3" />
@@ -1040,16 +1056,11 @@ export default function Treinos() {
                     </div>
                     <div className="flex gap-2 flex-wrap ml-5">
                       <Badge variant="outline" className="border-yellow-400 text-yellow-700 bg-yellow-50 font-semibold shadow-sm">
-                        📊 {exercicio.series}x
+                        📊 {exercicio.series} séries
                       </Badge>
                       <Badge variant="outline" className="border-orange-400 text-orange-700 bg-orange-50 font-semibold shadow-sm">
                         🔄 {exercicio.repeticoes}
                       </Badge>
-                      {exercicio.peso !== '0%' && (
-                        <Badge variant="outline" className="border-gray-400 text-gray-700 bg-gray-50 font-semibold shadow-sm">
-                          ⚖️ {exercicio.peso}
-                        </Badge>
-                      )}
                     </div>
                   </div>
                 ))}
@@ -1062,34 +1073,35 @@ export default function Treinos() {
       </div>
 
       {/* Seções Informativas */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {/* 3 Cards Informativos */}
+      <div className="grid md:grid-cols-3 gap-6 mb-6">
         {/* Dicas de Treino */}
         <Card className="bg-white dark:bg-white border-gray-200 dark:border-gray-200 text-gray-900">
           <CardHeader>
-            <CardTitle className="text-yellow-600 flex items-center gap-2">
+            <CardTitle className="text-blue-600 flex items-center gap-2">
               <span className="text-2xl">💡</span>
               Dicas de Treino
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3 text-gray-700">
             <div className="flex items-start gap-2">
-              <span className="text-orange-500 font-bold">•</span>
+              <span className="text-blue-500 font-bold">•</span>
               <p>Sempre faça aquecimento antes do treino</p>
             </div>
             <div className="flex items-start gap-2">
-              <span className="text-orange-500 font-bold">•</span>
+              <span className="text-blue-500 font-bold">•</span>
               <p>Mantenha a execução correta dos exercícios</p>
             </div>
             <div className="flex items-start gap-2">
-              <span className="text-orange-500 font-bold">•</span>
+              <span className="text-blue-500 font-bold">•</span>
               <p>Descanse de 48-72h entre treinos do mesmo grupo muscular</p>
             </div>
             <div className="flex items-start gap-2">
-              <span className="text-orange-500 font-bold">•</span>
+              <span className="text-blue-500 font-bold">•</span>
               <p>Hidrate-se durante o treino</p>
             </div>
             <div className="flex items-start gap-2">
-              <span className="text-orange-500 font-bold">•</span>
+              <span className="text-blue-500 font-bold">•</span>
               <p>Progrida gradualmente nas cargas</p>
             </div>
           </CardContent>
@@ -1100,17 +1112,17 @@ export default function Treinos() {
           <CardHeader>
             <CardTitle className="text-yellow-600 flex items-center gap-2">
               <span className="text-2xl">⏱️</span>
-              Duração Recomendada
+              Duração Estimada
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3 text-gray-700">
             <div className="flex justify-between items-center">
               <span>Treino 3x/Semana:</span>
-              <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white">45-60 min</Badge>
+              <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white">60 min</Badge>
             </div>
             <div className="flex justify-between items-center">
               <span>Treino 4x/Semana:</span>
-              <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white">45-60 min</Badge>
+              <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white">60 min</Badge>
             </div>
             <div className="flex justify-between items-center">
               <span>Treino 5x/Semana:</span>
@@ -1118,7 +1130,7 @@ export default function Treinos() {
             </div>
             <div className="flex justify-between items-center">
               <span>Treino 6x/Semana:</span>
-              <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white">45-60 min</Badge>
+              <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white">60-75 min</Badge>
             </div>
             <div className="flex justify-between items-center">
               <span>Treino em Casa:</span>
@@ -1127,8 +1139,25 @@ export default function Treinos() {
           </CardContent>
         </Card>
 
-        {/* Card de Motivação */}
-        <Card className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white">
+        {/* Cardios */}
+        <Card className="bg-white dark:bg-white border-gray-200 dark:border-gray-200 text-gray-900">
+          <CardHeader>
+            <CardTitle className="text-red-600 flex items-center gap-2">
+              <span className="text-2xl">❤️</span>
+              Cardios
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3 text-gray-700">
+            <p className="text-sm leading-relaxed">
+              Sempre que possível faça um cardio após o treino (ou em outro horário do dia) de <strong>20 minutos</strong> de caminhada rápida na esteira ou na rua, <strong>sem correr</strong>, mas sempre mantendo uma intensidade a ponto de se manter <strong>ofegante</strong>.
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Card de Motivação */}
+      <div className="mt-8">
+        <Card className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white max-w-4xl mx-auto">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Trophy className="w-5 h-5" />
@@ -1207,6 +1236,40 @@ export default function Treinos() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Modal de Vídeo */}
+      {videoModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
+          <div className="relative max-w-4xl w-[95vw] h-[80vh] bg-black rounded-lg">
+            {/* Header do Modal */}
+            <div className="absolute top-0 left-0 right-0 z-10 bg-gradient-to-r from-black/80 to-transparent p-4 rounded-t-lg">
+              <div className="flex items-center justify-between">
+                <h3 className="text-white font-semibold">Execução do Exercício</h3>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setVideoModalOpen(false)}
+                  className="text-white hover:bg-white/20"
+                >
+                  <X className="w-5 h-5" />
+                </Button>
+              </div>
+            </div>
+            
+            {/* Iframe do YouTube */}
+            {currentVideoId && (
+              <iframe
+                src={`https://www.youtube.com/embed/${currentVideoId}?autoplay=1&rel=0&modestbranding=1`}
+                title="Execução do Exercício"
+                className="w-full h-full rounded-lg"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            )}
+          </div>
+        </div>
+      )}
 
     </div>
   );
