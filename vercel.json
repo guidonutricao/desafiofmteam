@@ -1,8 +1,38 @@
 {
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/((?!api|_next/static|_next/image|favicon.ico).*)",
       "destination": "/index.html"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/login",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/ranking",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/treinos",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/dietas",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/perfil",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/celebration",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ],
   "headers": [
